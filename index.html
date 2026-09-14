@@ -14,7 +14,7 @@
     --line:#e8e8e8; --line-strong:#d4d4d4;
     --ink:#0f0f0f; --ink-2:#6b6b6b; --ink-3:#a0a0a0;
     --accent:#6da030; --accent-hover:#5e8c28;
-    --accent-subtle:rgba(109,160,48,.09); --accent-glow:rgba(109,160,48,.18);
+    --accent-subtle:rgba(109,160,48,.09); --accent-glow:rgba(109,160,48,.18); --accent-edge:rgba(109,160,48,.45);
     --on-accent:#ffffff;
     --warn:#b45d00; --warn-subtle:rgba(180,93,0,.1);
     --info:#3d6a99; --info-subtle:rgba(61,106,153,.1);
@@ -30,7 +30,7 @@
       --line:#1f1f1f; --line-strong:#2e2e2e;
       --ink:#f5f5f5; --ink-2:#9a9a9a; --ink-3:#5a5a5a;
       --accent:#8bc342; --accent-hover:#7db33a;
-      --accent-subtle:rgba(139,195,66,.1); --accent-glow:rgba(139,195,66,.15);
+      --accent-subtle:rgba(139,195,66,.1); --accent-glow:rgba(139,195,66,.15); --accent-edge:rgba(139,195,66,.4);
       --on-accent:#0a0a0a;
       --warn:#f0a830; --warn-subtle:rgba(240,168,48,.12);
       --info:#6b93c0; --info-subtle:rgba(107,147,192,.12);
@@ -43,7 +43,7 @@
     --line:#1f1f1f; --line-strong:#2e2e2e;
     --ink:#f5f5f5; --ink-2:#9a9a9a; --ink-3:#5a5a5a;
     --accent:#8bc342; --accent-hover:#7db33a;
-    --accent-subtle:rgba(139,195,66,.1); --accent-glow:rgba(139,195,66,.15);
+    --accent-subtle:rgba(139,195,66,.1); --accent-glow:rgba(139,195,66,.15); --accent-edge:rgba(139,195,66,.4);
     --on-accent:#0a0a0a;
     --warn:#f0a830; --warn-subtle:rgba(240,168,48,.12);
     --info:#6b93c0; --info-subtle:rgba(107,147,192,.12);
@@ -334,17 +334,51 @@
   .sendrow .sn b{font-family:var(--mono);font-size:13px}
   .sendrow .sn span{font-family:var(--mono);font-size:10.5px;color:var(--accent)}
 
-  .cal-top{display:flex;align-items:center;gap:11px;margin-bottom:14px}
-  .cal-top b{flex:1;text-align:center;font-size:14px}
-  .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
-  .cal .dow{text-align:center;font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);padding:5px 0}
-  .cd{aspect-ratio:1;border-radius:9px;border:1px solid transparent;background:transparent;color:var(--ink-2);font-size:12.5px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-family:var(--mono);transition:all .13s}
-  .cd:hover{background:var(--hover);color:var(--ink)}
-  .cd.on{border-color:var(--accent);background:var(--accent-subtle);color:var(--accent);font-weight:600}
-  .cd.empty{cursor:default;opacity:.25}
-  .cd .dots{display:flex;gap:2px;height:4px}
-  .cd .dots i{width:4px;height:4px;border-radius:50%;background:var(--ink-3);display:block}
-  .cd .dots i.mine{background:var(--accent)}
+  .cal-top{display:flex;align-items:center;gap:7px;margin-bottom:16px}
+  .cal-title{flex:1;text-align:center;min-width:0}
+  .cal-title b{display:block;font-size:15.5px;font-weight:600;letter-spacing:-.01em}
+  .cal-title span{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);margin-top:2px}
+  .nav-btn{height:32px;min-width:32px;padding:0 10px;border-radius:9px;border:1px solid var(--line-strong);background:transparent;color:var(--ink-2);cursor:pointer;font-size:12px;font-weight:500;display:inline-flex;align-items:center;justify-content:center;transition:all .13s;flex:none}
+  .nav-btn:hover{background:var(--hover);color:var(--ink);border-color:var(--ink-3)}
+  .nav-btn svg{width:14px;height:14px}
+
+  .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+  .cal .dow{text-align:center;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);padding:2px 0 7px;font-weight:500}
+
+  .cd{position:relative;min-height:66px;border-radius:11px;border:1px solid var(--line);
+      background:var(--surface);color:var(--ink-2);cursor:pointer;padding:7px 6px 6px;
+      display:flex;flex-direction:column;gap:5px;align-items:stretch;
+      font-family:var(--mono);font-size:12.5px;transition:transform .12s,border-color .13s,background .13s}
+  .cd:hover{border-color:var(--ink-3);transform:translateY(-1px)}
+  .cd .dnum{text-align:left;line-height:1;font-weight:500}
+  .cd.busy{background:var(--elevated)}
+  .cd.has-mine{border-color:var(--accent-edge)}
+  /* Today is the anchor you scan for, so it gets a filled marker rather than
+     a tint - it has to survive being next to a selected day and a busy day. */
+  .cd.today{border-color:var(--accent);background:var(--accent-subtle)}
+  .cd.today .dnum{position:relative;display:inline-flex;align-items:center;justify-content:center;
+    width:22px;height:22px;margin:-3px 0 0 -3px;border-radius:50%;
+    background:var(--accent);color:var(--on-accent);font-weight:700;font-size:12px}
+  .cd.today::after{content:"TODAY";position:absolute;top:8px;right:7px;
+    font-family:var(--mono);font-size:7.5px;letter-spacing:.09em;color:var(--accent);font-weight:600}
+  .cd.today.on{box-shadow:0 0 0 3px var(--accent-glow)}
+  .cd.today.on .dnum{background:var(--accent);color:var(--on-accent)}
+  .cd.on{border-color:var(--accent);background:var(--accent-subtle);box-shadow:0 0 0 3px var(--accent-glow)}
+  .cd.on:not(.today) .dnum{color:var(--accent);font-weight:700}
+  .cd.empty{background:transparent;border-color:transparent;cursor:default;pointer-events:none}
+
+  .bars{display:flex;flex-direction:column;gap:3px;margin-top:auto}
+  .bars i{display:block;height:5px;border-radius:20px;background:var(--line-strong)}
+  .bars i.mine{background:var(--accent)}
+  .bars .plus{font-family:var(--mono);font-size:9px;color:var(--ink-3);line-height:1;letter-spacing:.03em}
+
+  .cal-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:16px;padding-top:13px;border-top:1px solid var(--line)}
+  .cal-legend span{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--ink-3)}
+  .sw{width:14px;height:5px;border-radius:20px;display:block;flex:none}
+  .sw.mine{background:var(--accent)}
+  .sw.other{background:var(--line-strong)}
+  .sw.today{width:12px;height:12px;border-radius:50%;background:var(--accent)}
+
   .evc{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid var(--line)}
   .evc:last-child{border-bottom:0}
   .evc .ed2{width:44px;text-align:center;flex:none;border-radius:9px;background:var(--hover);padding:5px 0}
@@ -657,12 +691,17 @@
           <div class="split">
             <div class="card">
               <div class="cal-top">
-                <button class="mini" onclick="calMove(-1)">${ico('back')}</button>
-                <b id="calLabel"></b>
-                <button class="mini" onclick="calMove(1)">${ico('chev')}</button>
+                <button class="nav-btn" onclick="calMove(-1)" aria-label="Previous month">${ico('back')}</button>
+                <div class="cal-title"><b id="calLabel"></b><span id="calSub"></span></div>
+                <button class="nav-btn" onclick="calToday()">Today</button>
+                <button class="nav-btn" onclick="calMove(1)" aria-label="Next month">${ico('chev')}</button>
               </div>
               <div class="cal" id="cal"></div>
-              <p class="note-line">Green dots are yours. Grey are other centers.</p>
+              <div class="cal-legend">
+                <span><i class="sw mine"></i>Your events</span>
+                <span><i class="sw other"></i>Other centers</span>
+                <span><i class="sw today"></i>Today</span>
+              </div>
             </div>
             <div class="card">
               <h3 id="dayTitle">Pick a day</h3>
@@ -1433,7 +1472,8 @@ var EV=[];
   EV.sort(function(a,b){ return new Date(a.y,a.m,a.d)-new Date(b.y,b.m,b.d); });
 })();
 
-var CAL={m:8,y:2026}, SELDAY=null;
+var TODAY={m:8,d:14,y:2026};
+var CAL={m:8,y:2026}, SELDAY=TODAY.d;
 function evTab(i,b){
   var box=b.parentElement;
   [].slice.call(box.children).forEach(function(x){x.classList.remove('on');});
@@ -1451,24 +1491,41 @@ function calMove(step){
 }
 function evOn(d){ return EV.filter(function(e){ return e.m===CAL.m && e.y===CAL.y && e.d===d; }); }
 function renderCal(){
+  var todayIs = (CAL.m===TODAY.m && CAL.y===TODAY.y);
   $('calLabel').textContent=MON[CAL.m]+' '+CAL.y;
+  var mine=EV.filter(function(e){return e.m===CAL.m&&e.y===CAL.y&&e.mine;}).length;
+  var all=EV.filter(function(e){return e.m===CAL.m&&e.y===CAL.y;}).length;
+  $('calSub').textContent = all ? all+' events | '+mine+' yours' : 'Nothing scheduled';
+
   var first=new Date(CAL.y,CAL.m,1).getDay();
   var days=new Date(CAL.y,CAL.m+1,0).getDate();
   var h=DOW.map(function(x){return '<div class="dow">'+x+'</div>';}).join('');
   for(var i=0;i<first;i++) h+='<div class="cd empty"></div>';
   for(var d=1;d<=days;d++){
     var ev=evOn(d);
-    var dots=ev.slice(0,3).map(function(e){return '<i class="'+(e.mine?'mine':'')+'"></i>';}).join('');
-    h+='<button class="cd '+(SELDAY===d?'on':'')+'" onclick="pickDay('+d+')">'+d+'<span class="dots">'+dots+'</span></button>';
+    var hasMine=ev.some(function(e){return e.mine;});
+    // Two bars maximum, yours first so it reads at a glance, then a count.
+    var sorted=ev.slice().sort(function(a,b){return (b.mine?1:0)-(a.mine?1:0);});
+    var bars=sorted.slice(0,2).map(function(e){return '<i class="'+(e.mine?'mine':'')+'"></i>';}).join('');
+    if(ev.length>2) bars+='<span class="plus">+'+(ev.length-2)+'</span>';
+    var cls=['cd'];
+    if(ev.length) cls.push('busy');
+    if(hasMine) cls.push('has-mine');
+    if(todayIs && d===TODAY.d) cls.push('today');
+    if(SELDAY===d) cls.push('on');
+    h+='<button class="'+cls.join(' ')+'" onclick="pickDay('+d+')" aria-label="'+d+' '+MON[CAL.m]+', '+ev.length+' events">'+
+       '<span class="dnum">'+d+'</span><span class="bars">'+bars+'</span></button>';
   }
   $('cal').innerHTML=h;
   renderDay();
 }
+function calToday(){ CAL={m:TODAY.m,y:TODAY.y}; SELDAY=TODAY.d; renderCal(); }
 function pickDay(d){ SELDAY=d; renderCal(); }
 function renderDay(){
   if(SELDAY===null){ $('dayTitle').textContent='Pick a day'; $('dayList').innerHTML='<div class="empty"><b>Nothing selected</b><span>Tap a date to see what is on.</span></div>'; return; }
+  var isToday = (CAL.m===TODAY.m && CAL.y===TODAY.y && SELDAY===TODAY.d);
   var ev=evOn(SELDAY);
-  $('dayTitle').textContent=SELDAY+' '+MON[CAL.m];
+  $('dayTitle').textContent=(isToday?'Today, ':'')+SELDAY+' '+MON[CAL.m];
   $('dayList').innerHTML = ev.length ? ev.map(evRow).join('')
     : '<div class="empty"><b>Nothing on</b><span>A clear night. Good time to run something.</span></div>';
 }
