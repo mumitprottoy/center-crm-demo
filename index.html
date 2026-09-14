@@ -21,7 +21,7 @@
   button{font-family:inherit}
   .num{font-family:var(--mono);font-variant-numeric:tabular-nums}
 
-  /* ── gate ── */
+  /* -- gate -- */
   .gate{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:24px;background:var(--bg);
     background-image:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(139,195,66,.08),transparent 70%)}
   .gate.hide{display:none}
@@ -35,7 +35,7 @@
   .gate .venue span{display:block;font-size:12.5px;color:var(--ink-3)}
   .gate .note{font-size:12px;color:var(--ink-3);margin-top:16px}
 
-  /* ── shell ── */
+  /* -- shell -- */
   .app{display:none;min-height:100vh}
   .app.on{display:block}
   .rail{position:fixed;left:0;top:0;bottom:0;width:var(--rail);border-right:1px solid var(--line);background:var(--surface);padding:18px 12px;display:flex;flex-direction:column;gap:3px;z-index:40}
@@ -60,7 +60,7 @@
   h2.title{font-size:21px;font-weight:700;letter-spacing:-.02em;margin:0 0 4px}
   p.sub{color:var(--ink-2);margin:0 0 22px;font-size:13.5px;max-width:68ch}
 
-  /* ── pieces ── */
+  /* -- pieces -- */
   .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(178px,1fr));gap:12px;margin-bottom:22px}
   .tile{border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:16px}
   .tile .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:9px}
@@ -243,22 +243,22 @@
   @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
-<!-- ═══ GATE ═══ -->
+<!-- === GATE === -->
 <div class="gate hide" id="gate">
   <div class="gate-card">
     <div class="mark">Bowlers<span>Network</span></div>
     <h1>Your center, on the network.</h1>
-    <p>Reach the right bowlers — not your whole mailing list.</p>
+    <p>Reach the right bowlers - not your whole mailing list.</p>
     <div class="venue">
       <div class="top-dot" style="width:38px;height:38px;border-radius:10px;background:var(--accent-subtle);color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;flex:none">RL</div>
-      <div><b>Richmond Lanes</b><span>Richmond, Minnesota · 24 lanes</span></div>
+      <div><b>Richmond Lanes</b><span>Richmond, Minnesota | 24 lanes</span></div>
     </div>
     <button class="btn solid lg" style="width:100%" onclick="enter()">Enter Center Mode</button>
-    <p class="note">Demo with sample data · nothing here is sent to anyone</p>
+    <p class="note">Demo with sample data | nothing here is sent to anyone</p>
   </div>
 </div>
 
-<!-- ═══ APP ═══ -->
+<!-- === APP === -->
 <div class="app on" id="app">
   <aside class="rail" id="rail">
     <div class="brand">Bowlers<span>Network</span></div>
@@ -269,7 +269,7 @@
     <button class="nav" data-s="event" onclick="go('event')">${ico('cal')}Events</button>
     <button class="nav" data-s="reach" onclick="go('reach')">${ico('send')}Reach</button>
     <div class="lbl">Platform</div>
-    <button class="nav" onclick="toast('In the real product this is your existing BowlersNetwork feed, groups and messages — same account, same app.')">${ico('feed')}Newsfeed</button>
+    <button class="nav" onclick="toast('In the real product this is your existing BowlersNetwork feed, groups and messages - same account, same app.')">${ico('feed')}Newsfeed</button>
     <button class="nav" onclick="toast('Groups, messages and the bowler community all live in the same account.')">${ico('chat')}Community</button>
   </aside>
 
@@ -277,12 +277,12 @@
     <header class="top">
       <button class="menu-btn" onclick="document.getElementById('rail').classList.toggle('open')">${ico('menu')}</button>
       <div class="dot">RL</div>
-      <div><b>Richmond Lanes</b><small>Richmond, MN · 24 lanes</small></div>
+      <div><b>Richmond Lanes</b><small>Richmond, MN | 24 lanes</small></div>
       <span class="pill">Center Mode</span>
     </header>
 
     <div class="wrap">
-      <!-- ── HOME ── -->
+      <!-- -- HOME -- -->
       <section class="screen on" id="s-home">
         <h2 class="title">Good evening, Dale.</h2>
         <p class="sub">Here's your house tonight.</p>
@@ -301,12 +301,12 @@
           <div class="tile"><div class="k">Customers</div><div class="v" id="tTotal">0</div><div class="m">on your list</div></div>
           <div class="tile accent"><div class="k">On BowlersNetwork</div><div class="v" id="tJoined">0</div>
             <div class="bar"><i id="tBar" style="width:0%"></i></div>
-            <div class="m" id="tPct">—</div></div>
+            <div class="m" id="tPct">-</div></div>
           <div class="tile"><div class="k">Reachable by filter</div><div class="v" id="tReach">0</div><div class="m">have a full profile</div></div>
           <div class="tile"><div class="k">Upcoming events</div><div class="v">3</div><div class="m">next: Friday 6:30pm</div></div>
         </div>
 
-        <div class="banner">${ico('spark')}<div><b>Why the second number matters.</b> You can email everyone on your list. You can <em>target</em> the ones who've joined — by average, age, league history, distance. The more of your customers join, the sharper your reach gets.</div></div>
+        <div class="banner">${ico('spark')}<div><b>Why the second number matters.</b> You can email everyone on your list. You can <em>target</em> the ones who've joined, by average, age, league history, distance. The more of your customers join, the sharper your reach gets.</div></div>
 
         <h3 style="font-size:13px;font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:24px 0 11px">One click</h3>
         <div class="quick">
@@ -317,7 +317,7 @@
         </div>
       </section>
 
-      <!-- ── PEOPLE ── -->
+      <!-- -- PEOPLE -- -->
       <section class="screen" id="s-people">
         <h2 class="title">Customers</h2>
         <p class="sub">Your list, and who's joined BowlersNetwork.</p>
@@ -325,14 +325,14 @@
         <div class="split" style="margin-bottom:14px">
           <div class="card" id="importCard" style="margin-bottom:0">
             <h3>Bring your list in</h3>
-            <p class="h-sub">Export from your scoring system, POS, or a spreadsheet you already keep. Any shape — we only look for three columns.</p>
-            <div class="drop" onclick="doImport()">${ico('upload')}<b>Drop your customer file here</b><span>CSV or XLSX · everything else in the file is ignored</span></div>
+            <p class="h-sub">Export from your scoring system, POS, or a spreadsheet you already keep. Any shape - we only look for three columns.</p>
+            <div class="drop" onclick="doImport()">${ico('upload')}<b>Drop your customer file here</b><span>CSV or XLSX | everything else in the file is ignored</span></div>
             <div class="fields">
               <div class="fr"><code>email</code><span class="req">Required</span></div>
               <div class="fr"><code>first_name</code><span class="opt">Optional</span></div>
               <div class="fr"><code>last_name</code><span class="opt">Optional</span></div>
             </div>
-            <p style="font-size:11.5px;color:var(--ink-3);margin:12px 0 0">Extra columns, odd headers and blank rows are fine — they're skipped. Rows without an email are reported back so you can fix them.</p>
+            <p style="font-size:11.5px;color:var(--ink-3);margin:12px 0 0">Extra columns, odd headers and blank rows are fine - they're skipped. Rows without an email are reported back so you can fix them.</p>
           </div>
 
           <div class="card" style="margin-bottom:0">
@@ -349,7 +349,7 @@
 
         <div class="card">
           <div style="display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-bottom:14px">
-            <input type="text" id="q" placeholder="Search name or email…" style="max-width:280px" oninput="renderPeople()">
+            <input type="text" id="q" placeholder="Search name or email..." style="max-width:280px" oninput="renderPeople()">
             <div class="seg" style="flex:0">
               <button class="on" data-st="all" onclick="setStatus('all',this)">All</button>
               <button data-st="joined" onclick="setStatus('joined',this)">Joined</button>
@@ -364,14 +364,14 @@
         </div>
       </section>
 
-      <!-- ── GROUPS ── -->
+      <!-- -- GROUPS -- -->
       <section class="screen" id="s-groups">
         <div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:22px">
           <div style="flex:1;min-width:250px">
             <h2 class="title">Groups</h2>
-            <p class="sub" style="margin:0">A league, its teams, and the subs list. Message any level — or one person — from wherever you are.</p>
+            <p class="sub" style="margin:0">A league, its teams, and the subs list. Message any level - or one person - from wherever you are.</p>
           </div>
-          <button class="btn ghost" onclick="toast('In the real product this creates a group, names it, and lets you add sub-groups and people as you go — including people not yet in the system, by name and email, in batches.')">${ico('plus')}New group</button>
+          <button class="btn ghost" onclick="toast('In the real product this creates a group, names it, and lets you add sub-groups and people as you go - including people not yet in the system, by name and email, in batches.')">${ico('plus')}New group</button>
         </div>
 
         <div class="split">
@@ -383,7 +383,7 @@
                     <b style="font-size:15px">Tuesday Night League</b>
                     <span class="tag joined"><i></i>Active</span>
                   </div>
-                  <span style="font-size:12px;color:var(--ink-3)">10 teams · 60 rostered · 20 on the subs list</span>
+                  <span style="font-size:12px;color:var(--ink-3)">10 teams | 60 rostered | 20 on the subs list</span>
                 </div>
                 <button class="btn" onclick="compose('group','Tuesday Night League',80)">${ico('send')}Message all 80</button>
               </div>
@@ -394,7 +394,7 @@
           <div>
             <div class="card">
               <h3>Subs list</h3>
-              <p class="h-sub">20 bowlers who said they'd fill in. A captain can reach them — so can you.</p>
+              <p class="h-sub">20 bowlers who said they'd fill in. A captain can reach them - so can you.</p>
               <button class="btn solid" style="width:100%;margin-bottom:9px" onclick="compose('subs','the subs list',20)">${ico('send')}We need a bowler tonight</button>
               <div class="list" id="subsList"></div>
             </div>
@@ -412,7 +412,7 @@
         </div>
       </section>
 
-      <!-- ── EVENT (hero) ── -->
+      <!-- -- EVENT (hero) -- -->
       <section class="screen" id="s-event">
         <h2 class="title">New event</h2>
         <p class="sub">One screen. Set it up, see exactly who it reaches, invite them.</p>
@@ -450,11 +450,11 @@
               </div>
 
               <div class="fld"><label class="f">Bowling average</label>
-                <div class="row"><input type="number" id="avgMin" placeholder="From" oninput="recount()"><span style="color:var(--ink-3)">–</span><input type="number" id="avgMax" placeholder="To" oninput="recount()"></div>
+                <div class="row"><input type="number" id="avgMin" placeholder="From" oninput="recount()"><span style="color:var(--ink-3)">-</span><input type="number" id="avgMax" placeholder="To" oninput="recount()"></div>
               </div>
 
               <div class="fld"><label class="f">Age</label>
-                <div class="row"><input type="number" id="ageMin" placeholder="From" oninput="recount()"><span style="color:var(--ink-3)">–</span><input type="number" id="ageMax" placeholder="To" oninput="recount()"></div>
+                <div class="row"><input type="number" id="ageMin" placeholder="From" oninput="recount()"><span style="color:var(--ink-3)">-</span><input type="number" id="ageMax" placeholder="To" oninput="recount()"></div>
               </div>
 
               <div class="fld"><label class="f">Last visit</label>
@@ -483,18 +483,18 @@
               <div class="faces" id="audFaces"></div>
               <div id="audWarn" style="display:none;font-size:12px;color:var(--warn);margin:10px 0 0">That may be too few to fill this. Try widening the average or age range.</div>
               <button class="btn solid lg" style="width:100%;margin-top:16px" id="audBtn" onclick="createEvent()">Create &amp; invite</button>
-              <p style="font-size:11.5px;color:var(--ink-3);margin:10px 0 0;text-align:center">Invites go out through BowlersNetwork — feed, notification and email.</p>
+              <p style="font-size:11.5px;color:var(--ink-3);margin:10px 0 0;text-align:center">Invites go out through BowlersNetwork - feed, notification and email.</p>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- ── REACH ── -->
+      <!-- -- REACH -- -->
       <section class="screen" id="s-reach">
         <h2 class="title">Reach</h2>
         <p class="sub">The same audience filters, pointed at the tools your bowlers already use.</p>
 
-        <div class="banner">${ico('spark')}<div><b>Nothing new to learn.</b> Your bowlers already have a BowlersNetwork feed, groups and messages. A center post lands where they're already looking — no separate app, no new password.</div></div>
+        <div class="banner">${ico('spark')}<div><b>Nothing new to learn.</b> Your bowlers already have a BowlersNetwork feed, groups and messages. A center post lands where they're already looking - no separate app, no new password.</div></div>
 
         <div class="quick" style="margin-bottom:18px">
           <button class="qa" onclick="reachPick(this,'post')"><div class="ic">${ico('feed')}</div><div><b>Post to their feed</b><span>Shows up in the bowler's newsfeed</span></div></button>
@@ -515,7 +515,7 @@
               </div>
             </div>
             <div class="fld" style="margin-bottom:0"><label class="f">Message</label>
-              <textarea id="reachMsg" rows="4">Lanes 9–16 are open Friday night — $2 games till close. Bring someone who hasn't bowled in a while.</textarea>
+              <textarea id="reachMsg" rows="4">Lanes 9-16 are open Friday night - $2 games till close. Bring someone who hasn't bowled in a while.</textarea>
             </div>
           </div>
           <div>
@@ -533,11 +533,11 @@
   </div>
 </div>
 
-<!-- ═══ CONTACT DRAWER ═══ -->
+<!-- === CONTACT DRAWER === -->
 <div class="scrim" id="scrim" onclick="closeAll()"></div>
 <aside class="drawer" id="drawer"><div id="drawerBody"></div></aside>
 
-<!-- ═══ MESSAGE COMPOSER ═══ -->
+<!-- === MESSAGE COMPOSER === -->
 <div class="modal" id="modal">
   <div class="sheet">
     <div class="sheet-head">
@@ -554,7 +554,7 @@
         </div>
       </div>
       <div class="fld" style="margin-bottom:0"><label class="f">Message</label>
-        <textarea id="mBody" rows="4">Short one team — anyone free for Tuesday 6:30? First to reply gets the spot.</textarea>
+        <textarea id="mBody" rows="4">Short one team - anyone free for Tuesday 6:30? First to reply gets the spot.</textarea>
       </div>
     </div>
     <div class="sheet-foot">
@@ -567,7 +567,7 @@
 <div class="toast" id="toast">${ico('check')}<span id="toastMsg"></span></div>
 
 <script>
-// ── icons ────────────────────────────────────────────────────────────
+// -- icons ------------------------------------------------------------
 function ico(n){
   const p={
     home:'<path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
@@ -593,7 +593,7 @@ function ico(n){
 // The markup above is plain HTML, not a template literal, so the browser
 // rendered the ${ico('x')} placeholders as visible text. Walk the text nodes
 // and swap each for its real SVG. Done this way rather than rewriting
-// innerHTML on containers so no element — and no inline handler — is touched.
+// innerHTML on containers so no element - and no inline handler - is touched.
 (function(){
   const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
   const hits=[];
@@ -605,8 +605,8 @@ function ico(n){
   });
 })();
 
-// ── deterministic sample data ────────────────────────────────────────
-// Seeded so every viewer of this demo sees identical numbers — important
+// -- deterministic sample data ----------------------------------------
+// Seeded so every viewer of this demo sees identical numbers - important
 // when it's being screen-shared and pointed at.
 let _s=20260914;
 const rnd=()=>{_s=(_s*1664525+1013904223)%4294967296;return _s/4294967296;};
@@ -634,10 +634,10 @@ for(let i=0;i<482;i++){
 const NAME=p=>p.first+' '+p.last;
 const INIT=p=>p.first[0]+p.last[0];
 
-// ── state ────────────────────────────────────────────────────────────
+// -- state ------------------------------------------------------------
 const S={gender:'',visit:'',league:'',seg:'all',status:'all',imported:false};
 
-// ── helpers ──────────────────────────────────────────────────────────
+// -- helpers ----------------------------------------------------------
 const $=id=>document.getElementById(id);
 const val=id=>{const v=$(id).value.trim();return v===''?null:Number(v);};
 
@@ -684,7 +684,7 @@ function segPick(b){ [...b.parentElement.children].forEach(x=>x.classList.remove
 function pick(key,b){ segPick(b); S[key]=b.dataset.v; if(key==='seg') reachCount(); else recount(); }
 function setStatus(v,b){ segPick(b); S.status=v; renderPeople(); }
 
-// ── tiles ────────────────────────────────────────────────────────────
+// -- tiles ------------------------------------------------------------
 function refreshTiles(){
   const vis=visiblePeople();
   const joined=vis.filter(p=>p.status==='joined').length;
@@ -698,26 +698,26 @@ function refreshTiles(){
   const hi=$('homeImport'); if(hi) hi.style.display=S.imported?'none':'';
 }
 
-// ── import ───────────────────────────────────────────────────────────
+// -- import -----------------------------------------------------------
 function doImport(){
-  if(S.imported){ toast('Already imported in this demo — 482 customers on your list.'); return; }
+  if(S.imported){ toast('Already imported in this demo - 482 customers on your list.'); return; }
   S.imported=true;
   // Deliberately reports what it SKIPPED as well as what it took. A manager's
   // real spreadsheet is messy; showing the mess handled is what earns trust.
   $('importCard').innerHTML =
     '<h3>List imported</h3>'+
-    '<p class="h-sub">From <b style="color:var(--ink)">richmond-lanes-customers.xlsx</b> — 5 columns found, 3 used.</p>'+
+    '<p class="h-sub">From <b style="color:var(--ink)">richmond-lanes-customers.xlsx</b> - 5 columns found, 3 used.</p>'+
     '<div class="fields">'+
-      '<div class="fr"><code>Email Address</code><span class="req">→ email</span></div>'+
-      '<div class="fr"><code>First</code><span class="req">→ first_name</span></div>'+
-      '<div class="fr"><code>Last</code><span class="req">→ last_name</span></div>'+
+      '<div class="fr"><code>Email Address</code><span class="req">-> email</span></div>'+
+      '<div class="fr"><code>First</code><span class="req">-> first_name</span></div>'+
+      '<div class="fr"><code>Last</code><span class="req">-> last_name</span></div>'+
       '<div class="fr" style="opacity:.5"><code>Phone</code><span class="opt">ignored</span></div>'+
       '<div class="fr" style="opacity:.5"><code>Member Since</code><span class="opt">ignored</span></div>'+
     '</div>'+
     '<div style="display:flex;gap:20px;flex-wrap:wrap;margin-top:16px">'+
       '<div><div class="v num" style="font-size:20px;font-weight:700;color:var(--accent)">482</div><div style="font-size:11.5px;color:var(--ink-3)">imported</div></div>'+
       '<div><div class="v num" style="font-size:20px;font-weight:700">135</div><div style="font-size:11.5px;color:var(--ink-3)">already on BN</div></div>'+
-      '<div><div class="v num" style="font-size:20px;font-weight:700;color:var(--warn)">9</div><div style="font-size:11.5px;color:var(--ink-3)">skipped — no email</div></div>'+
+      '<div><div class="v num" style="font-size:20px;font-weight:700;color:var(--warn)">9</div><div style="font-size:11.5px;color:var(--ink-3)">skipped - no email</div></div>'+
       '<div><div class="v num" style="font-size:20px;font-weight:700">14</div><div style="font-size:11.5px;color:var(--ink-3)">duplicates merged</div></div>'+
     '</div>'+
     '<button class="btn ghost" style="margin-top:16px" onclick="toast(\'In the real product this downloads the 9 rows that had no email address, so you can fix and re-upload just those.\')">Download the 9 skipped rows</button>';
@@ -729,9 +729,9 @@ function addOne(){
   const email=$('oneEmail').value.trim();
   const first=$('oneFirst').value.trim();
   const last=$('oneLast').value.trim();
-  if(!email || !email.includes('@')){ toast('An email address is required — it\'s the only mandatory field.'); $('oneEmail').focus(); return; }
+  if(!email || !email.includes('@')){ toast('An email address is required - it\'s the only mandatory field.'); $('oneEmail').focus(); return; }
   PEOPLE.unshift({
-    id:PEOPLE.length, first:first||'—', last:last||'',
+    id:PEOPLE.length, first:first||'-', last:last||'',
     gender:'M', age:0, avg:null, visit:0, league:false, status:'invited'
   });
   $('oneEmail').value=''; $('oneFirst').value=''; $('oneLast').value='';
@@ -739,7 +739,7 @@ function addOne(){
   toast(`Invite sent to ${email}. They'll appear as Joined once they accept.`);
 }
 
-// ── people table ─────────────────────────────────────────────────────
+// -- people table -----------------------------------------------------
 function renderPeople(){
   const q=$('q').value.toLowerCase();
   let rows=visiblePeople();
@@ -751,13 +751,13 @@ function renderPeople(){
   body.innerHTML=rows.slice(0,60).map(p=>`<tr>
     <td><div class="who"><div class="av ${p.status==='joined'?'on':''}">${INIT(p)}</div><div><div>${NAME(p)}</div><div style="font-size:11px;color:var(--ink-3)">${p.first.toLowerCase()}.${p.last.toLowerCase()}@email.com</div></div></div></td>
     <td><span class="tag ${p.status}"><i></i>${p.status==='imported'?'Not joined':p.status[0].toUpperCase()+p.status.slice(1)}</span></td>
-    <td class="num">${p.avg??'<span style="color:var(--ink-3)">—</span>'}</td>
+    <td class="num">${p.avg??'<span style="color:var(--ink-3)">-</span>'}</td>
     <td class="num">${p.age}</td>
     <td style="color:var(--ink-2)">${p.visit} days ago</td>
-    <td style="color:var(--ink-2)">${p.league?'Yes':'<span style="color:var(--ink-3)">—</span>'}</td></tr>`).join('');
+    <td style="color:var(--ink-2)">${p.league?'Yes':'<span style="color:var(--ink-3)">-</span>'}</td></tr>`).join('');
 }
 
-// ── audience ─────────────────────────────────────────────────────────
+// -- audience ---------------------------------------------------------
 function recount(){
   const m=PEOPLE.filter(matches);
   const n=m.length;
@@ -771,14 +771,14 @@ function recount(){
   const c=[];
   if(S.gender) c.push(S.gender==='F'?'Women':'Men');
   const aMin=val('avgMin'),aMax=val('avgMax');
-  if(aMin!==null||aMax!==null) c.push('Avg '+(aMin??'any')+'–'+(aMax??'any'));
+  if(aMin!==null||aMax!==null) c.push('Avg '+(aMin??'any')+'-'+(aMax??'any'));
   const gMin=val('ageMin'),gMax=val('ageMax');
-  if(gMin!==null||gMax!==null) c.push('Age '+(gMin??'any')+'–'+(gMax??'any'));
-  if(S.visit==='30') c.push('Visited ≤30d');
-  if(S.visit==='90') c.push('Visited ≤90d');
+  if(gMin!==null||gMax!==null) c.push('Age '+(gMin??'any')+'-'+(gMax??'any'));
+  if(S.visit==='30') c.push('Visited <=30d');
+  if(S.visit==='90') c.push('Visited <=90d');
   if(S.visit==='lapsed') c.push('Lapsed 60d+');
   if(S.league==='1') c.push('League bowlers');
-  $('audChips').innerHTML=c.length?c.map(x=>`<span class="chip">${x}</span>`).join(''):'<span class="chip">No filters — everyone who has joined</span>';
+  $('audChips').innerHTML=c.length?c.map(x=>`<span class="chip">${x}</span>`).join(''):'<span class="chip">No filters - everyone who has joined</span>';
 
   $('audFaces').innerHTML=m.slice(0,6).map(p=>`<div class="av on">${INIT(p)}</div>`).join('')+(n>6?`<span class="more">+${(n-6).toLocaleString()} more</span>`:'');
 }
@@ -788,21 +788,21 @@ function preset(kind){
   S.gender='';S.visit='';S.league='';
   const set=(box,v)=>{const b=$(box);[...b.children].forEach(x=>x.classList.toggle('on',x.dataset.v===v));};
   if(kind==='scratch'){ $('avgMin').value=190; S.league='1'; $('eName').value='Saturday Scratch Classic'; }
-  if(kind==='lapsed'){ S.visit='lapsed'; $('eName').value='Comeback Night — $2 Games'; }
+  if(kind==='lapsed'){ S.visit='lapsed'; $('eName').value='Comeback Night - $2 Games'; }
   if(kind==='women'){ S.gender='F'; $('eName').value='Thursday Women\'s League'; }
   if(kind==='youth'){ $('ageMax').value=17; $('eName').value='Youth Saturday Program'; }
   set('fGender',S.gender); set('fVisit',S.visit); set('fLeague',S.league);
   go('event');
-  setTimeout(()=>toast('Filters set. The count on the right is live — adjust anything and watch it move.'),400);
+  setTimeout(()=>toast('Filters set. The count on the right is live - adjust anything and watch it move.'),400);
 }
 
 function createEvent(){
   const n=PEOPLE.filter(matches).length;
   const name=$('eName').value||'Your event';
-  toast(n?`"${name}" created — ${n} bowlers invited via feed, notification and email.`:`"${name}" created. No filters set, so nobody was invited yet.`);
+  toast(n?`"${name}" created - ${n} bowlers invited via feed, notification and email.`:`"${name}" created. No filters set, so nobody was invited yet.`);
 }
 
-// ── reach ────────────────────────────────────────────────────────────
+// -- reach ------------------------------------------------------------
 function segMatch(p){
   if(p.status!=='joined') return false;
   if(S.seg==='league') return p.league;
@@ -825,7 +825,7 @@ function sendReach(){
   toast(`Sent to ${n.toLocaleString()} bowlers. They'll see it in the app they already use.`);
 }
 
-// ── groups: league › team › subs ─────────────────────────────────────
+// -- groups: league > team > subs -------------------------------------
 const TEAM_NAMES=['Gutter Gang','Split Happens','Pin Pals','Rolling Thunder','Lane Violation','Strike Force','Alley Cats','Turkey Hunters','Spare Me','Head Pins'];
 const pool=PEOPLE.filter(p=>p.status==='joined');
 const TEAMS=TEAM_NAMES.map((n,i)=>({name:n,members:pool.slice(i*6,i*6+6)}));
@@ -838,7 +838,7 @@ function renderTree(){
     return `<div class="team" id="tm${i}">
       <div class="team-row" onclick="toggleTeam(${i},event)">
         ${ico('chev').replace('<svg','<svg class="caret"')}
-        <div><b>${t.name}</b><div class="cap">${t.members.length} bowlers · captain ${cap?NAME(cap):'—'}</div></div>
+        <div><b>${t.name}</b><div class="cap">${t.members.length} bowlers | captain ${cap?NAME(cap):'-'}</div></div>
         <div class="team-acts">
           <button class="mini" onclick="event.stopPropagation();compose('team','${t.name}',${t.members.length})">${ico('send')}Message team</button>
         </div>
@@ -858,10 +858,10 @@ function renderTree(){
 }
 function toggleTeam(i,e){ if(e) e.stopPropagation(); $('tm'+i).classList.toggle('open'); }
 
-// ── contact record — the live BN profile, not a copy ─────────────────
+// -- contact record - the live BN profile, not a copy -----------------
 const ACH=p=>{
   const a=[];
-  if(p.avg>=200) a.push(['🎯','Bowled '+(p.avg+48)+' — personal best','4 days ago']);
+  if(p.avg>=200) a.push(['🎯','Bowled '+(p.avg+48)+' - personal best','4 days ago']);
   if(p.avg>=175) a.push(['🔥','Three strikes in a row','Last Tuesday']);
   a.push(['📈','Average up '+(3+(p.id%9))+' pins this season','This month']);
   if(p.league) a.push(['🏆','Joined Tuesday Night League','Sept 2']);
@@ -891,7 +891,7 @@ function openContact(id){
       <div class="kv"><span>Date of birth</span><b class="num">${String(1+(p.id%28)).padStart(2,'0')}/${String(1+(p.id%12)).padStart(2,'0')}/${2026-p.age}</b></div>
       <div class="kv"><span>Last visit</span><b>${p.visit} days ago</b></div>
       <div class="kv"><span>Home center</span><b style="color:var(--accent)">Richmond Lanes</b></div>
-      <p style="font-size:11px;color:var(--ink-3);margin:10px 0 0;line-height:1.5">This is ${p.first}'s own profile — not a copy. When they update it, you see it.</p>
+      <p style="font-size:11px;color:var(--ink-3);margin:10px 0 0;line-height:1.5">This is ${p.first}'s own profile - not a copy. When they update it, you see it.</p>
     </div>
     <div class="dsec">
       <div class="k">Favourite brands</div>
@@ -905,14 +905,14 @@ function openContact(id){
     </div>`:`
     <div class="dsec">
       <div class="k">Not on BowlersNetwork yet</div>
-      <p style="font-size:13px;color:var(--ink-2);margin:0 0 12px;line-height:1.55">You have their email, so you can still reach them. Once they join, their average, age, favourite brands and accomplishments appear here automatically — and they become targetable by filter.</p>
+      <p style="font-size:13px;color:var(--ink-2);margin:0 0 12px;line-height:1.55">You have their email, so you can still reach them. Once they join, their average, age, favourite brands and accomplishments appear here automatically - and they become targetable by filter.</p>
       <button class="btn solid" style="width:100%" onclick="closeAll();toast('Invite sent to ${p.first}. They join with Richmond Lanes as their home center.')">Send invite</button>
     </div>`}`;
   $('drawer').classList.add('on'); $('scrim').classList.add('on');
 }
 function reward(name,what){ closeAll(); toast(`Reward sent to ${name} for "${what}".`); }
 
-// ── message composer — same sheet from every level ───────────────────
+// -- message composer - same sheet from every level -------------------
 let TARGET={kind:'group',label:'',n:0};
 function compose(kind,label,n){
   TARGET={kind,label,n};
@@ -920,9 +920,9 @@ function compose(kind,label,n){
   $('mSub').textContent = n===1 ? 'One bowler' : n+' bowlers';
   $('mSend').textContent = n===1 ? 'Send' : 'Send to '+n;
   $('mBody').value = kind==='subs'
-    ? 'Short one team for Tuesday 6:30 — anyone free? First to reply gets the spot.'
-    : kind==='person' ? 'Hi '+label.split(' ')[0]+' — saw your 268 last week. Nice shooting.'
-    : 'Lanes are open Friday night — $2 games till close.';
+    ? 'Short one team for Tuesday 6:30 - anyone free? First to reply gets the spot.'
+    : kind==='person' ? 'Hi '+label.split(' ')[0]+' - saw your 268 last week. Nice shooting.'
+    : 'Lanes are open Friday night - $2 games till close.';
   $('modal').classList.add('on'); $('scrim').classList.add('on');
 }
 function sendMsg(){
@@ -936,7 +936,7 @@ function closeAll(){
 }
 document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeAll(); });
 
-// ── init ─────────────────────────────────────────────────────────────
+// -- init -------------------------------------------------------------
 // Static markup was already de-placeholdered by the text-node walk at the top
 // of this script; everything below is built from real template literals.
 refreshTiles(); renderPeople(); recount(); reachCount(); renderTree();
