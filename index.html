@@ -227,6 +227,110 @@
   input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--accent);cursor:pointer;border:3px solid var(--surface);box-shadow:0 0 0 1px var(--accent)}
   input[type=range]:focus::-webkit-slider-thumb{box-shadow:0 0 0 1px var(--accent),0 0 0 4px var(--accent-glow)}
 
+  .act{display:flex;gap:13px;align-items:flex-start;border:1px solid var(--line);background:var(--surface);border-radius:13px;padding:14px 16px;margin-bottom:9px;transition:border-color .14s}
+  .act:hover{border-color:var(--line-strong)}
+  .act .ai{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;flex:none;background:var(--accent-subtle)}
+  .act.big .ai{background:var(--warn-subtle)}
+  .act .who2{font-size:13.5px;font-weight:600;color:var(--ink);cursor:pointer}
+  .act .who2:hover{color:var(--accent)}
+  .act .what{font-size:13px;color:var(--ink-2);margin-top:1px}
+  .act .when{font-size:11px;color:var(--ink-3);margin-top:4px;font-family:var(--mono)}
+  .act .acts{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap;align-items:flex-start}
+  .act .tagm{display:inline-block;font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--warn);background:var(--warn-subtle);padding:2px 7px;border-radius:20px;margin-left:7px}
+
+  .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px}
+  @media(max-width:560px){.row3{grid-template-columns:1fr}}
+  .acc .acc-body{display:none;padding-top:14px}
+  .acc.open .acc-body{display:block}
+  .acc-head{display:flex;align-items:center;gap:10px;width:100%;padding:0;border:0;background:transparent;color:inherit;cursor:pointer;text-align:left}
+  .acc-head b{display:block;font-size:14.5px;font-weight:600}
+  .acc-head span{display:block;font-size:12px;color:var(--ink-3);margin-top:1px}
+  .acc-head svg{width:15px;height:15px;color:var(--ink-3);margin-left:auto;transition:transform .16s;flex:none}
+  .acc.open .acc-head svg{transform:rotate(90deg)}
+  .chk{display:flex;align-items:center;gap:9px;padding:6px 0;cursor:pointer;font-size:13px;color:var(--ink-2)}
+  .chk input{width:16px;height:16px;accent-color:var(--accent)}
+  .tier{display:grid;grid-template-columns:1fr 92px 84px 30px;gap:7px;margin-bottom:7px;align-items:center}
+  @media(max-width:560px){.tier{grid-template-columns:1fr 1fr}}
+  .tier button{height:38px;border-radius:9px;border:1px solid var(--line-strong);background:transparent;color:var(--ink-3);cursor:pointer}
+  .tier button:hover{color:var(--alert,#ff6b4a);border-color:rgba(255,107,74,.4)}
+  .evrow{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid var(--line)}
+  .evrow:last-child{border-bottom:0}
+  .evrow .ed{width:42px;text-align:center;flex:none}
+  .evrow .ed b{display:block;font-family:var(--mono);font-size:15px;line-height:1}
+  .evrow .ed span{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin-top:2px}
+  .evrow .en{font-size:13.5px;font-weight:600}
+  .evrow .et{font-size:11.5px;color:var(--ink-3)}
+  .evrow .eg{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--accent)}
+
+  .tabs.big button{height:40px;font-size:13.5px}
+  .composer-top{display:flex;align-items:center;gap:11px}
+  .composer-foot{display:flex;gap:9px;align-items:center;margin-top:12px;flex-wrap:wrap}
+  .post{border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:16px;margin-bottom:11px}
+  .post-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .post-head .dot{width:34px;height:34px;font-size:12px}
+  .post-head b{font-size:13.5px;display:block}
+  .post-head span{font-size:11.5px;color:var(--ink-3)}
+  .post-body{font-size:13.5px;color:var(--ink);line-height:1.55;white-space:pre-wrap}
+  .post-media{margin-top:11px;border-radius:11px;height:150px;background:linear-gradient(135deg,var(--hover),var(--elevated));display:flex;align-items:center;justify-content:center;color:var(--ink-3);font-size:12px;border:1px solid var(--line)}
+  .post-bar{display:flex;gap:6px;align-items:center;margin-top:12px;padding-top:11px;border-top:1px solid var(--line);flex-wrap:wrap}
+  .pb{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 10px;border-radius:8px;border:0;background:transparent;color:var(--ink-3);font-size:12.5px;cursor:pointer;transition:all .13s}
+  .pb:hover{background:var(--hover);color:var(--ink)}
+  .pb.on{color:var(--accent)}
+  .pb svg{width:14px;height:14px}
+  .reach-note{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--ink-3)}
+  .thread{margin-top:12px;padding-top:11px;border-top:1px solid var(--line);display:none}
+  .thread.on{display:block}
+  .cmt{display:flex;gap:9px;padding:7px 0}
+  .cmt .av{width:26px;height:26px;font-size:10px}
+  .cmt .bub{background:var(--hover);border-radius:11px;padding:7px 11px;font-size:12.5px;color:var(--ink-2);flex:1;min-width:0}
+  .cmt .bub b{display:block;font-size:12px;color:var(--ink);margin-bottom:1px}
+  .cmt-box{display:flex;gap:8px;margin-top:9px}
+  .cmt-box input{height:34px}
+  .bar-row{display:flex;align-items:center;gap:10px;margin-bottom:11px;font-size:12.5px}
+  .bar-row .bl{width:78px;color:var(--ink-2);flex:none}
+  .bar-row .bt{flex:1;height:7px;border-radius:20px;background:var(--hover);overflow:hidden}
+  .bar-row .bt i{display:block;height:100%;background:var(--accent);border-radius:20px}
+  .bar-row .bn2{font-family:var(--mono);font-size:12px;color:var(--ink-3);min-width:44px;text-align:right}
+  .sendrow{display:flex;align-items:center;gap:11px;padding:10px 0;border-bottom:1px solid var(--line)}
+  .sendrow:last-child{border-bottom:0}
+  .sendrow .si{width:30px;height:30px;border-radius:9px;background:var(--hover);color:var(--ink-2);display:flex;align-items:center;justify-content:center;flex:none}
+  .sendrow .si svg{width:14px;height:14px}
+  .sendrow b{font-size:13px;display:block}
+  .sendrow span{font-size:11.5px;color:var(--ink-3)}
+  .sendrow .sn{margin-left:auto;text-align:right;flex:none}
+  .sendrow .sn b{font-family:var(--mono);font-size:13px}
+  .sendrow .sn span{font-family:var(--mono);font-size:10.5px;color:var(--accent)}
+
+  .cal-top{display:flex;align-items:center;gap:11px;margin-bottom:14px}
+  .cal-top b{flex:1;text-align:center;font-size:14px}
+  .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+  .cal .dow{text-align:center;font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);padding:5px 0}
+  .cd{aspect-ratio:1;border-radius:9px;border:1px solid transparent;background:transparent;color:var(--ink-2);font-size:12.5px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-family:var(--mono);transition:all .13s}
+  .cd:hover{background:var(--hover);color:var(--ink)}
+  .cd.on{border-color:var(--accent);background:var(--accent-subtle);color:var(--accent);font-weight:600}
+  .cd.empty{cursor:default;opacity:.25}
+  .cd .dots{display:flex;gap:2px;height:4px}
+  .cd .dots i{width:4px;height:4px;border-radius:50%;background:var(--ink-3);display:block}
+  .cd .dots i.mine{background:var(--accent)}
+  .evc{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid var(--line)}
+  .evc:last-child{border-bottom:0}
+  .evc .ed2{width:44px;text-align:center;flex:none;border-radius:9px;background:var(--hover);padding:5px 0}
+  .evc .ed2 b{display:block;font-family:var(--mono);font-size:14px;line-height:1}
+  .evc .ed2 span{display:block;font-family:var(--mono);font-size:8.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-top:2px}
+  .evc .en2{font-size:13.5px;font-weight:600}
+  .evc .et2{font-size:11.5px;color:var(--ink-3)}
+  .evc .er{margin-left:auto;text-align:right;flex:none}
+  .evc .er b{font-family:var(--mono);font-size:13px;display:block}
+  .evc .er span{font-family:var(--mono);font-size:10px;color:var(--ink-3)}
+  .mine-tag{display:inline-block;font-family:var(--mono);font-size:8.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--accent);background:var(--accent-subtle);padding:1.5px 6px;border-radius:20px;margin-left:7px}
+
+  .hero-row{display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+  .modal.wide .sheet{max-width:940px}
+  .sheet.tall{max-height:92vh;display:flex;flex-direction:column}
+  .sheet-body.scroll{overflow-y:auto;flex:1;min-height:0}
+  .sheet-body.scroll .card{background:transparent;border-color:var(--line)}
+  .sheet-body.scroll .aud{position:static}
+
   /* drawer + modal */
   .scrim{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);z-index:70;opacity:0;pointer-events:none;transition:opacity .2s}
   .scrim.on{opacity:1;pointer-events:auto}
@@ -313,6 +417,7 @@
     <div class="brand">Bowlers<span>Network</span></div>
     <button class="nav on" data-s="home" onclick="go('home')">${ico('home')}Overview</button>
     <button class="nav" data-s="people" onclick="go('people')">${ico('users')}Customers<span class="badge num" id="navPeople">0</span></button>
+    <button class="nav" data-s="activity" onclick="go('activity')">${ico('spark')}Activity<span class="badge num" id="navAct">0</span></button>
     <button class="nav" data-s="groups" onclick="go('groups')">${ico('layers')}Groups</button>
     <button class="nav" data-s="event" onclick="go('event')">${ico('cal')}Events</button>
     <button class="nav" data-s="reach" onclick="go('reach')">${ico('send')}Reach Out</button>
@@ -348,7 +453,7 @@
             <div class="bar"><i id="tBar" style="width:0%"></i></div>
             <div class="m" id="tPct">-</div></div>
           <div class="tile"><div class="k">Reachable by filter</div><div class="v" id="tReach">0</div><div class="m">have a full profile</div></div>
-          <div class="tile"><div class="k">Upcoming events</div><div class="v">3</div><div class="m">next: Friday 6:30pm</div></div>
+          <button class="tile" style="text-align:left;cursor:pointer;font:inherit;color:inherit" onclick="go('event')"><div class="k">Upcoming events</div><div class="v num" id="tEvents">0</div><div class="m" id="tNext">-</div></button>
         </div>
 
         <div class="banner">${ico('spark')}<div><b>Why the second number matters.</b> You can email everyone on your list. You can <em>target</em> the ones who've joined, by average, age, league history, distance. The more of your customers join, the sharper your reach gets.</div></div>
@@ -407,6 +512,22 @@
             <table><thead><tr><th>Bowler</th><th>Status</th><th class="num">Average</th><th class="num">Age</th><th>Last active</th><th>League</th></tr></thead><tbody id="peopleBody"></tbody></table>
           </div>
         </div>
+      </section>
+
+      <section class="screen" id="s-activity">
+        <h2 class="title">Activity</h2>
+        <p class="sub">What your bowlers have been doing. Congratulate them, or turn a good night into a reason to come back.</p>
+
+        <div class="card" style="display:flex;gap:9px;align-items:center;flex-wrap:wrap">
+          <div class="seg" style="flex:1;min-width:230px" id="actFilter">
+            <button class="on" data-v="" onclick="actPick(this)">Everything</button>
+            <button data-v="big" onclick="actPick(this)">Milestones only</button>
+            <button data-v="week" onclick="actPick(this)">This week</button>
+          </div>
+          <span class="num" id="actCount" style="font-size:12px;color:var(--ink-3)"></span>
+        </div>
+
+        <div id="actFeed"></div>
       </section>
 
       <!-- -- GROUPS -- -->
@@ -471,94 +592,165 @@
 
       <!-- -- EVENT (hero) -- -->
       <section class="screen" id="s-event">
-        <h2 class="title">New event</h2>
-        <p class="sub">One screen. Set it up, see exactly who it reaches, invite them.</p>
-
-        <div class="split">
-          <div>
-            <div class="card">
-              <h3>The basics</h3>
-              <p class="h-sub">Four fields. Everything else has a sensible default.</p>
-              <div class="fld"><label class="f">Name</label><input type="text" id="eName" value="Saturday Scratch Classic"></div>
-              <div class="row" style="margin-bottom:14px">
-                <div style="flex:1"><label class="f">Date</label><input type="text" id="eDate" value="Sat 27 Sep, 6:30pm"></div>
-                <div style="flex:1"><label class="f">Entry fee</label><input type="text" id="eFee" value="$45"></div>
-              </div>
-              <div class="fld"><label class="f">Type</label>
-                <div class="seg">
-                  <button class="on" onclick="segPick(this)">Tournament</button>
-                  <button onclick="segPick(this)">League</button>
-                  <button onclick="segPick(this)">Open play</button>
-                  <button onclick="segPick(this)">Clinic</button>
-                </div>
-              </div>
-            </div>
-
-            <div class="card">
-              <h3>Who should come?</h3>
-              <p class="h-sub">The count updates as you change these. Nothing is sent until you press the button.</p>
-
-              <div class="fld"><label class="f">Gender</label>
-                <div class="seg" id="fGender">
-                  <button class="on" data-v="" onclick="pick('gender',this)">Anyone</button>
-                  <button data-v="F" onclick="pick('gender',this)">Women</button>
-                  <button data-v="M" onclick="pick('gender',this)">Men</button>
-                </div>
-              </div>
-
-              <div class="fld"><label class="f">Bowling average</label>
-                <div class="row"><input type="number" id="avgMin" placeholder="From" oninput="recount()"><span style="color:var(--ink-3)">-</span><input type="number" id="avgMax" placeholder="To" oninput="recount()"></div>
-              </div>
-
-              <div class="fld"><label class="f">Age</label>
-                <div class="row"><input type="number" id="ageMin" placeholder="From" oninput="recount()"><span style="color:var(--ink-3)">-</span><input type="number" id="ageMax" placeholder="To" oninput="recount()"></div>
-              </div>
-
-              <div class="fld"><label class="f">Last active</label>
-                <div class="seg" id="fVisit">
-                  <button class="on" data-v="" onclick="pick('visit',this)">Any time</button>
-                  <button data-v="30" onclick="pick('visit',this)">Past 30 days</button>
-                  <button data-v="90" onclick="pick('visit',this)">Past 90 days</button>
-                  <button data-v="lapsed" onclick="pick('visit',this)">Lapsed 60+</button>
-                </div>
-              </div>
-
-              <div class="fld" style="margin-bottom:0"><label class="f">League history</label>
-                <div class="seg" id="fLeague">
-                  <button class="on" data-v="" onclick="pick('league',this)">Everyone</button>
-                  <button data-v="1" onclick="pick('league',this)">League bowlers only</button>
-                </div>
-              </div>
-            </div>
+        <div class="hero-row">
+          <div style="flex:1;min-width:240px">
+            <h2 class="title">Events</h2>
+            <p class="sub" style="margin:0">Your calendar, your events, what else is on, and how they performed.</p>
           </div>
+          <button class="btn solid lg" onclick="openCreate()">${ico('plus')}Create an event</button>
+        </div>
 
-          <div>
-            <div class="aud" id="aud">
-              <div class="big num" id="audN">0</div>
-              <div class="cap" id="audCap">bowlers match</div>
-              <div class="chips" id="audChips"></div>
-              <div class="faces" id="audFaces"></div>
-              <div id="audWarn" style="display:none;font-size:12px;color:var(--warn);margin:10px 0 0">That may be too few to fill this. Try widening the average or age range.</div>
-              <button class="btn solid lg" style="width:100%;margin-top:16px" id="audBtn" onclick="createEvent()">Create &amp; invite</button>
-              <p style="font-size:11.5px;color:var(--ink-3);margin:10px 0 0;text-align:center">Invites go out through BowlersNetwork - feed, notification and email.</p>
+        <div class="tabs big" style="margin-bottom:18px">
+          <button class="on" onclick="evTab(0,this)">Calendar</button>
+          <button onclick="evTab(1,this)">Your events</button>
+          <button onclick="evTab(2,this)">On the network</button>
+          <button onclick="evTab(3,this)">Stats</button>
+        </div>
+
+        <div class="pane on" id="ev0">
+          <div class="split">
+            <div class="card">
+              <div class="cal-top">
+                <button class="mini" onclick="calMove(-1)">${ico('back')}</button>
+                <b id="calLabel"></b>
+                <button class="mini" onclick="calMove(1)">${ico('chev')}</button>
+              </div>
+              <div class="cal" id="cal"></div>
+              <p class="note-line">Green dots are yours. Grey are other centers.</p>
+            </div>
+            <div class="card">
+              <h3 id="dayTitle">Pick a day</h3>
+              <p class="h-sub">Everything happening that day.</p>
+              <div id="dayList"></div>
             </div>
           </div>
         </div>
-      </section>
+
+        <div class="pane" id="ev1">
+          <div class="card">
+            <div style="display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-bottom:14px">
+              <div class="seg" style="flex:1;min-width:220px" id="myScope">
+                <button class="on" data-v="up" onclick="scopePick(this)">Upcoming</button>
+                <button data-v="past" onclick="scopePick(this)">Past</button>
+                <button data-v="all" onclick="scopePick(this)">All</button>
+              </div>
+              <button class="btn solid" onclick="openCreate()">${ico('plus')}New event</button>
+            </div>
+            <div id="myEvents"></div>
+          </div>
+        </div>
+
+        <div class="pane" id="ev2">
+          <div class="card">
+            <h3>Everything on BowlersNetwork</h3>
+            <p class="h-sub">What other centers are running. Useful for spotting a clash, or a gap.</p>
+            <div style="display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-bottom:14px">
+              <input type="text" id="netQ" placeholder="Search events or centers..." style="max-width:260px" oninput="renderNet()">
+              <div class="seg" style="flex:0" id="netType">
+                <button class="on" data-v="" onclick="netPick(this)">All</button>
+                <button data-v="Tournament" onclick="netPick(this)">Tournaments</button>
+                <button data-v="League" onclick="netPick(this)">Leagues</button>
+                <button data-v="Open play" onclick="netPick(this)">Open play</button>
+              </div>
+              <span class="num" id="netCount" style="margin-left:auto;font-size:12px;color:var(--ink-3)"></span>
+            </div>
+            <div id="netEvents"></div>
+          </div>
+        </div>
+
+        <div class="pane" id="ev3">
+          <div class="tiles">
+            <div class="tile accent"><div class="k">Events run</div><div class="v num" id="stEv">0</div><div class="m">this season</div></div>
+            <div class="tile"><div class="k">Registrations</div><div class="v num" id="stReg">0</div><div class="m">across all events</div></div>
+            <div class="tile"><div class="k">Average fill</div><div class="v num" id="stFill">0%</div><div class="m">of capacity</div></div>
+            <div class="tile"><div class="k">Entry fees</div><div class="v num" id="stRev">$0</div><div class="m">collected</div></div>
+          </div>
+          <div class="split">
+            <div class="card"><h3>By type</h3><p class="h-sub">Where your registrations come from.</p><div id="stType"></div></div>
+            <div class="card"><h3>Best attended</h3><p class="h-sub">Your top events this season.</p><div id="stTop"></div></div>
+          </div>
+        </div>
+
+        </section>
 
       <!-- -- REACH -- -->
       <section class="screen" id="s-reach">
         <h2 class="title">Reach out</h2>
-        <p class="sub">Pick who you want, see exactly how many that is, then send it however suits them.</p>
+        <p class="sub">Everything you send, and how it landed.</p>
 
-        <div class="card">
+        <div class="tabs big" style="margin-bottom:18px">
+          <button class="on" onclick="roTab(0,this)">Dashboard</button>
+          <button onclick="roTab(1,this)">Newsfeed</button>
+          <button onclick="roTab(2,this)">Messages</button>
+        </div>
+
+        <!-- ---- comms dashboard ---- -->
+        <div class="pane on" id="ro0">
+          <div class="tiles">
+            <div class="tile accent"><div class="k">Bowlers reached</div><div class="v num" id="cReach">0</div><div class="m">last 30 days</div></div>
+            <div class="tile"><div class="k">Messages sent</div><div class="v num" id="cSent">0</div><div class="m" id="cSends">-</div></div>
+            <div class="tile"><div class="k">Opened</div><div class="v num" id="cOpen">0%</div><div class="m">email and notification</div></div>
+            <div class="tile"><div class="k">Post engagement</div><div class="v num" id="cEng">0</div><div class="m">reactions and comments</div></div>
+          </div>
+
+          <div class="split">
+            <div class="card">
+              <h3>Recent sends</h3>
+              <p class="h-sub">Who you reached, how, and how many opened it.</p>
+              <div id="sendList"></div>
+            </div>
+            <div>
+              <div class="card">
+                <h3>By channel</h3>
+                <p class="h-sub">Last 30 days.</p>
+                <div id="chanBars"></div>
+              </div>
+              <div class="card">
+                <h3>Best post</h3>
+                <p class="h-sub">Most engagement this month.</p>
+                <div id="bestPost"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ---- newsfeed ---- -->
+        <div class="pane" id="ro1">
+          <div class="card">
+            <div class="composer-top">
+              <div class="dot">RL</div>
+              <div><b style="font-size:13.5px">Richmond Lanes</b><div style="font-size:11.5px;color:var(--ink-3)">Posting as your center</div></div>
+            </div>
+            <div class="tabs" style="margin:14px 0 12px">
+              <button class="on" data-v="text" onclick="postType(this)">Text</button>
+              <button data-v="photo" onclick="postType(this)">Photo</button>
+              <button data-v="score" onclick="postType(this)">Score</button>
+              <button data-v="poll" onclick="postType(this)">Poll</button>
+            </div>
+            <textarea id="postBody" rows="3" placeholder="Something for your bowlers. Use @ to mention someone."></textarea>
+            <div id="postExtra"></div>
+            <div class="composer-foot">
+              <div class="seg" id="postAud" style="flex:1">
+                <button class="on" data-v="all" onclick="segPick(this)">Everyone</button>
+                <button data-v="league" onclick="segPick(this)">League bowlers</button>
+                <button data-v="group" onclick="segPick(this)">One group</button>
+              </div>
+              <button class="btn solid" onclick="publishPost()">Post</button>
+            </div>
+          </div>
+          <div id="postFeed"></div>
+        </div>
+
+        <!-- ---- messages ---- -->
+        <div class="pane" id="ro2">
+          <div class="card">
           <h3>How should this reach them?</h3>
           <p class="h-sub">Different channels reach different people. The count updates to match.</p>
           <div class="chan">
             <button class="ch on" data-v="notification" onclick="chanPick(this)"><b>Notification</b><span>In the app they already use</span></button>
-            <button class="ch" data-v="feed" onclick="chanPick(this)"><b>Newsfeed post</b><span>Shows in their BN feed</span></button>
+            
             <button class="ch" data-v="email" onclick="chanPick(this)"><b>Email</b><span>Reaches your whole list</span></button>
-            <button class="ch" data-v="all" onclick="chanPick(this)"><b>Everything</b><span>Notification, feed and email</span></button>
+            <button class="ch" data-v="all" onclick="chanPick(this)"><b>Both</b><span>Notification and email</span></button>
           </div>
           <p id="chanNote" class="note-line"></p>
         </div>
@@ -639,6 +831,8 @@
             </div>
           </div>
         </div>
+      
+        </div>
       </section>
     </div>
   </div>
@@ -683,6 +877,202 @@
   </div>
 </div>
 
+<div class="modal wide" id="createModal">
+  <div class="sheet tall">
+    <div class="sheet-head">
+      <div><b>Create an event</b><small>Four things are required. Open a section only if you need it.</small></div>
+      <button class="x" onclick="closeAll()">${ico('close')}</button>
+    </div>
+    <div class="sheet-body scroll" id="createBody">
+          <div class="card">
+            <h3>New event</h3>
+            <p class="h-sub">Four things are required. The rest have sensible defaults.</p>
+            <div class="fld"><label class="f">Name *</label><input type="text" id="eName" value="Saturday Scratch Classic"></div>
+            <div class="fld"><label class="f">Type *</label>
+              <div class="seg">
+                <button class="on" onclick="segPick(this)">Tournament</button>
+                <button onclick="segPick(this)">League</button>
+                <button onclick="segPick(this)">Open play</button>
+                <button onclick="segPick(this)">Clinic</button>
+                <button onclick="segPick(this)">Fundraiser</button>
+              </div>
+            </div>
+            <div class="row3" style="margin-bottom:14px">
+              <div><label class="f">Date *</label><input type="text" id="eDate" value="Sat 27 Sep"></div>
+              <div><label class="f">Start *</label><input type="text" id="eTime" value="6:30pm"></div>
+              <div><label class="f">Ends</label><input type="text" id="eEnd" placeholder="Optional"></div>
+            </div>
+            <div class="fld" style="margin-bottom:0"><label class="f">Where</label>
+              <div class="seg" id="eWhere">
+                <button class="on" data-v="here" onclick="wherePick(this)">Richmond Lanes</button>
+                <button data-v="other" onclick="wherePick(this)">Another venue</button>
+                <button data-v="online" onclick="wherePick(this)">Online</button>
+              </div>
+              <div id="eVenueWrap" style="display:none;margin-top:9px"><input type="text" id="eVenue" placeholder="Venue name and address"></div>
+            </div>
+          </div>
+          <div class="split">
+          <div>
+            <div class="card">
+              <h3>New event</h3>
+              <p class="h-sub">Four things are required. The rest have sensible defaults.</p>
+
+              <div class="fld"><label class="f">Name *</label><input type="text" id="eName" value="Saturday Scratch Classic"></div>
+
+              <div class="fld"><label class="f">Type *</label>
+                <div class="seg">
+                  <button class="on" onclick="segPick(this)">Tournament</button>
+                  <button onclick="segPick(this)">League</button>
+                  <button onclick="segPick(this)">Open play</button>
+                  <button onclick="segPick(this)">Clinic</button>
+                  <button onclick="segPick(this)">Fundraiser</button>
+                </div>
+              </div>
+
+              <div class="row3" style="margin-bottom:14px">
+                <div><label class="f">Date *</label><input type="text" id="eDate" value="Sat 27 Sep"></div>
+                <div><label class="f">Start *</label><input type="text" id="eTime" value="6:30pm"></div>
+                <div><label class="f">Ends</label><input type="text" id="eEnd" placeholder="Optional"></div>
+              </div>
+
+              <div class="fld" style="margin-bottom:0"><label class="f">Where</label>
+                <div class="seg" id="eWhere">
+                  <button class="on" data-v="here" onclick="wherePick(this)">Richmond Lanes</button>
+                  <button data-v="other" onclick="wherePick(this)">Another venue</button>
+                  <button data-v="online" onclick="wherePick(this)">Online</button>
+                </div>
+                <div id="eVenueWrap" style="display:none;margin-top:9px"><input type="text" id="eVenue" placeholder="Venue name and address"></div>
+              </div>
+            </div>
+
+            <div class="card acc" id="accFee">
+              <button class="acc-head" onclick="acc('accFee')">
+                <div><b>Entry fee</b><span id="sumFee">Free to enter</span></div>${ico('chev')}
+              </button>
+              <div class="acc-body">
+                <div class="seg" id="eFeeMode" style="margin-bottom:12px">
+                  <button class="on" data-v="free" onclick="feeMode(this)">Free</button>
+                  <button data-v="single" onclick="feeMode(this)">One price</button>
+                  <button data-v="tiers" onclick="feeMode(this)">Tiered</button>
+                </div>
+                <div id="feeSingle" style="display:none"><label class="f">Entry fee</label><input type="text" id="eFee" value="$45" oninput="sumUp()"></div>
+                <div id="feeTiers" style="display:none">
+                  <div id="tierRows"></div>
+                  <button class="mini" onclick="addTier()">${ico('plus')}Add a tier</button>
+                  <p class="note-line">Early bird, member price, doubles entry - each with its own cap.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card acc" id="accReg">
+              <button class="acc-head" onclick="acc('accReg')">
+                <div><b>Registration</b><span id="sumReg">Open, auto-approved, no cap</span></div>${ico('chev')}
+              </button>
+              <div class="acc-body">
+                <label class="chk"><input type="checkbox" id="eReg" checked onchange="sumUp()"><span>Let bowlers register through BowlersNetwork</span></label>
+                <label class="chk"><input type="checkbox" id="eAuto" checked onchange="sumUp()"><span>Approve everyone automatically</span></label>
+                <div class="row3" style="margin-top:12px">
+                  <div><label class="f">Capacity</label><input type="number" id="eCap" placeholder="No limit" oninput="sumUp()"></div>
+                  <div><label class="f">Closes</label><input type="text" id="eDeadline" placeholder="Optional"></div>
+                  <div><label class="f">Also collect</label>
+                    <div class="seg" style="gap:4px">
+                      <button class="on" onclick="segPick(this)">Nothing</button>
+                      <button onclick="segPick(this)">Phone</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card acc" id="accRepeat">
+              <button class="acc-head" onclick="acc('accRepeat')">
+                <div><b>Repeat</b><span id="sumRep">One-off</span></div>${ico('chev')}
+              </button>
+              <div class="acc-body">
+                <div class="seg" id="eRepeat" style="margin-bottom:12px">
+                  <button class="on" data-v="" onclick="repeatPick(this)">One-off</button>
+                  <button data-v="Weekly" onclick="repeatPick(this)">Weekly</button>
+                  <button data-v="Every 2 weeks" onclick="repeatPick(this)">Every 2 weeks</button>
+                  <button data-v="Monthly" onclick="repeatPick(this)">Monthly</button>
+                </div>
+                <div id="repUntil" style="display:none"><label class="f">Until</label><input type="text" id="eUntil" placeholder="e.g. 19 Dec" oninput="sumUp()">
+                <p class="note-line">One event is created for each date, and everyone invited once.</p></div>
+              </div>
+            </div>
+
+            <div class="card acc" id="accExtra">
+              <button class="acc-head" onclick="acc('accExtra')">
+                <div><b>Details</b><span id="sumEx">Nothing added</span></div>${ico('chev')}
+              </button>
+              <div class="acc-body">
+                <div class="drop" style="padding:18px" onclick="toast('Banner uploaded. It shows at the top of the event and in the bowler feed.')">${ico('upload')}<b>Event banner</b><span>Optional. Shows in their feed.</span></div>
+                <div class="fld" style="margin-top:12px"><label class="f">Contact email</label><input type="text" id="eEmail" placeholder="Who bowlers should reply to"></div>
+                <div class="fld" style="margin-bottom:0"><label class="f">Rules and info</label><textarea id="eRules" rows="3" placeholder="Format, handicap, payouts, anything they should know"></textarea></div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="aud" id="aud">
+              <div class="big num" id="audN">0</div>
+              <div class="cap" id="audCap">bowlers match</div>
+              <div class="chips" id="audChips"></div>
+              <div class="faces" id="audFaces"></div>
+              <div id="audWarn" style="display:none;font-size:12px;color:var(--warn);margin:10px 0 0">That may be too few to fill this. Try widening the average or age range.</div>
+
+              <button class="acc-head" style="padding:12px 0 0;border-top:1px solid var(--line);margin-top:14px" onclick="acc('accWho')">
+                <div><b>Who to invite</b><span id="sumWho">Everyone who has joined</span></div>${ico('chev')}
+              </button>
+              <div class="acc" id="accWho"><div class="acc-body" style="padding-top:12px">
+                <div class="fld"><label class="f">Gender</label>
+                  <div class="seg" id="fGender">
+                    <button class="on" data-v="" onclick="pick('gender',this)">Anyone</button>
+                    <button data-v="F" onclick="pick('gender',this)">Women</button>
+                    <button data-v="M" onclick="pick('gender',this)">Men</button>
+                  </div>
+                </div>
+                <div class="fld"><label class="f">Membership</label>
+                  <div class="seg" id="fJoin">
+                    <button class="on" data-v="" onclick="pick('ejoin',this)">Everyone</button>
+                    <button data-v="joined" onclick="pick('ejoin',this)">On BN</button>
+                    <button data-v="not" onclick="pick('ejoin',this)">Not yet</button>
+                  </div>
+                </div>
+                <div class="fld"><label class="f">Bowling average</label>
+                  <div class="row"><input type="number" id="avgMin" placeholder="From" oninput="recount()"><span class="dash">-</span><input type="number" id="avgMax" placeholder="To" oninput="recount()"></div>
+                </div>
+                <div class="fld"><label class="f">Age</label>
+                  <div class="row"><input type="number" id="ageMin" placeholder="From" oninput="recount()"><span class="dash">-</span><input type="number" id="ageMax" placeholder="To" oninput="recount()"></div>
+                </div>
+                <div class="fld"><label class="f">Distance from Richmond Lanes</label>
+                  <div class="slider-row"><input type="range" id="eGeoRange" min="0" max="500" step="5" value="0" oninput="eGeoSlide()"><span class="slider-val num" id="eGeoVal">Anywhere</span></div>
+                </div>
+                <div class="fld"><label class="f">Last active</label>
+                  <div class="seg" id="fVisit">
+                    <button class="on" data-v="" onclick="pick('visit',this)">Any time</button>
+                    <button data-v="30" onclick="pick('visit',this)">30 days</button>
+                    <button data-v="90" onclick="pick('visit',this)">90 days</button>
+                    <button data-v="lapsed" onclick="pick('visit',this)">Lapsed 60+</button>
+                  </div>
+                </div>
+                <div class="fld" style="margin-bottom:0"><label class="f">League history</label>
+                  <div class="seg" id="fLeague">
+                    <button class="on" data-v="" onclick="pick('league',this)">Everyone</button>
+                    <button data-v="1" onclick="pick('league',this)">League bowlers</button>
+                  </div>
+                </div>
+              </div></div>
+
+              <button class="btn solid lg" style="width:100%;margin-top:16px" id="audBtn" onclick="createEvent()">Create &amp; invite</button>
+              <p class="note-line" style="text-align:center;margin-top:9px">Invites go out by notification, feed and email.</p>
+            </div>
+          </div>
+        </div>
+      
+        </div>
+  </div>
+</div>
+
 <div class="toast" id="toast">${ico('check')}<span id="toastMsg"></span></div>
 
 <script>
@@ -706,6 +1096,9 @@ function ico(n){
     close:'<path d="M18 6 6 18M6 6l12 12"/>',
     back:'<path d="m15 18-6-6 6-6"/>',
     chev:'<path d="m9 18 6-6-6-6"/>',
+    heart:'<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8Z"/>',
+    mail:'<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/>',
+    bell:'<path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>',
     gift:'<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M5 12v9h14v-9"/><path d="M12 8a3 3 0 1 0-3-3 3 3 0 0 0 3 3Zm0 0a3 3 0 1 1 3-3 3 3 0 0 1-3 3Z"/>'
   }[n]||'';
   return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+p+'</svg>';
@@ -763,7 +1156,9 @@ const $=id=>document.getElementById(id);
 const val=id=>{const v=$(id).value.trim();return v===''?null:Number(v);};
 
 function matches(p){
+  if(S.ejoin==='not') return p.status!=='joined' && !eProfileFilter();
   if(p.status!=='joined') return false;           // only joined can be targeted
+  if(S.egeo && p.miles>Number(S.egeo)) return false;
   if(S.gender && p.gender!==S.gender) return false;
   const aMin=val('avgMin'), aMax=val('avgMax');
   if(aMin!==null && (p.avg===null||p.avg<aMin)) return false;
@@ -789,8 +1184,9 @@ function go(s){
   $('rail').classList.remove('open');
   window.scrollTo({top:0,behavior:'instant'});
   if(s==='people') renderPeople();
-  if(s==='event') recount();
-  if(s==='reach') reachCount();
+  if(s==='activity') renderActivity();
+  if(s==='event'){ recount(); sumUp(); renderCal(); }
+  if(s==='reach'){ renderComms(); renderPosts(); reachCount(); }
 }
 
 function enter(){ $('gate').classList.add('hide'); $('app').classList.add('on'); refreshTiles(); }
@@ -806,6 +1202,12 @@ function pick(key,b){ segPick(b); S[key]=b.dataset.v; if(key==='seg') reachCount
 function setStatus(v,b){ segPick(b); S.status=v; renderPeople(); }
 
 // -- tiles ------------------------------------------------------------
+var EVENTS=[
+  {name:'Saturday Scratch Classic', when:'Sat 27 Sep, 6:30pm', going:38},
+  {name:'Youth Fall Kickoff',       when:'Sun 28 Sep, 10:00am', going:22},
+  {name:'Comeback Night, $2 Games', when:'Thu 2 Oct, 7:00pm',  going:54}
+];
+
 function refreshTiles(){
   const vis=visiblePeople();
   const joined=vis.filter(p=>p.status==='joined').length;
@@ -817,6 +1219,7 @@ function refreshTiles(){
   $('tPct').textContent=pct+'% of your list';
   $('navPeople').textContent=vis.length.toLocaleString();
   const hi=$('homeImport'); if(hi) hi.style.display=S.imported?'none':'';
+  if($('tEvents')){ $('tEvents').textContent=EVENTS.length; $('tNext').textContent='next: '+EVENTS[0].when; }
 }
 
 // -- import -----------------------------------------------------------
@@ -879,6 +1282,17 @@ function renderPeople(){
 }
 
 // -- audience ---------------------------------------------------------
+function eProfileFilter(){
+  return Boolean(S.gender||S.egeo||S.visit||S.league||
+    val('avgMin')!==null||val('avgMax')!==null||val('ageMin')!==null||val('ageMax')!==null);
+}
+function eGeoSlide(){
+  var v=Number($('eGeoRange').value);
+  S.egeo = v===0 ? '' : String(v);
+  $('eGeoVal').textContent = v===0 ? 'Anywhere' : v+' mi';
+  recount();
+}
+
 function recount(){
   const m=PEOPLE.filter(matches);
   const n=m.length;
@@ -895,18 +1309,23 @@ function recount(){
   if(aMin!==null||aMax!==null) c.push('Avg '+(aMin??'any')+'-'+(aMax??'any'));
   const gMin=val('ageMin'),gMax=val('ageMax');
   if(gMin!==null||gMax!==null) c.push('Age '+(gMin??'any')+'-'+(gMax??'any'));
+  if(S.egeo) c.push('Within '+S.egeo+' mi');
+  if(S.ejoin==='joined') c.push('On BN');
+  if(S.ejoin==='not') c.push('Not joined');
   if(S.visit==='30') c.push('Active <=30d');
   if(S.visit==='90') c.push('Active <=90d');
   if(S.visit==='lapsed') c.push('Lapsed 60d+');
   if(S.league==='1') c.push('League bowlers');
   $('audChips').innerHTML=c.length?c.map(x=>`<span class="chip">${x}</span>`).join(''):'<span class="chip">No filters - everyone who has joined</span>';
 
+  if($('sumWho')) $('sumWho').textContent=n.toLocaleString()+' bowlers';
   $('audFaces').innerHTML=m.slice(0,6).map(p=>`<div class="av on">${INIT(p)}</div>`).join('')+(n>6?`<span class="more">+${(n-6).toLocaleString()} more</span>`:'');
 }
 
 function preset(kind){
   ['avgMin','avgMax','ageMin','ageMax'].forEach(i=>$(i).value='');
-  S.gender='';S.visit='';S.league='';
+  S.gender='';S.visit='';S.league='';S.ejoin='';S.egeo='';
+  if($('eGeoRange')){ $('eGeoRange').value=0; $('eGeoVal').textContent='Anywhere'; }
   const set=(box,v)=>{const b=$(box);[...b.children].forEach(x=>x.classList.toggle('on',x.dataset.v===v));};
   if(kind==='scratch'){ $('avgMin').value=190; S.league='1'; $('eName').value='Saturday Scratch Classic'; }
   if(kind==='lapsed'){ S.visit='lapsed'; $('eName').value='Comeback Night - $2 Games'; }
@@ -917,17 +1336,207 @@ function preset(kind){
   setTimeout(()=>toast('Filters set. The count on the right is live - adjust anything and watch it move.'),400);
 }
 
-function createEvent(){
-  const n=PEOPLE.filter(matches).length;
-  const name=$('eName').value||'Your event';
-  toast(n?`"${name}" created - ${n} bowlers invited via feed, notification and email.`:`"${name}" created. No filters set, so nobody was invited yet.`);
+// ---- events: calendar, yours, the network, stats --------------------
+var MON=['January','February','March','April','May','June','July','August','September','October','November','December'];
+var MONS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var DOW=['S','M','T','W','T','F','S'];
+var OTHER_CENTERS=['Kenmore Lanes','Warrior Lanes','Sky Lanes','Oakland Lanes','Country Lanes','The Station'];
+var ETYPES=['Tournament','League','Open play','Clinic','Fundraiser'];
+var ENAMES=['Scratch Classic','Friday Night Mixed','Youth Kickoff','Seniors Doubles','Handicap Open','9-Pin No Tap','Moonlight Doubles','Baker Format Shootout','Turkey Shoot','Charity Marathon','Pro Shop Clinic','King of the Hill'];
+
+var EV=[];
+(function(){
+  var today={m:8,d:14,y:2026};           // 14 Sep 2026, month is 0-based
+  for(var i=0;i<34;i++){
+    var mine=rnd()<0.42;
+    var off=Math.floor(rnd()*54)-18;      // -18 to +35 days around today
+    var d=new Date(2026,8,14+off);
+    var cap=[24,32,40,48,64][Math.floor(rnd()*5)];
+    var reg=Math.floor(cap*(0.35+rnd()*0.7)); if(reg>cap) reg=cap;
+    var feeN=[0,0,15,25,35,45,60][Math.floor(rnd()*7)];
+    EV.push({
+      name:ENAMES[Math.floor(rnd()*ENAMES.length)],
+      type:ETYPES[Math.floor(rnd()*ETYPES.length)],
+      m:d.getMonth(), d:d.getDate(), y:d.getFullYear(),
+      time:['10:00am','1:00pm','6:30pm','7:00pm','8:00pm'][Math.floor(rnd()*5)],
+      mine:mine, center: mine?'Richmond Lanes':OTHER_CENTERS[Math.floor(rnd()*OTHER_CENTERS.length)],
+      cap:cap, reg:reg, fee:feeN, past:off<0
+    });
+  }
+  EV.sort(function(a,b){ return new Date(a.y,a.m,a.d)-new Date(b.y,b.m,b.d); });
+})();
+
+var CAL={m:8,y:2026}, SELDAY=null;
+function evTab(i,b){
+  var box=b.parentElement;
+  [].slice.call(box.children).forEach(function(x){x.classList.remove('on');});
+  b.classList.add('on');
+  [0,1,2,3].forEach(function(n){ $('ev'+n).classList.toggle('on',n===i); });
+  if(i===0) renderCal();
+  if(i===1) renderMine();
+  if(i===2) renderNet();
+  if(i===3) renderStats();
 }
+function calMove(step){
+  CAL.m+=step;
+  if(CAL.m<0){CAL.m=11;CAL.y--;} if(CAL.m>11){CAL.m=0;CAL.y++;}
+  SELDAY=null; renderCal();
+}
+function evOn(d){ return EV.filter(function(e){ return e.m===CAL.m && e.y===CAL.y && e.d===d; }); }
+function renderCal(){
+  $('calLabel').textContent=MON[CAL.m]+' '+CAL.y;
+  var first=new Date(CAL.y,CAL.m,1).getDay();
+  var days=new Date(CAL.y,CAL.m+1,0).getDate();
+  var h=DOW.map(function(x){return '<div class="dow">'+x+'</div>';}).join('');
+  for(var i=0;i<first;i++) h+='<div class="cd empty"></div>';
+  for(var d=1;d<=days;d++){
+    var ev=evOn(d);
+    var dots=ev.slice(0,3).map(function(e){return '<i class="'+(e.mine?'mine':'')+'"></i>';}).join('');
+    h+='<button class="cd '+(SELDAY===d?'on':'')+'" onclick="pickDay('+d+')">'+d+'<span class="dots">'+dots+'</span></button>';
+  }
+  $('cal').innerHTML=h;
+  renderDay();
+}
+function pickDay(d){ SELDAY=d; renderCal(); }
+function renderDay(){
+  if(SELDAY===null){ $('dayTitle').textContent='Pick a day'; $('dayList').innerHTML='<div class="empty"><b>Nothing selected</b><span>Tap a date to see what is on.</span></div>'; return; }
+  var ev=evOn(SELDAY);
+  $('dayTitle').textContent=SELDAY+' '+MON[CAL.m];
+  $('dayList').innerHTML = ev.length ? ev.map(evRow).join('')
+    : '<div class="empty"><b>Nothing on</b><span>A clear night. Good time to run something.</span></div>';
+}
+function evRow(e){
+  return '<div class="evc"><div class="ed2"><b>'+e.d+'</b><span>'+MONS[e.m]+'</span></div>'+
+    '<div style="min-width:0"><div class="en2">'+e.name+(e.mine?'<span class="mine-tag">Yours</span>':'')+'</div>'+
+    '<div class="et2">'+e.time+' | '+e.type+' | '+e.center+'</div></div>'+
+    '<div class="er"><b>'+e.reg+'/'+e.cap+'</b><span>'+(e.fee?'$'+e.fee:'free')+'</span></div></div>';
+}
+var MYSCOPE='up';
+function scopePick(b){ segPick(b); MYSCOPE=b.dataset.v; renderMine(); }
+function renderMine(){
+  var rows=EV.filter(function(e){ return e.mine && (MYSCOPE==='all'||(MYSCOPE==='past'?e.past:!e.past)); });
+  $('myEvents').innerHTML = rows.map(evRow).join('') ||
+    '<div class="empty"><b>Nothing here</b><span>Create an event and it shows up.</span></div>';
+}
+var NETTYPE='';
+function netPick(b){ segPick(b); NETTYPE=b.dataset.v; renderNet(); }
+function renderNet(){
+  var q=($('netQ')?$('netQ').value:'').toLowerCase();
+  var rows=EV.filter(function(e){
+    if(NETTYPE && e.type!==NETTYPE) return false;
+    if(q && (e.name+' '+e.center).toLowerCase().indexOf(q)<0) return false;
+    return !e.past;
+  });
+  $('netCount').textContent=rows.length+' upcoming';
+  $('netEvents').innerHTML = rows.map(evRow).join('') || '<div class="empty"><b>Nothing matches</b><span>Try a different search.</span></div>';
+}
+function renderStats(){
+  var mine=EV.filter(function(e){return e.mine;});
+  var reg=mine.reduce(function(a,e){return a+e.reg;},0);
+  var cap=mine.reduce(function(a,e){return a+e.cap;},0);
+  var rev=mine.reduce(function(a,e){return a+e.reg*e.fee;},0);
+  $('stEv').textContent=mine.length;
+  $('stReg').textContent=reg.toLocaleString();
+  $('stFill').textContent=Math.round(reg/cap*100)+'%';
+  $('stRev').textContent='$'+rev.toLocaleString();
+  var byType={}; mine.forEach(function(e){ byType[e.type]=(byType[e.type]||0)+e.reg; });
+  var max=Math.max.apply(null,Object.keys(byType).map(function(k){return byType[k];}));
+  $('stType').innerHTML=Object.keys(byType).sort(function(a,b){return byType[b]-byType[a];}).map(function(k){
+    return '<div class="bar-row"><span class="bl">'+k+'</span><span class="bt"><i style="width:'+Math.round(byType[k]/max*100)+'%"></i></span><span class="bn2">'+byType[k]+'</span></div>';
+  }).join('');
+  $('stTop').innerHTML=mine.slice().sort(function(a,b){return b.reg-a.reg;}).slice(0,5).map(evRow).join('');
+}
+
+function openCreate(){
+  $('createModal').classList.add('on'); $('scrim').classList.add('on');
+  recount(); sumUp();
+}
+
+function acc(id){ $(id).classList.toggle('open'); }
+function wherePick(b){ segPick(b); $('eVenueWrap').style.display = b.dataset.v==='other' ? '' : 'none'; sumUp(); }
+function repeatPick(b){ segPick(b); $('repUntil').style.display = b.dataset.v ? '' : 'none'; sumUp(); }
+function feeMode(b){
+  segPick(b);
+  $('feeSingle').style.display = b.dataset.v==='single' ? '' : 'none';
+  $('feeTiers').style.display  = b.dataset.v==='tiers'  ? '' : 'none';
+  if(b.dataset.v==='tiers' && !TIERS.length){ TIERS=[{l:'Early bird',a:'$35',c:'24'},{l:'Standard',a:'$45',c:''}]; renderTiers(); }
+  sumUp();
+}
+var TIERS=[];
+function renderTiers(){
+  $('tierRows').innerHTML = TIERS.map(function(t,i){
+    return '<div class="tier">'+
+      '<input type="text" value="'+t.l+'" placeholder="Label" oninput="TIERS['+i+'].l=this.value;sumUp()">'+
+      '<input type="text" value="'+t.a+'" placeholder="Price" oninput="TIERS['+i+'].a=this.value;sumUp()">'+
+      '<input type="text" value="'+t.c+'" placeholder="Spots" oninput="TIERS['+i+'].c=this.value;sumUp()">'+
+      '<button onclick="TIERS.splice('+i+',1);renderTiers();sumUp()" title="Remove">x</button></div>';
+  }).join('');
+}
+function addTier(){ TIERS.push({l:'',a:'',c:''}); renderTiers(); sumUp(); }
+
+function segVal(id){
+  var b=$(id); if(!b) return '';
+  var on=[].slice.call(b.children).filter(function(x){return x.classList.contains('on');})[0];
+  return on ? (on.dataset.v!==undefined ? on.dataset.v : on.textContent) : '';
+}
+
+// Every collapsed section shows its own summary, so nothing is hidden -
+// you can read the whole event without opening anything.
+function sumUp(){
+  var mode=segVal('eFeeMode');
+  $('sumFee').textContent = mode==='free' ? 'Free to enter'
+    : mode==='single' ? ($('eFee').value||'One price')
+    : TIERS.length+' tiers, from '+(TIERS.map(function(t){return t.a;}).filter(Boolean)[0]||'-');
+
+  var reg=$('eReg').checked, auto=$('eAuto').checked, cap=$('eCap').value;
+  $('sumReg').textContent = !reg ? 'Registration closed'
+    : (auto?'Open, auto-approved':'Open, you approve each')+(cap?', cap '+cap:', no cap');
+
+  var rep=segVal('eRepeat');
+  $('sumRep').textContent = rep ? rep+($('eUntil').value?' until '+$('eUntil').value:'') : 'One-off';
+
+  var ex=[]; if($('eEmail').value) ex.push('contact'); if($('eRules').value) ex.push('rules');
+  $('sumEx').textContent = ex.length ? ex.join(' and ')+' added' : 'Nothing added';
+
+  var w=segVal('eWhere');
+  $('sumWho').textContent = $('audN').textContent+' bowlers';
+  return {fee:mode,where:w,repeat:rep};
+}
+
+function createEvent(){
+  var n=PEOPLE.filter(matches).length;
+  var name=$('eName').value||'Your event';
+  var info=sumUp();
+  var rep=info.repeat;
+  // Feels consequential: it lands in "Coming up" and the dashboard count moves.
+  EVENTS.unshift({name:name, when:$('eDate').value+', '+$('eTime').value, going:0, mine:true});
+  var dm=$('eDate').value.match(/(\d+)\s*(\w{3})/);
+  EV.push({name:name,type:'Tournament',m:dm?MONS.indexOf(dm[2]):8,d:dm?Number(dm[1]):27,y:2026,
+    time:$('eTime').value,mine:true,center:'Richmond Lanes',cap:Number($('eCap').value)||48,reg:0,fee:0,past:false});
+  EV.sort(function(a,b){ return new Date(a.y,a.m,a.d)-new Date(b.y,b.m,b.d); });
+  refreshTiles(); renderCal(); renderMine(); closeAll();
+  var extra = rep ? ' '+rep.toLowerCase()+' series created.' : '';
+  toast(n ? '"'+name+'" created.'+extra+' '+n+' bowlers invited.'
+          : '"'+name+'" created.'+extra+' Nobody invited yet - set who to invite on the right.');
+}
+
+function renderEvents(){
+  $('evList').innerHTML = EVENTS.map(function(e){
+    var bits=e.when.split(',');
+    var d=(bits[0]||'').trim().split(' ');
+    return '<div class="evrow">'+
+      '<div class="ed"><b>'+(d[1]||'-')+'</b><span>'+(d[2]||d[0]||'')+'</span></div>'+
+      '<div style="min-width:0"><div class="en">'+e.name+'</div><div class="et">'+e.when+'</div></div>'+
+      '<span class="eg">'+(e.going?e.going+' going':'new')+'</span></div>';
+  }).join('');
+}
+
 
 // ---- reach out: the integrated communication page ------------------
 // The channel decides who is even reachable, and the filters narrow from
 // there. Email can reach anyone whose address you hold; a notification or a
 // feed post can only reach someone who has actually joined.
-S.chan='notification'; S.join=''; S.geo='';
+S.chan='notification'; S.join=''; S.geo=''; S.ejoin=''; S.egeo='';
 
 function chanPick(b){
   [...b.parentElement.children].forEach(x=>x.classList.remove('on'));
@@ -1035,6 +1644,118 @@ function sendReach(){
 }
 
 // -- groups: league > team > subs -------------------------------------
+// ---- reach out: dashboard, newsfeed, messages -----------------------
+function roTab(i,b){
+  [].slice.call(b.parentElement.children).forEach(function(x){x.classList.remove('on');});
+  b.classList.add('on');
+  [0,1,2].forEach(function(n){ $('ro'+n).classList.toggle('on',n===i); });
+  if(i===0) renderComms();
+  if(i===1) renderPosts();
+  if(i===2) reachCount();
+}
+
+// --- the center's own posts, with real engagement ---
+var CNAMES=['Marilyn H.','Gary B.','Randy O.','Diane V.','Keith P.','Brenda S.','Doug M.','Lori T.','Curtis A.','Paula D.'];
+var CTEXT=['Count me in.','What time do lanes open?','Bringing two friends.','Finally!','Is there a youth division?','See you Friday.','Can I still get on a team?','Great night last week.'];
+var POSTS=[
+  {t:'Lanes 9-16 are open Friday night, $2 games till close. Bring someone who has not bowled in a while.', d:2, r:47, media:false, aud:'Everyone'},
+  {t:'Tuesday Night League standings are up after week 6. Gutter Gang still top by 14 pins.', d:5, r:63, media:false, aud:'League bowlers'},
+  {t:'New approach carpets went down this week. Come feel the difference.', d:9, r:88, media:true, aud:'Everyone'},
+  {t:'Congratulations to Randy on his first 300. Framed and on the wall where it belongs.', d:14, r:212, media:true, aud:'Everyone'},
+  {t:'Youth program starts Saturday 10am. Ages 8-18, all levels, coaching included.', d:21, r:54, media:false, aud:'Everyone'}
+];
+POSTS.forEach(function(p,i){
+  p.id=i; p.liked=false; p.open=false;
+  var n=1+Math.floor(rnd()*5);
+  p.c=[]; for(var k=0;k<n;k++) p.c.push({who:CNAMES[Math.floor(rnd()*CNAMES.length)],txt:CTEXT[Math.floor(rnd()*CTEXT.length)]});
+});
+var PTYPE='text';
+function postType(b){
+  segPick(b); PTYPE=b.dataset.v;
+  $('postExtra').innerHTML =
+    PTYPE==='photo' ? '<div class="drop" style="padding:20px;margin-top:11px" onclick="toast(\'Photo attached.\')">'+ico('upload')+'<b>Add a photo</b><span>Shows full width in their feed</span></div>' :
+    PTYPE==='poll'  ? '<div style="margin-top:11px"><input type="text" placeholder="Option 1" style="margin-bottom:7px"><input type="text" placeholder="Option 2"></div>' :
+    PTYPE==='score' ? '<div style="margin-top:11px"><input type="text" placeholder="Bowler and score, e.g. Randy O. - 300"></div>' : '';
+}
+function publishPost(){
+  var t=$('postBody').value.trim();
+  if(!t){ toast('Write something first.'); $('postBody').focus(); return; }
+  var aud=[].slice.call($('postAud').children).filter(function(x){return x.classList.contains('on');})[0].textContent;
+  POSTS.unshift({id:Date.now(),t:t,d:0,r:0,c:[],media:PTYPE==='photo',aud:aud,liked:false,open:false});
+  $('postBody').value=''; $('postExtra').innerHTML='';
+  renderPosts(); renderComms();
+  toast('Posted. It is in the feed of every bowler matching "'+aud+'".');
+}
+function togglePostLike(id){ var p=POSTS.filter(function(x){return x.id===id;})[0]; if(!p)return; p.liked=!p.liked; p.r+=p.liked?1:-1; renderPosts(); }
+function toggleThread(id){ var p=POSTS.filter(function(x){return x.id===id;})[0]; if(!p)return; p.open=!p.open; renderPosts(); }
+function addComment(id){
+  var el=$('ci'+id); if(!el||!el.value.trim()) return;
+  var p=POSTS.filter(function(x){return x.id===id;})[0];
+  p.c.push({who:'Richmond Lanes',txt:el.value.trim()}); el.value='';
+  renderPosts(); toast('Replied.');
+}
+function renderPosts(){
+  $('postFeed').innerHTML = POSTS.map(function(p){
+    return '<div class="post">'+
+      '<div class="post-head"><div class="dot">RL</div><div><b>Richmond Lanes</b><span>'+ago(p.d)+' | to '+p.aud+'</span></div></div>'+
+      '<div class="post-body">'+p.t+'</div>'+
+      (p.media?'<div class="post-media">Photo</div>':'')+
+      '<div class="post-bar">'+
+        '<button class="pb '+(p.liked?'on':'')+'" onclick="togglePostLike('+p.id+')">'+ico('heart')+p.r+'</button>'+
+        '<button class="pb" onclick="toggleThread('+p.id+')">'+ico('chat')+p.c.length+'</button>'+
+        '<button class="pb" onclick="toast(\'Shared to your own page.\')">'+ico('send')+'Share</button>'+
+        '<span class="reach-note">seen by '+(120+p.r*7)+'</span>'+
+      '</div>'+
+      '<div class="thread '+(p.open?'on':'')+'">'+
+        p.c.map(function(c){
+          return '<div class="cmt"><div class="av">'+c.who.split(' ').map(function(w){return w[0];}).join('').slice(0,2)+'</div>'+
+          '<div class="bub"><b>'+c.who+'</b>'+c.txt+'</div></div>';
+        }).join('')+
+        '<div class="cmt-box"><input type="text" id="ci'+p.id+'" placeholder="Reply as Richmond Lanes..."><button class="btn" onclick="addComment('+p.id+')">Reply</button></div>'+
+      '</div></div>';
+  }).join('');
+}
+
+// --- communication stats ---
+var SENDS=[
+  {what:'Subs needed - Tuesday Night League', chan:'notification', n:20, open:18, d:1},
+  {what:'Friday $2 games', chan:'email', n:462, open:171, d:3},
+  {what:'Week 6 standings', chan:'notification', n:135, open:119, d:5},
+  {what:'Youth program starts Saturday', chan:'email', n:462, open:143, d:8},
+  {what:'Comeback night - lapsed bowlers', chan:'email', n:88, open:31, d:12},
+  {what:'League night reminder', chan:'notification', n:135, open:112, d:15}
+];
+function renderComms(){
+  var sent=SENDS.reduce(function(a,x){return a+x.n;},0);
+  var opened=SENDS.reduce(function(a,x){return a+x.open;},0);
+  var eng=POSTS.reduce(function(a,p){return a+p.r+p.c.length;},0);
+  $('cReach').textContent=(482).toLocaleString();
+  $('cSent').textContent=sent.toLocaleString();
+  $('cSends').textContent=SENDS.length+' sends';
+  $('cOpen').textContent=Math.round(opened/sent*100)+'%';
+  $('cEng').textContent=eng.toLocaleString();
+
+  $('sendList').innerHTML=SENDS.map(function(x){
+    var pct=Math.round(x.open/x.n*100);
+    return '<div class="sendrow"><div class="si">'+ico(x.chan==='email'?'mail':'bell')+'</div>'+
+      '<div style="min-width:0"><b>'+x.what+'</b><span>'+ago(x.d)+' | '+x.chan+'</span></div>'+
+      '<div class="sn"><b>'+x.n.toLocaleString()+'</b><span>'+pct+'% opened</span></div></div>';
+  }).join('');
+
+  var byChan={notification:0,email:0,feed:0};
+  SENDS.forEach(function(x){ byChan[x.chan]+=x.n; });
+  byChan.feed=POSTS.reduce(function(a,p){return a+120+p.r*7;},0);
+  var max=Math.max(byChan.notification,byChan.email,byChan.feed);
+  $('chanBars').innerHTML=[['Notification',byChan.notification],['Email',byChan.email],['Newsfeed',byChan.feed]].map(function(r){
+    return '<div class="bar-row"><span class="bl">'+r[0]+'</span><span class="bt"><i style="width:'+Math.round(r[1]/max*100)+'%"></i></span><span class="bn2">'+r[1].toLocaleString()+'</span></div>';
+  }).join('');
+
+  var best=POSTS.slice().sort(function(a,b){return (b.r+b.c.length)-(a.r+a.c.length);})[0];
+  $('bestPost').innerHTML='<div style="font-size:13px;color:var(--ink-2);line-height:1.5">'+best.t.slice(0,92)+(best.t.length>92?'...':'')+'</div>'+
+    '<div style="display:flex;gap:16px;margin-top:11px"><div><b class="num" style="font-size:18px;color:var(--accent)">'+best.r+'</b><div style="font-size:10.5px;color:var(--ink-3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em">Reactions</div></div>'+
+    '<div><b class="num" style="font-size:18px">'+best.c.length+'</b><div style="font-size:10.5px;color:var(--ink-3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em">Comments</div></div></div>';
+}
+
 // ---- groups: index, then league > team > subs ----------------------
 const NAMEPOOL=['Gutter Gang','Split Happens','Pin Pals','Rolling Thunder','Lane Violation','Strike Force','Alley Cats','Turkey Hunters','Spare Me','Head Pins','Bowl Movement','Lane Rangers','Kingpins','Pin Killers'];
 const pool=PEOPLE.filter(p=>p.status==='joined');
@@ -1132,17 +1853,35 @@ function newGroup(){
         '<button data-v="request" onclick="segPick(this)">Anyone can request</button>'+
         '<button data-v="open" onclick="segPick(this)">Open to all</button>'+
       '</div>'+
-      '<p class="note-line">Request and Open give the group a join link bowlers can use themselves.</p></div>',
+      '<p class="note-line">Request and Open give the group a join link bowlers can use themselves.</p></div>'+
+    '<div class="fld" style="margin:14px 0 0"><label class="f">Add people now (optional)</label>'+
+      '<textarea id="ngBulk" rows="4" placeholder="Paste email addresses, one per line or comma separated. Anyone not on your list is added and invited." oninput="ngCount()"></textarea>'+
+      '<p class="note-line" id="ngNote">You can also add people after it is created.</p></div>',
     '<button class="btn ghost" onclick="closeAll()">Cancel</button><button class="btn solid" onclick="doNewGroup()">Create group</button>');
   setTimeout(function(){ var e=$('ngName'); if(e) e.focus(); },60);
 }
+function ngCount(){
+  var n=parseEmails($('ngBulk').value).length;
+  $('ngNote').textContent = n ? n+' email '+(n===1?'address':'addresses')+' found. They go straight into the group.'
+    : 'You can also add people after it is created.';
+}
+
 function doNewGroup(){
   var name=$('ngName').value.trim();
   if(!name){ toast('Give the group a name.'); $('ngName').focus(); return; }
   var join=[].slice.call($('ngJoin').children).filter(function(b){return b.classList.contains('on');})[0].dataset.v;
-  GROUPS.push({name:name,desc:$('ngDesc').value.trim()||'No description',teams:[],subs:[],join:join});
-  closeAll(); renderGroupIndex(); openGroup(GROUPS.length-1);
-  toast('"'+name+'" created. Add people to it next.');
+  var g={name:name,desc:$('ngDesc').value.trim()||'No description',teams:[],subs:[],join:join};
+  var emails=parseEmails($('ngBulk')?$('ngBulk').value:'');
+  emails.forEach(function(e,i){
+    var nm=e.split('@')[0].replace(/[._]/g,' ').split(' ');
+    var np={id:100000+PEOPLE.length+i,first:(nm[0]||'New'),last:(nm[1]||''),gender:'M',age:0,avg:null,visit:0,miles:0,league:false,status:'invited'};
+    PEOPLE.push(np); g.subs.push(np);
+  });
+  GROUPS.push(g);
+  closeAll(); renderGroupIndex(); openGroup(GROUPS.length-1); refreshTiles(); renderPeople();
+  toast(emails.length
+    ? '"'+name+'" created with '+emails.length+' people. Invites sent to anyone new.'
+    : '"'+name+'" created. Add people to it next.');
 }
 
 var PICKED=new Set();
@@ -1258,6 +1997,58 @@ const ACH=p=>{
   if(p.league) a.push(['🏆','Joined Tuesday Night League','Sept 2']);
   return a.slice(0,3);
 };
+// ---- activity: what your bowlers did, so you can respond ------------
+// The inbound half of communication. Reach Out is you talking to them; this
+// is them giving you a reason to.
+var ACT_KINDS=[
+  {icon:'\u{1F3AF}', t:function(p){return 'Bowled '+(p.avg+48)+' - a personal best';}, big:true,  w:3},
+  {icon:'\u{1F3C6}', t:function(p){return 'Shot a 300 game';},                        big:true,  w:1},
+  {icon:'\u{1F525}', t:function(p){return 'Seven strikes in a row';},                 big:true,  w:2},
+  {icon:'\u{1F4C8}', t:function(p){return 'Average up to '+p.avg+', best this season';}, big:false, w:5},
+  {icon:'\u{2705}',  t:function(p){return 'Clean game, no open frames';},             big:false, w:6},
+  {icon:'\u{1F3B3}', t:function(p){return 'Converted the 7-10 split';},               big:true,  w:1},
+  {icon:'\u{1F44B}', t:function(p){return 'Back after a while away';},                big:false, w:3},
+  {icon:'\u{1F91D}', t:function(p){return 'Joined Tuesday Night League';},            big:false, w:4}
+];
+var ACTS=[];
+(function(){
+  var bag=[]; ACT_KINDS.forEach(function(k,i){ for(var n=0;n<k.w;n++) bag.push(i); });
+  var src=PEOPLE.filter(function(p){return p.status==='joined';});
+  for(var i=0;i<46;i++){
+    var p=src[Math.floor(rnd()*src.length)];
+    var k=ACT_KINDS[bag[Math.floor(rnd()*bag.length)]];
+    ACTS.push({p:p,kind:k,days:Math.floor(rnd()*rnd()*26)});
+  }
+  ACTS.sort(function(a,b){return a.days-b.days;});
+})();
+S.act='';
+function actPick(b){ segPick(b); S.act=b.dataset.v; renderActivity(); }
+function ago(d){ return d===0?'Today':d===1?'Yesterday':d+' days ago'; }
+function renderActivity(){
+  var rows=ACTS.filter(function(a){
+    if(S.act==='big') return a.kind.big;
+    if(S.act==='week') return a.days<=7;
+    return true;
+  });
+  $('actCount').textContent=rows.length+' shown';
+  $('navAct').textContent=ACTS.filter(function(a){return a.days<=7;}).length;
+  $('actFeed').innerHTML = rows.map(function(a){
+    var p=a.p;
+    return '<div class="act '+(a.kind.big?'big':'')+'">'+
+      '<div class="ai">'+a.kind.icon+'</div>'+
+      '<div style="min-width:0;flex:1">'+
+        '<span class="who2" onclick="openContact('+p.id+')">'+NAME(p)+'</span>'+
+        (a.kind.big?'<span class="tagm">Milestone</span>':'')+
+        '<div class="what">'+a.kind.t(p)+'</div>'+
+        '<div class="when">'+ago(a.days)+'</div>'+
+      '</div>'+
+      '<div class="acts">'+
+        '<button class="mini" onclick="compose(\'person\',\''+NAME(p)+'\',1)">'+ico('send')+'Say well done</button>'+
+        '<button class="mini" onclick="reward(\''+p.first+'\',\''+a.kind.t(p).replace(/'/g,"")+'\')">'+ico('gift')+'Reward</button>'+
+      '</div></div>';
+  }).join('') || '<div class="empty"><b>Nothing here yet</b><span>Try a different filter.</span></div>';
+}
+
 const BRANDS=['Storm','Roto Grip','Hammer','Motiv','900 Global','Brunswick','Ebonite'];
 
 function openContact(id){
@@ -1324,12 +2115,13 @@ function sendMsg(){
 }
 function closeAll(){
   $('drawer').classList.remove('on'); $('modal').classList.remove('on');
-  $('gmodal').classList.remove('on'); $('scrim').classList.remove('on');
+  $('gmodal').classList.remove('on'); $('createModal').classList.remove('on');
+  $('scrim').classList.remove('on');
 }
 document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeAll(); });
 
 // -- init -------------------------------------------------------------
 // Static markup was already de-placeholdered by the text-node walk at the top
 // of this script; everything below is built from real template literals.
-refreshTiles(); renderPeople(); recount(); reachCount(); renderGroupIndex();
+refreshTiles(); renderPeople(); recount(); reachCount(); renderGroupIndex(); renderActivity(); sumUp(); renderPosts(); renderComms(); renderCal();
 </script>
