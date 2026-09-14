@@ -5,17 +5,50 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
 
 <style>
+  /* Light is the bare :root so an un-stamped document follows the OS.
+     Dark is redefined twice: once under prefers-color-scheme guarded against
+     an explicit light choice, once under [data-theme="dark"] so the toggle
+     wins in both directions. Components only ever read tokens. */
   :root{
+    --bg:#fafafa; --surface:#ffffff; --elevated:#ffffff; --hover:#f0f0f0;
+    --line:#e8e8e8; --line-strong:#d4d4d4;
+    --ink:#0f0f0f; --ink-2:#6b6b6b; --ink-3:#a0a0a0;
+    --accent:#6da030; --accent-hover:#5e8c28;
+    --accent-subtle:rgba(109,160,48,.09); --accent-glow:rgba(109,160,48,.18);
+    --on-accent:#ffffff;
+    --warn:#b45d00; --warn-subtle:rgba(180,93,0,.1);
+    --info:#3d6a99; --info-subtle:rgba(61,106,153,.1);
+    --alert:#c0392b;
+    --shadow:rgba(0,0,0,.14); --scrim:rgba(20,22,26,.42);
+    --sans:"Geist","Geist Fallback",system-ui,-apple-system,sans-serif;
+    --mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --rail:236px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0a0a0a; --surface:#111111; --elevated:#1a1a1a; --hover:#222222;
+      --line:#1f1f1f; --line-strong:#2e2e2e;
+      --ink:#f5f5f5; --ink-2:#9a9a9a; --ink-3:#5a5a5a;
+      --accent:#8bc342; --accent-hover:#7db33a;
+      --accent-subtle:rgba(139,195,66,.1); --accent-glow:rgba(139,195,66,.15);
+      --on-accent:#0a0a0a;
+      --warn:#f0a830; --warn-subtle:rgba(240,168,48,.12);
+      --info:#6b93c0; --info-subtle:rgba(107,147,192,.12);
+      --alert:#ff6b4a;
+      --shadow:rgba(0,0,0,.5); --scrim:rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"]{
     --bg:#0a0a0a; --surface:#111111; --elevated:#1a1a1a; --hover:#222222;
     --line:#1f1f1f; --line-strong:#2e2e2e;
     --ink:#f5f5f5; --ink-2:#9a9a9a; --ink-3:#5a5a5a;
     --accent:#8bc342; --accent-hover:#7db33a;
     --accent-subtle:rgba(139,195,66,.1); --accent-glow:rgba(139,195,66,.15);
+    --on-accent:#0a0a0a;
     --warn:#f0a830; --warn-subtle:rgba(240,168,48,.12);
     --info:#6b93c0; --info-subtle:rgba(107,147,192,.12);
-    --sans:"Geist","Geist Fallback",system-ui,-apple-system,sans-serif;
-    --mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
-    --rail:236px;
+    --alert:#ff6b4a;
+    --shadow:rgba(0,0,0,.5); --scrim:rgba(0,0,0,.6);
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
@@ -51,7 +84,7 @@
   .nav.on .badge{background:rgba(139,195,66,.18);color:var(--accent)}
 
   .main{margin-left:var(--rail);min-height:100vh}
-  .top{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:14px;padding:13px 26px;border-bottom:1px solid var(--line);background:rgba(10,10,10,.86);backdrop-filter:blur(12px)}
+  .top{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:14px;padding:13px 26px;border-bottom:1px solid var(--line);background:color-mix(in srgb, var(--bg) 86%, transparent);backdrop-filter:blur(12px)}
   .top .dot{width:30px;height:30px;border-radius:9px;background:var(--accent-subtle);color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex:none}
   .top b{font-size:14px;font-weight:600;display:block;line-height:1.25}
   .top small{font-size:11.5px;color:var(--ink-3)}
@@ -77,7 +110,7 @@
 
   .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;height:38px;padding:0 15px;border-radius:10px;border:1px solid var(--accent-subtle);background:var(--accent-subtle);color:var(--accent);font-size:13px;font-weight:600;cursor:pointer;transition:all .14s}
   .btn:hover{background:rgba(139,195,66,.16);border-color:rgba(139,195,66,.35)}
-  .btn.solid{background:var(--accent);border-color:var(--accent);color:#0a0a0a;box-shadow:0 4px 16px rgba(139,195,66,.22)}
+  .btn.solid{background:var(--accent);border-color:var(--accent);color:var(--on-accent);box-shadow:0 4px 16px rgba(139,195,66,.22)}
   .btn.solid:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
   .btn.ghost{background:transparent;border-color:var(--line-strong);color:var(--ink-2)}
   .btn.ghost:hover{background:var(--hover);color:var(--ink)}
@@ -146,7 +179,7 @@
   .drop b{display:block;font-size:14px;margin-bottom:3px}
   .drop span{font-size:12.5px;color:var(--ink-3)}
 
-  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(90px);z-index:90;display:flex;align-items:center;gap:10px;background:var(--elevated);border:1px solid var(--line-strong);border-left:3px solid var(--accent);border-radius:12px;padding:12px 16px;font-size:13.5px;box-shadow:0 10px 34px rgba(0,0,0,.5);transition:transform .3s cubic-bezier(.16,1,.3,1);max-width:90vw}
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(90px);z-index:90;display:flex;align-items:center;gap:10px;background:var(--elevated);border:1px solid var(--line-strong);border-left:3px solid var(--accent);border-radius:12px;padding:12px 16px;font-size:13.5px;box-shadow:0 10px 34px var(--shadow);transition:transform .3s cubic-bezier(.16,1,.3,1);max-width:90vw}
   .toast.on{transform:translateX(-50%) translateY(0)}
   .toast svg{width:16px;height:16px;color:var(--accent);flex:none}
 
@@ -215,7 +248,7 @@
   .pickrow:last-child{border-bottom:0}
   .pickrow:hover{background:var(--hover)}
   .box{width:17px;height:17px;border-radius:5px;border:1px solid var(--line-strong);flex:none;display:flex;align-items:center;justify-content:center;color:transparent}
-  .pickrow.sel .box{background:var(--accent);border-color:var(--accent);color:#0a0a0a}
+  .pickrow.sel .box{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
   .box svg{width:11px;height:11px}
   .joinlink{display:flex;align-items:center;gap:9px;border:1px solid var(--line-strong);border-radius:10px;padding:9px 11px;background:var(--bg);margin-top:10px}
   .joinlink code{flex:1;font-family:var(--mono);font-size:11.5px;color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -331,8 +364,16 @@
   .sheet-body.scroll .card{background:transparent;border-color:var(--line)}
   .sheet-body.scroll .aud{position:static}
 
+  .theme{margin-left:auto;display:flex;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:9px;overflow:hidden;flex:none}
+  .theme button{width:30px;height:28px;border:0;background:var(--surface);color:var(--ink-3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .13s}
+  .theme button:hover{background:var(--hover);color:var(--ink)}
+  .theme button.on{background:var(--accent-subtle);color:var(--accent)}
+  .theme button svg{width:14px;height:14px}
+  .theme button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+  .pill{margin-left:10px}
+
   /* drawer + modal */
-  .scrim{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);z-index:70;opacity:0;pointer-events:none;transition:opacity .2s}
+  .scrim{position:fixed;inset:0;background:var(--scrim);backdrop-filter:blur(3px);z-index:70;opacity:0;pointer-events:none;transition:opacity .2s}
   .scrim.on{opacity:1;pointer-events:auto}
   .drawer{position:fixed;top:0;right:0;bottom:0;width:min(430px,92vw);background:var(--surface);border-left:1px solid var(--line-strong);z-index:80;transform:translateX(100%);transition:transform .26s cubic-bezier(.16,1,.3,1);overflow-y:auto}
   .drawer.on{transform:none}
@@ -360,7 +401,7 @@
   .modal{position:fixed;inset:0;z-index:85;display:none;align-items:flex-end;justify-content:center;padding:0}
   .modal.on{display:flex}
   @media(min-width:641px){.modal{align-items:center;padding:20px}}
-  .sheet{position:relative;width:100%;max-width:470px;background:var(--elevated);border:1px solid var(--line-strong);border-radius:16px 16px 0 0;box-shadow:0 12px 44px rgba(0,0,0,.55);animation:up .24s cubic-bezier(.16,1,.3,1)}
+  .sheet{position:relative;width:100%;max-width:470px;background:var(--elevated);border:1px solid var(--line-strong);border-radius:16px 16px 0 0;box-shadow:0 12px 44px var(--shadow);animation:up .24s cubic-bezier(.16,1,.3,1)}
   @media(min-width:641px){.sheet{border-radius:16px}}
   @keyframes up{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
   .sheet-head{display:flex;align-items:flex-start;gap:12px;padding:16px 18px;border-bottom:1px solid var(--line)}
@@ -428,6 +469,11 @@
       <button class="menu-btn" onclick="document.getElementById('rail').classList.toggle('open')">${ico('menu')}</button>
       <div class="dot">RL</div>
       <div><b>Richmond Lanes</b><small>Richmond, MN | 24 lanes</small></div>
+      <div class="theme" id="theme" role="group" aria-label="Colour theme">
+        <button data-t="light" onclick="setTheme('light')" title="Light" aria-label="Light">${ico('sun')}</button>
+        <button data-t="dark" onclick="setTheme('dark')" title="Dark" aria-label="Dark">${ico('moon')}</button>
+        <button data-t="system" onclick="setTheme('system')" title="Match system" aria-label="Match system">${ico('mon')}</button>
+      </div>
       <span class="pill">Center Mode</span>
     </header>
 
@@ -1096,6 +1142,9 @@ function ico(n){
     close:'<path d="M18 6 6 18M6 6l12 12"/>',
     back:'<path d="m15 18-6-6 6-6"/>',
     chev:'<path d="m9 18 6-6-6-6"/>',
+    sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+    moon:'<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/>',
+    mon:'<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>',
     heart:'<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8Z"/>',
     mail:'<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/>',
     bell:'<path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>',
@@ -1147,6 +1196,23 @@ for(let i=0;i<482;i++){
 }
 const NAME=p=>p.first+' '+p.last;
 const INIT=p=>p.first[0]+p.last[0];
+
+// -- theme --------------------------------------------------------------
+// 'system' deliberately REMOVES the attribute rather than setting a value,
+// so the bare :root and its prefers-color-scheme block do the work and the
+// page follows the OS live, with no listener needed.
+function setTheme(t){
+  if(t==='system') document.documentElement.removeAttribute('data-theme');
+  else document.documentElement.setAttribute('data-theme',t);
+  try{ localStorage.setItem('bn_center_theme',t); }catch(e){}
+  var box=document.getElementById('theme');
+  if(box) [].slice.call(box.children).forEach(function(b){ b.classList.toggle('on',b.dataset.t===t); });
+}
+(function(){
+  var t='system';
+  try{ t=localStorage.getItem('bn_center_theme')||'system'; }catch(e){}
+  setTheme(t);
+})();
 
 // -- state ------------------------------------------------------------
 const S={gender:'',visit:'',league:'',seg:'all',status:'all',imported:false};
@@ -1245,7 +1311,8 @@ function doImport(){
       '<div><div class="v num" style="font-size:20px;font-weight:700">14</div><div style="font-size:11.5px;color:var(--ink-3)">duplicates merged</div></div>'+
     '</div>'+
     '<button class="btn ghost" style="margin-top:16px" onclick="toast(\'In the real product this downloads the 9 rows that had no email address, so you can fix and re-upload just those.\')">Download the 9 skipped rows</button>';
-  refreshTiles(); renderPeople();
+  (function(){ var t='system'; try{ t=localStorage.getItem('bn_center_theme')||'system'; }catch(e){} setTheme(t); })();
+refreshTiles(); renderPeople();
   toast('482 customers imported. 135 already had BowlersNetwork accounts.');
 }
 
