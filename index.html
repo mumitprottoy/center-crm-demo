@@ -1,3 +1,4 @@
+<meta charset="utf-8">
 <title>Center Command</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -178,6 +179,54 @@
   .rr .act{margin-left:auto;opacity:0;transition:opacity .13s}
   .rr:hover .act{opacity:1}
 
+  /* reach out */
+  .chan{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:9px}
+  .ch{text-align:left;padding:12px 13px;border-radius:12px;border:1px solid var(--line-strong);background:transparent;cursor:pointer;transition:all .14s}
+  .ch:hover{background:var(--hover)}
+  .ch.on{border-color:rgba(139,195,66,.45);background:var(--accent-subtle)}
+  .ch b{display:block;font-size:13.5px;font-weight:600;color:var(--ink);margin-bottom:2px}
+  .ch.on b{color:var(--accent)}
+  .ch span{display:block;font-size:11.5px;color:var(--ink-3);line-height:1.35}
+  .note-line{font-size:11.5px;color:var(--ink-3);margin:12px 0 0;line-height:1.5}
+  .warn-line{font-size:11.5px;color:var(--warn);margin:10px 0 0;line-height:1.5;display:none}
+  .warn-line.on{display:block}
+  .fgrid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+  @media(max-width:560px){.fgrid{grid-template-columns:1fr}}
+  .dash{color:var(--ink-3)}
+
+  .grp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+  .gcard{text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:17px;cursor:pointer;transition:all .15s;color:inherit}
+  .gcard:hover{border-color:rgba(139,195,66,.35);background:var(--elevated);transform:translateY(-1px)}
+  .gcard .gt{display:flex;align-items:center;gap:9px;margin-bottom:10px}
+  .gcard .gi{width:32px;height:32px;border-radius:9px;background:var(--accent-subtle);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex:none}
+  .gcard b{font-size:14.5px;font-weight:600;display:block}
+  .gcard .gd{font-size:11.5px;color:var(--ink-3)}
+  .gcard .gstats{display:flex;gap:16px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+  .gcard .gstats div span{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin-top:2px}
+  .gcard .gstats div b{font-size:16px;font-family:var(--mono)}
+  .explain{border-left:2px solid var(--accent);background:var(--accent-subtle);padding:10px 13px;border-radius:0 9px 9px 0;font-size:12px;color:var(--ink-2);line-height:1.55}
+  .explain b{display:block;color:var(--ink);font-size:12.5px;margin-bottom:3px}
+
+  .tabs{display:flex;gap:6px;margin-bottom:14px}
+  .tabs button{flex:1;height:34px;border-radius:9px;border:1px solid var(--line-strong);background:transparent;color:var(--ink-2);font-size:12.5px;font-weight:500;cursor:pointer}
+  .tabs button.on{border-color:rgba(139,195,66,.4);background:var(--accent-subtle);color:var(--accent);font-weight:600}
+  .pane{display:none}.pane.on{display:block}
+  .pickrow{display:flex;align-items:center;gap:9px;padding:8px 10px;border-bottom:1px solid var(--line);cursor:pointer;font-size:13px}
+  .pickrow:last-child{border-bottom:0}
+  .pickrow:hover{background:var(--hover)}
+  .box{width:17px;height:17px;border-radius:5px;border:1px solid var(--line-strong);flex:none;display:flex;align-items:center;justify-content:center;color:transparent}
+  .pickrow.sel .box{background:var(--accent);border-color:var(--accent);color:#0a0a0a}
+  .box svg{width:11px;height:11px}
+  .joinlink{display:flex;align-items:center;gap:9px;border:1px solid var(--line-strong);border-radius:10px;padding:9px 11px;background:var(--bg);margin-top:10px}
+  .joinlink code{flex:1;font-family:var(--mono);font-size:11.5px;color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+  .slider-row{display:flex;align-items:center;gap:13px}
+  .slider-val{min-width:78px;text-align:right;font-size:13px;font-weight:600;color:var(--accent)}
+  input[type=range]{-webkit-appearance:none;appearance:none;flex:1;height:4px;border-radius:20px;background:var(--hover);outline:none;padding:0;border:0}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:18px;height:18px;border-radius:50%;background:var(--accent);cursor:pointer;border:3px solid var(--surface);box-shadow:0 0 0 1px var(--accent)}
+  input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--accent);cursor:pointer;border:3px solid var(--surface);box-shadow:0 0 0 1px var(--accent)}
+  input[type=range]:focus::-webkit-slider-thumb{box-shadow:0 0 0 1px var(--accent),0 0 0 4px var(--accent-glow)}
+
   /* drawer + modal */
   .scrim{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);z-index:70;opacity:0;pointer-events:none;transition:opacity .2s}
   .scrim.on{opacity:1;pointer-events:auto}
@@ -262,15 +311,11 @@
 <div class="app on" id="app">
   <aside class="rail" id="rail">
     <div class="brand">Bowlers<span>Network</span></div>
-    <div class="lbl">Center</div>
     <button class="nav on" data-s="home" onclick="go('home')">${ico('home')}Overview</button>
     <button class="nav" data-s="people" onclick="go('people')">${ico('users')}Customers<span class="badge num" id="navPeople">0</span></button>
     <button class="nav" data-s="groups" onclick="go('groups')">${ico('layers')}Groups</button>
     <button class="nav" data-s="event" onclick="go('event')">${ico('cal')}Events</button>
-    <button class="nav" data-s="reach" onclick="go('reach')">${ico('send')}Reach</button>
-    <div class="lbl">Platform</div>
-    <button class="nav" onclick="toast('In the real product this is your existing BowlersNetwork feed, groups and messages - same account, same app.')">${ico('feed')}Newsfeed</button>
-    <button class="nav" onclick="toast('Groups, messages and the bowler community all live in the same account.')">${ico('chat')}Community</button>
+    <button class="nav" data-s="reach" onclick="go('reach')">${ico('send')}Reach Out</button>
   </aside>
 
   <div class="main">
@@ -311,7 +356,7 @@
         <h3 style="font-size:13px;font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:24px 0 11px">One click</h3>
         <div class="quick">
           <button class="qa" onclick="preset('scratch')"><div class="ic">${ico('target')}</div><div><b>Fill a scratch tournament</b><span>Averages 190+, invite in one click</span></div></button>
-          <button class="qa" onclick="preset('lapsed')"><div class="ic">${ico('clock')}</div><div><b>Win back lapsed bowlers</b><span>Haven't visited in 60+ days</span></div></button>
+          <button class="qa" onclick="preset('lapsed')"><div class="ic">${ico('clock')}</div><div><b>Win back lapsed bowlers</b><span>No activity in 60+ days</span></div></button>
           <button class="qa" onclick="preset('women')"><div class="ic">${ico('users')}</div><div><b>Women's league night</b><span>Women, any average</span></div></button>
           <button class="qa" onclick="preset('youth')"><div class="ic">${ico('spark')}</div><div><b>Youth program</b><span>Under 18 on your list</span></div></button>
         </div>
@@ -359,53 +404,65 @@
             <span class="num" id="peopleCount" style="margin-left:auto;font-size:12px;color:var(--ink-3)"></span>
           </div>
           <div style="overflow-x:auto">
-            <table><thead><tr><th>Bowler</th><th>Status</th><th class="num">Average</th><th class="num">Age</th><th>Last visit</th><th>League</th></tr></thead><tbody id="peopleBody"></tbody></table>
+            <table><thead><tr><th>Bowler</th><th>Status</th><th class="num">Average</th><th class="num">Age</th><th>Last active</th><th>League</th></tr></thead><tbody id="peopleBody"></tbody></table>
           </div>
         </div>
       </section>
 
       <!-- -- GROUPS -- -->
       <section class="screen" id="s-groups">
-        <div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:22px">
-          <div style="flex:1;min-width:250px">
-            <h2 class="title">Groups</h2>
-            <p class="sub" style="margin:0">A league, its teams, and the subs list. Message any level - or one person - from wherever you are.</p>
+        <!-- index -->
+        <div id="grpIndex">
+          <div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:8px">
+            <div style="flex:1;min-width:250px">
+              <h2 class="title">Groups</h2>
+              <p class="sub" style="margin:0">Your leagues and programs. Open one to see its teams, captains and subs list.</p>
+            </div>
+            <button class="btn solid" onclick="newGroup()">${ico('plus')}New group</button>
           </div>
-          <button class="btn ghost" onclick="toast('In the real product this creates a group, names it, and lets you add sub-groups and people as you go - including people not yet in the system, by name and email, in batches.')">${ico('plus')}New group</button>
+          <div class="grp-grid" id="grpGrid"></div>
         </div>
 
-        <div class="split">
-          <div>
-            <div class="card" style="padding:0;overflow:hidden">
-              <div class="grp-head">
-                <div style="flex:1">
-                  <div style="display:flex;align-items:center;gap:9px">
-                    <b style="font-size:15px">Tuesday Night League</b>
-                    <span class="tag joined"><i></i>Active</span>
+        <!-- detail -->
+        <div id="grpDetail" style="display:none">
+          <button class="btn ghost" style="margin-bottom:16px" onclick="showGroups()">${ico('back')}All groups</button>
+          <div class="split">
+            <div>
+              <div class="card" style="padding:0;overflow:hidden">
+                <div class="grp-head">
+                  <div style="flex:1">
+                    <div style="display:flex;align-items:center;gap:9px">
+                      <b style="font-size:15px" id="gName"></b>
+                      <span class="tag joined"><i></i>Active</span>
+                    </div>
+                    <span style="font-size:12px;color:var(--ink-3)" id="gMeta"></span>
                   </div>
-                  <span style="font-size:12px;color:var(--ink-3)">10 teams | 60 rostered | 20 on the subs list</span>
+                  <div style="display:flex;gap:7px;flex-wrap:wrap"><button class="btn ghost" onclick="addMembers()">${ico('plus')}Add people</button><button class="btn ghost" onclick="addTeam()">${ico('layers')}Add team</button><button class="btn" id="gMsgAll">${ico('send')}Message everyone</button></div>
                 </div>
-                <button class="btn" onclick="compose('group','Tuesday Night League',80)">${ico('send')}Message all 80</button>
+                <div id="tree"></div>
               </div>
-              <div id="tree"></div>
-            </div>
-          </div>
-
-          <div>
-            <div class="card">
-              <h3>Subs list</h3>
-              <p class="h-sub">20 bowlers who said they'd fill in. A captain can reach them - so can you.</p>
-              <button class="btn solid" style="width:100%;margin-bottom:9px" onclick="compose('subs','the subs list',20)">${ico('send')}We need a bowler tonight</button>
-              <div class="list" id="subsList"></div>
             </div>
 
-            <div class="card">
-              <h3>Designations</h3>
-              <p class="h-sub">Who can message whom.</p>
-              <div class="fields">
-                <div class="fr"><code>Center</code><span class="req">everyone</span></div>
-                <div class="fr"><code>Captain</code><span class="opt">own team + subs</span></div>
-                <div class="fr"><code>Bowler</code><span class="opt">own team</span></div>
+            <div>
+              <div class="card">
+                <h3>Subs list</h3>
+                <p class="h-sub" id="gSubsMeta"></p>
+                <div class="explain">
+                  <b>What a subs list is</b>
+                  Bowlers who are not on any team roster but have said they will fill in when someone cannot make it. When a captain is a player short on the night, they message the subs list instead of ringing round themselves. You can message it too.
+                </div>
+                <button class="btn solid" style="width:100%;margin:12px 0 9px" id="gSubsBtn">${ico('send')}We need a bowler tonight</button>
+                <div class="list" id="subsList"></div>
+              </div>
+
+              <div class="card">
+                <h3>Who can message whom</h3>
+                <p class="h-sub">Designations decide reach.</p>
+                <div class="fields">
+                  <div class="fr"><code>Center</code><span class="req">everyone</span></div>
+                  <div class="fr"><code>Captain</code><span class="opt">own team + subs</span></div>
+                  <div class="fr"><code>Bowler</code><span class="opt">own team</span></div>
+                </div>
               </div>
             </div>
           </div>
@@ -457,7 +514,7 @@
                 <div class="row"><input type="number" id="ageMin" placeholder="From" oninput="recount()"><span style="color:var(--ink-3)">-</span><input type="number" id="ageMax" placeholder="To" oninput="recount()"></div>
               </div>
 
-              <div class="fld"><label class="f">Last visit</label>
+              <div class="fld"><label class="f">Last active</label>
                 <div class="seg" id="fVisit">
                   <button class="on" data-v="" onclick="pick('visit',this)">Any time</button>
                   <button data-v="30" onclick="pick('visit',this)">Past 30 days</button>
@@ -491,40 +548,94 @@
 
       <!-- -- REACH -- -->
       <section class="screen" id="s-reach">
-        <h2 class="title">Reach</h2>
-        <p class="sub">The same audience filters, pointed at the tools your bowlers already use.</p>
+        <h2 class="title">Reach out</h2>
+        <p class="sub">Pick who you want, see exactly how many that is, then send it however suits them.</p>
 
-        <div class="banner">${ico('spark')}<div><b>Nothing new to learn.</b> Your bowlers already have a BowlersNetwork feed, groups and messages. A center post lands where they're already looking - no separate app, no new password.</div></div>
-
-        <div class="quick" style="margin-bottom:18px">
-          <button class="qa" onclick="reachPick(this,'post')"><div class="ic">${ico('feed')}</div><div><b>Post to their feed</b><span>Shows up in the bowler's newsfeed</span></div></button>
-          <button class="qa" onclick="reachPick(this,'msg')"><div class="ic">${ico('chat')}</div><div><b>Direct message</b><span>Straight to their inbox</span></div></button>
-          <button class="qa" onclick="reachPick(this,'group')"><div class="ic">${ico('users')}</div><div><b>Post to a group</b><span>Your league's private space</span></div></button>
+        <div class="card">
+          <h3>How should this reach them?</h3>
+          <p class="h-sub">Different channels reach different people. The count updates to match.</p>
+          <div class="chan">
+            <button class="ch on" data-v="notification" onclick="chanPick(this)"><b>Notification</b><span>In the app they already use</span></button>
+            <button class="ch" data-v="feed" onclick="chanPick(this)"><b>Newsfeed post</b><span>Shows in their BN feed</span></button>
+            <button class="ch" data-v="email" onclick="chanPick(this)"><b>Email</b><span>Reaches your whole list</span></button>
+            <button class="ch" data-v="all" onclick="chanPick(this)"><b>Everything</b><span>Notification, feed and email</span></button>
+          </div>
+          <p id="chanNote" class="note-line"></p>
         </div>
 
         <div class="split">
           <div class="card">
-            <h3 id="reachTitle">Post to their feed</h3>
-            <p class="h-sub">Write once. It reaches everyone who matches.</p>
-            <div class="fld"><label class="f">Audience</label>
-              <div class="seg" id="fSeg">
-                <button class="on" data-v="all" onclick="pick('seg',this)">Everyone joined</button>
-                <button data-v="league" onclick="pick('seg',this)">League bowlers</button>
-                <button data-v="lapsed" onclick="pick('seg',this)">Lapsed 60+</button>
-                <button data-v="high" onclick="pick('seg',this)">190+ average</button>
+            <h3>Who should get it?</h3>
+            <p class="h-sub">Leave anything blank to ignore it.</p>
+
+            <div class="fgrid">
+              <div class="fld"><label class="f">Gender</label>
+                <div class="seg" id="rGender">
+                  <button class="on" data-v="" onclick="rPick('gender',this)">Anyone</button>
+                  <button data-v="F" onclick="rPick('gender',this)">Women</button>
+                  <button data-v="M" onclick="rPick('gender',this)">Men</button>
+                </div>
+              </div>
+
+              <div class="fld"><label class="f">Membership</label>
+                <div class="seg" id="rJoin">
+                  <button class="on" data-v="" onclick="rPick('join',this)">Everyone</button>
+                  <button data-v="joined" onclick="rPick('join',this)">On BN</button>
+                  <button data-v="not" onclick="rPick('join',this)">Not yet</button>
+                </div>
+              </div>
+
+              <div class="fld"><label class="f">Bowling average</label>
+                <div class="row"><input type="number" id="rAvgMin" placeholder="From" oninput="reachCount()"><span class="dash">-</span><input type="number" id="rAvgMax" placeholder="To" oninput="reachCount()"></div>
+              </div>
+
+              <div class="fld"><label class="f">Age</label>
+                <div class="row"><input type="number" id="rAgeMin" placeholder="From" oninput="reachCount()"><span class="dash">-</span><input type="number" id="rAgeMax" placeholder="To" oninput="reachCount()"></div>
               </div>
             </div>
-            <div class="fld" style="margin-bottom:0"><label class="f">Message</label>
-              <textarea id="reachMsg" rows="4">Lanes 9-16 are open Friday night - $2 games till close. Bring someone who hasn't bowled in a while.</textarea>
+
+            <div class="fld"><label class="f">Distance from Richmond Lanes</label>
+              <div class="slider-row">
+                <input type="range" id="rGeoRange" min="0" max="500" step="5" value="0" oninput="geoSlide()">
+                <span class="slider-val num" id="rGeoVal">Anywhere</span>
+              </div>
+              <p class="note-line" style="margin-top:6px">Straight-line distance from the bowler's home address. Slide to Anywhere to ignore it.</p>
             </div>
+
+            <div class="fld"><label class="f">Last active</label>
+              <div class="seg" id="rVisit">
+                <button class="on" data-v="" onclick="rPick('visit',this)">Any time</button>
+                <button data-v="30" onclick="rPick('visit',this)">Past 30 days</button>
+                <button data-v="90" onclick="rPick('visit',this)">Past 90 days</button>
+                <button data-v="lapsed" onclick="rPick('visit',this)">Lapsed 60+</button>
+              </div>
+            </div>
+
+            <div class="fld" style="margin-bottom:0"><label class="f">League</label>
+              <div class="seg" id="rLeague">
+                <button class="on" data-v="" onclick="rPick('league',this)">Everyone</button>
+                <button data-v="1" onclick="rPick('league',this)">League bowlers</button>
+                <button data-v="subs" onclick="rPick('league',this)">Subs list</button>
+              </div>
+            </div>
+
+            <button class="btn ghost" style="margin-top:16px" onclick="clearReach()">Clear all filters</button>
           </div>
+
           <div>
-            <div class="aud">
+            <div class="aud" id="rAud">
               <div class="big num" id="reachN">0</div>
-              <div class="cap">bowlers will see this</div>
+              <div class="cap" id="reachCap">bowlers will get this</div>
+              <div class="chips" id="rChips"></div>
               <div class="faces" id="reachFaces"></div>
-              <button class="btn solid lg" style="width:100%;margin-top:16px" onclick="sendReach()">Send now</button>
-              <p style="font-size:11.5px;color:var(--ink-3);margin:10px 0 0;text-align:center">One click. No mail merge, no spreadsheet.</p>
+              <div id="rWarn" class="warn-line"></div>
+
+              <div style="margin-top:16px"><label class="f">Message</label>
+                <textarea id="reachMsg" rows="5">Lanes 9-16 are open Friday night, $2 games till close. Bring someone who hasn't bowled in a while.</textarea>
+              </div>
+
+              <button class="btn solid lg" style="width:100%;margin-top:12px" id="reachBtn" onclick="sendReach()">Send</button>
+              <p class="note-line" style="text-align:center;margin-top:9px">Nothing sends in this demo.</p>
             </div>
           </div>
         </div>
@@ -564,6 +675,14 @@
   </div>
 </div>
 
+<div class="modal" id="gmodal">
+  <div class="sheet">
+    <div class="sheet-head"><div><b id="gmTitle"></b><small id="gmSub"></small></div><button class="x" onclick="closeAll()">${ico('close')}</button></div>
+    <div class="sheet-body" id="gmBody"></div>
+    <div class="sheet-foot" id="gmFoot"></div>
+  </div>
+</div>
+
 <div class="toast" id="toast">${ico('check')}<span id="toastMsg"></span></div>
 
 <script>
@@ -585,6 +704,7 @@ function ico(n){
     layers:'<path d="m12 2 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5"/><path d="m3 17 9 5 9-5"/>',
     plus:'<path d="M12 5v14M5 12h14"/>',
     close:'<path d="M18 6 6 18M6 6l12 12"/>',
+    back:'<path d="m15 18-6-6 6-6"/>',
     chev:'<path d="m9 18 6-6-6-6"/>',
     gift:'<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M5 12v9h14v-9"/><path d="M12 8a3 3 0 1 0-3-3 3 3 0 0 0 3 3Zm0 0a3 3 0 1 1 3-3 3 3 0 0 1-3 3Z"/>'
   }[n]||'';
@@ -627,6 +747,7 @@ for(let i=0;i<482;i++){
     age,
     avg: joined ? 118+Math.floor(rnd()*102) : null,
     visit: Math.floor(rnd()*160),
+    miles: Math.round(Math.pow(rnd(),3)*480),  // clustered near the house, long tail across the state
     league: rnd()<0.46,
     status
   });
@@ -774,8 +895,8 @@ function recount(){
   if(aMin!==null||aMax!==null) c.push('Avg '+(aMin??'any')+'-'+(aMax??'any'));
   const gMin=val('ageMin'),gMax=val('ageMax');
   if(gMin!==null||gMax!==null) c.push('Age '+(gMin??'any')+'-'+(gMax??'any'));
-  if(S.visit==='30') c.push('Visited <=30d');
-  if(S.visit==='90') c.push('Visited <=90d');
+  if(S.visit==='30') c.push('Active <=30d');
+  if(S.visit==='90') c.push('Active <=90d');
   if(S.visit==='lapsed') c.push('Lapsed 60d+');
   if(S.league==='1') c.push('League bowlers');
   $('audChips').innerHTML=c.length?c.map(x=>`<span class="chip">${x}</span>`).join(''):'<span class="chip">No filters - everyone who has joined</span>';
@@ -802,63 +923,333 @@ function createEvent(){
   toast(n?`"${name}" created - ${n} bowlers invited via feed, notification and email.`:`"${name}" created. No filters set, so nobody was invited yet.`);
 }
 
-// -- reach ------------------------------------------------------------
-function segMatch(p){
-  if(p.status!=='joined') return false;
-  if(S.seg==='league') return p.league;
-  if(S.seg==='lapsed') return p.visit>=60;
-  if(S.seg==='high') return p.avg>=190;
+// ---- reach out: the integrated communication page ------------------
+// The channel decides who is even reachable, and the filters narrow from
+// there. Email can reach anyone whose address you hold; a notification or a
+// feed post can only reach someone who has actually joined.
+S.chan='notification'; S.join=''; S.geo='';
+
+function chanPick(b){
+  [...b.parentElement.children].forEach(x=>x.classList.remove('on'));
+  b.classList.add('on'); S.chan=b.dataset.v; reachCount();
+}
+function rPick(key,b){ segPick(b); S[key]=b.dataset.v; reachCount(); }
+
+function usingProfileFilter(){
+  return Boolean(S.gender||S.geo||S.visit||S.league||
+    val('rAvgMin')!==null||val('rAvgMax')!==null||val('rAgeMin')!==null||val('rAgeMax')!==null);
+}
+
+function reachMatch(p){
+  const joined = p.status==='joined';
+  // Channel gate
+  if((S.chan==='notification'||S.chan==='feed') && !joined) return false;
+  // Anything drawn from a profile can only apply to someone who has one.
+  // An imported contact is a name and an email, nothing more.
+  if(usingProfileFilter() && !joined) return false;
+  if(S.join==='joined' && !joined) return false;
+  if(S.join==='not' && joined) return false;
+  if(S.gender && p.gender!==S.gender) return false;
+  const aMin=val('rAvgMin'), aMax=val('rAvgMax');
+  if(aMin!==null && (p.avg===null||p.avg<aMin)) return false;
+  if(aMax!==null && (p.avg===null||p.avg>aMax)) return false;
+  const gMin=val('rAgeMin'), gMax=val('rAgeMax');
+  if(gMin!==null && p.age<gMin) return false;
+  if(gMax!==null && p.age>gMax) return false;
+  if(S.geo && p.miles>Number(S.geo)) return false;
+  if(S.visit==='30' && p.visit>30) return false;
+  if(S.visit==='90' && p.visit>90) return false;
+  if(S.visit==='lapsed' && p.visit<60) return false;
+  if(S.league==='1' && !p.league) return false;
+  if(S.league==='subs' && !SUBS.includes(p)) return false;
   return true;
 }
+
 function reachCount(){
-  const m=PEOPLE.filter(segMatch);
-  $('reachN').textContent=m.length.toLocaleString();
-  $('reachFaces').innerHTML=m.slice(0,6).map(p=>`<div class="av on">${INIT(p)}</div>`).join('')+(m.length>6?`<span class="more">+${(m.length-6).toLocaleString()} more</span>`:'');
+  const pool=visiblePeople();
+  const m=pool.filter(reachMatch);
+  const n=m.length;
+  $('reachN').textContent=n.toLocaleString();
+  $('reachCap').textContent=n===1?'bowler will get this':'bowlers will get this';
+  $('rAud').classList.toggle('thin',n===0);
+  $('reachBtn').textContent=n?('Send to '+n.toLocaleString()):'Nobody to send to';
+  $('reachBtn').disabled=n===0;
+
+  const joined=pool.filter(x=>x.status==='joined').length;
+  $('chanNote').textContent = S.chan==='email'
+    ? 'Email reaches anyone whose address you hold, joined or not - '+pool.length.toLocaleString()+' people.'
+    : S.chan==='all'
+    ? 'Everyone gets an email. The '+joined.toLocaleString()+' who have joined also get a notification and a feed post.'
+    : 'Only the '+joined.toLocaleString()+' who have joined can receive this. Use email to reach the rest.';
+
+  const c=[];
+  if(S.gender) c.push(S.gender==='F'?'Women':'Men');
+  if(S.join==='joined') c.push('On BN');
+  if(S.join==='not') c.push('Not joined');
+  const aMin=val('rAvgMin'),aMax=val('rAvgMax');
+  if(aMin!==null||aMax!==null) c.push('Avg '+(aMin??'any')+'-'+(aMax??'any'));
+  const gMin=val('rAgeMin'),gMax=val('rAgeMax');
+  if(gMin!==null||gMax!==null) c.push('Age '+(gMin??'any')+'-'+(gMax??'any'));
+  if(S.geo) c.push('Within '+S.geo+' mi');
+  if(S.visit==='30') c.push('Active <=30d');
+  if(S.visit==='90') c.push('Active <=90d');
+  if(S.visit==='lapsed') c.push('Lapsed 60d+');
+  if(S.league==='1') c.push('League bowlers');
+  if(S.league==='subs') c.push('Subs list');
+  $('rChips').innerHTML=c.length?c.map(x=>'<span class="chip">'+x+'</span>').join(''):'<span class="chip">No filters - everyone reachable on this channel</span>';
+
+  $('reachFaces').innerHTML=m.slice(0,6).map(p=>'<div class="av on">'+INIT(p)+'</div>').join('')+
+    (n>6?'<span class="more">+'+(n-6).toLocaleString()+' more</span>':'');
+
+  const w=$('rWarn');
+  if(usingProfileFilter() && S.chan==='email'){
+    w.textContent='Profile filters only apply to bowlers who have joined, so this excludes the rest of your list even though you could email them.';
+    w.classList.add('on');
+  } else if(n===0){
+    w.textContent='Nobody matches. Try widening a filter, or switch to email.';
+    w.classList.add('on');
+  } else { w.classList.remove('on'); }
 }
-function reachPick(btn,kind){
-  document.querySelectorAll('#s-reach .qa').forEach(b=>b.style.borderColor='');
-  btn.style.borderColor='rgba(139,195,66,.4)';
-  $('reachTitle').textContent={post:'Post to their feed',msg:'Direct message',group:'Post to a group'}[kind];
+
+function geoSlide(){
+  var v=Number($('rGeoRange').value);
+  S.geo = v===0 ? '' : String(v);
+  $('rGeoVal').textContent = v===0 ? 'Anywhere' : v+' mi';
+  reachCount();
 }
+
+function clearReach(){
+  ['rAvgMin','rAvgMax','rAgeMin','rAgeMax'].forEach(i=>$(i).value='');
+  S.gender='';S.join='';S.geo='';S.visit='';S.league='';
+  if($('rGeoRange')){ $('rGeoRange').value=0; $('rGeoVal').textContent='Anywhere'; }
+  [['rGender',''],['rJoin',''],['rVisit',''],['rLeague','']].forEach(([id,v])=>{
+    const b=$(id); if(b)[...b.children].forEach(x=>x.classList.toggle('on',x.dataset.v===v));
+  });
+  reachCount();
+}
+
 function sendReach(){
-  const n=PEOPLE.filter(segMatch).length;
-  toast(`Sent to ${n.toLocaleString()} bowlers. They'll see it in the app they already use.`);
+  const n=visiblePeople().filter(reachMatch).length;
+  const how={notification:'as a notification',feed:'as a post in their newsfeed',email:'by email',all:'by notification, newsfeed and email'}[S.chan];
+  toast('Sent to '+n.toLocaleString()+' '+(n===1?'bowler':'bowlers')+' '+how+'.');
 }
 
 // -- groups: league > team > subs -------------------------------------
-const TEAM_NAMES=['Gutter Gang','Split Happens','Pin Pals','Rolling Thunder','Lane Violation','Strike Force','Alley Cats','Turkey Hunters','Spare Me','Head Pins'];
+// ---- groups: index, then league > team > subs ----------------------
+const NAMEPOOL=['Gutter Gang','Split Happens','Pin Pals','Rolling Thunder','Lane Violation','Strike Force','Alley Cats','Turkey Hunters','Spare Me','Head Pins','Bowl Movement','Lane Rangers','Kingpins','Pin Killers'];
 const pool=PEOPLE.filter(p=>p.status==='joined');
-const TEAMS=TEAM_NAMES.map((n,i)=>({name:n,members:pool.slice(i*6,i*6+6)}));
-const SUBS=pool.slice(60,80);
+const women=pool.filter(p=>p.gender==='F');
+const youth=pool.filter(p=>p.age<19);
 const byId=id=>PEOPLE.find(p=>p.id===id);
 
-function renderTree(){
-  $('tree').innerHTML=TEAMS.map((t,i)=>{
-    const cap=t.members[0];
-    return `<div class="team" id="tm${i}">
-      <div class="team-row" onclick="toggleTeam(${i},event)">
-        ${ico('chev').replace('<svg','<svg class="caret"')}
-        <div><b>${t.name}</b><div class="cap">${t.members.length} bowlers | captain ${cap?NAME(cap):'-'}</div></div>
-        <div class="team-acts">
-          <button class="mini" onclick="event.stopPropagation();compose('team','${t.name}',${t.members.length})">${ico('send')}Message team</button>
-        </div>
-      </div>
-      <div class="roster">${t.members.map((p,j)=>`
-        <div class="rr" onclick="openContact(${p.id})">
-          <div class="av on">${INIT(p)}</div>
-          <b>${NAME(p)}</b>
-          ${j===0?'<span class="crown">Captain</span>':''}
-          <span class="act"><button class="mini" onclick="event.stopPropagation();compose('person','${NAME(p)}',1)">${ico('send')}Message</button></span>
-        </div>`).join('')}</div>
-    </div>`;
+function buildGroup(name,desc,src,teamCount,perTeam,subCount){
+  const teams=[];
+  for(let i=0;i<teamCount;i++){
+    const members=src.slice(i*perTeam,i*perTeam+perTeam);
+    if(members.length) teams.push({name:NAMEPOOL[i%NAMEPOOL.length],members});
+  }
+  const used=teamCount*perTeam;
+  return {name,desc,teams,subs:src.slice(used,used+subCount)};
+}
+
+const GROUPS=[
+  buildGroup('Tuesday Night League','Mixed, handicap, 32 weeks',pool,10,6,20),
+  buildGroup("Thursday Women's League",'Women, handicap, 24 weeks',women,6,5,10),
+  buildGroup('Saturday Youth Program','Under 19, coached',youth.length>=18?youth:pool.slice(90),5,4,6),
+  buildGroup('Friday Mixed Doubles','Pairs, scratch, 16 weeks',pool.slice(100),8,2,6)
+];
+let CUR=0;
+
+function renderGroupIndex(){
+  $('grpGrid').innerHTML=GROUPS.map((g,i)=>{
+    const n=g.teams.reduce((a,t)=>a+t.members.length,0);
+    const init=g.name.split(' ').slice(0,2).map(w=>w[0]).join('');
+    return '<button class="gcard" onclick="openGroup('+i+')">'+
+      '<div class="gt"><div class="gi">'+init+'</div><div><b>'+g.name+'</b><span class="gd">'+g.desc+'</span></div></div>'+
+      '<div class="gstats">'+
+        '<div><b>'+g.teams.length+'</b><span>Teams</span></div>'+
+        '<div><b>'+n+'</b><span>Bowlers</span></div>'+
+        '<div><b>'+g.subs.length+'</b><span>Subs</span></div>'+
+      '</div></button>';
   }).join('');
-  $('subsList').innerHTML=SUBS.map(p=>`<div class="li" style="cursor:pointer" onclick="openContact(${p.id})">
-    <div class="av on">${INIT(p)}</div><span>${NAME(p)}</span>
-    <span class="meta">${p.avg} avg</span></div>`).join('');
+}
+
+function showGroups(){ $('grpIndex').style.display=''; $('grpDetail').style.display='none'; }
+
+function openGroup(i){
+  CUR=i; const g=GROUPS[i];
+  const n=g.teams.reduce((a,t)=>a+t.members.length,0);
+  $('grpIndex').style.display='none'; $('grpDetail').style.display='';
+  $('gName').textContent=g.name;
+  $('gMeta').textContent=g.teams.length+' teams | '+n+' rostered | '+g.subs.length+' on the subs list';
+  $('gSubsMeta').textContent=g.subs.length+' bowlers ready to fill in.';
+  $('gMsgAll').onclick=()=>compose('group',g.name,n);
+  $('gSubsBtn').onclick=()=>compose('subs',g.name+' subs list',g.subs.length);
+  renderTree();
+  window.scrollTo({top:0,behavior:'instant'});
+}
+
+function renderTree(){
+  const g=GROUPS[CUR];
+  $('tree').innerHTML=g.teams.map((t,i)=>{
+    const cap=t.members[0];
+    return '<div class="team" id="tm'+i+'">'+
+      '<div class="team-row" onclick="toggleTeam('+i+',event)">'+
+        ico('chev').replace('<svg','<svg class="caret"')+
+        '<div><b>'+t.name+'</b><div class="cap">'+t.members.length+' bowlers | captain '+(cap?NAME(cap):'-')+'</div></div>'+
+        '<div class="team-acts"><button class="mini" onclick="event.stopPropagation();compose(\'team\',\''+t.name+'\','+t.members.length+')">'+ico('send')+'Message team</button></div>'+
+      '</div>'+
+      '<div class="roster">'+t.members.map((p,j)=>
+        '<div class="rr" onclick="openContact('+p.id+')">'+
+          '<div class="av on">'+INIT(p)+'</div><b>'+NAME(p)+'</b>'+
+          (j===0?'<span class="crown">Captain</span>':'')+
+          '<span class="act"><button class="mini" onclick="event.stopPropagation();compose(\'person\',\''+NAME(p)+'\',1)">'+ico('send')+'Message</button></span>'+
+        '</div>').join('')+'</div></div>';
+  }).join('');
+  $('subsList').innerHTML=g.subs.map(p=>
+    '<div class="li" style="cursor:pointer" onclick="openContact('+p.id+')">'+
+    '<div class="av on">'+INIT(p)+'</div><span>'+NAME(p)+'</span>'+
+    '<span class="meta">'+p.avg+' avg</span></div>').join('') ||
+    '<div class="empty"><b>Nobody on the subs list yet</b><span>Add bowlers who are happy to fill in.</span></div>';
 }
 function toggleTeam(i,e){ if(e) e.stopPropagation(); $('tm'+i).classList.toggle('open'); }
+const SUBS=GROUPS[0].subs;
 
-// -- contact record - the live BN profile, not a copy -----------------
+// ---- creating a group, adding people, adding teams -----------------
+function sheet(title,sub,body,foot){
+  $('gmTitle').textContent=title; $('gmSub').textContent=sub||'';
+  $('gmBody').innerHTML=body; $('gmFoot').innerHTML=foot;
+  $('gmodal').classList.add('on'); $('scrim').classList.add('on');
+}
+
+function newGroup(){
+  sheet('New group','Name it. You can add people and teams straight after.',
+    '<div class="fld"><label class="f">Name</label><input type="text" id="ngName" placeholder="e.g. Monday Senior League"></div>'+
+    '<div class="fld"><label class="f">Description</label><input type="text" id="ngDesc" placeholder="Optional"></div>'+
+    '<div class="fld" style="margin-bottom:0"><label class="f">Who can join</label>'+
+      '<div class="seg" id="ngJoin">'+
+        '<button class="on" data-v="invite" onclick="segPick(this)">Invite only</button>'+
+        '<button data-v="request" onclick="segPick(this)">Anyone can request</button>'+
+        '<button data-v="open" onclick="segPick(this)">Open to all</button>'+
+      '</div>'+
+      '<p class="note-line">Request and Open give the group a join link bowlers can use themselves.</p></div>',
+    '<button class="btn ghost" onclick="closeAll()">Cancel</button><button class="btn solid" onclick="doNewGroup()">Create group</button>');
+  setTimeout(function(){ var e=$('ngName'); if(e) e.focus(); },60);
+}
+function doNewGroup(){
+  var name=$('ngName').value.trim();
+  if(!name){ toast('Give the group a name.'); $('ngName').focus(); return; }
+  var join=[].slice.call($('ngJoin').children).filter(function(b){return b.classList.contains('on');})[0].dataset.v;
+  GROUPS.push({name:name,desc:$('ngDesc').value.trim()||'No description',teams:[],subs:[],join:join});
+  closeAll(); renderGroupIndex(); openGroup(GROUPS.length-1);
+  toast('"'+name+'" created. Add people to it next.');
+}
+
+var PICKED=new Set();
+function addMembers(){
+  PICKED=new Set();
+  var slug=GROUPS[CUR].name.toLowerCase().replace(/[^a-z0-9]+/g,'-');
+  sheet('Add people to '+GROUPS[CUR].name,'Pick whichever way suits you.',
+    '<div class="tabs">'+
+      '<button class="on" onclick="tab(0,this)">From your list</button>'+
+      '<button onclick="tab(1,this)">Paste emails</button>'+
+      '<button onclick="tab(2,this)">Share a link</button></div>'+
+    '<div class="pane on" id="pane0">'+
+      '<input type="text" id="pickQ" placeholder="Search your customers..." oninput="renderPick()" style="margin-bottom:9px">'+
+      '<div style="display:flex;gap:9px;margin-bottom:9px"><button class="mini" onclick="pickAll()">Select all shown</button><button class="mini" onclick="clearPick()">Clear</button></div>'+
+      '<div class="list" id="pickList"></div></div>'+
+    '<div class="pane" id="pane1">'+
+      '<label class="f">Paste email addresses</label>'+
+      '<textarea id="bulk" rows="7" placeholder="One per line, or separated by commas. Paste straight from a spreadsheet." oninput="bulkCount()"></textarea>'+
+      '<p class="note-line" id="bulkNote">Anyone not already on your list is added and invited automatically.</p></div>'+
+    '<div class="pane" id="pane2">'+
+      '<p style="font-size:13px;color:var(--ink-2);margin:0 0 4px;line-height:1.55">Send bowlers this link and they join themselves. Nothing for you to do.</p>'+
+      '<div class="joinlink"><code>bowlersnetwork.com/j/richmond-lanes/'+slug+'</code>'+
+      '<button class="mini" onclick="toast(\'Link copied.\')">Copy</button></div>'+
+      '<p class="note-line">Put it on a lane card, a flyer, or your own Facebook page. Set to <b>Anyone can request</b> you approve each one. Set to <b>Open</b> they are in straight away.</p></div>',
+    '<button class="btn ghost" onclick="closeAll()">Cancel</button><button class="btn solid" id="addBtn" onclick="doAddMembers()">Add selected</button>');
+  renderPick();
+}
+function tab(i,b){
+  [].slice.call(b.parentElement.children).forEach(function(x){x.classList.remove('on');}); b.classList.add('on');
+  [0,1,2].forEach(function(n){ $('pane'+n).classList.toggle('on',n===i); });
+  $('addBtn').style.display = i===2 ? 'none' : '';
+  $('addBtn').textContent = i===1 ? 'Add pasted emails' : 'Add selected';
+}
+function clearPick(){ PICKED=new Set(); renderPick(); }
+function candidates(){
+  var g=GROUPS[CUR], inGroup=new Set();
+  g.teams.forEach(function(t){ t.members.forEach(function(p){ inGroup.add(p.id); }); });
+  g.subs.forEach(function(p){ inGroup.add(p.id); });
+  var qEl=$('pickQ'), q=qEl?qEl.value.toLowerCase():'';
+  return visiblePeople().filter(function(p){ return !inGroup.has(p.id) && (!q||NAME(p).toLowerCase().indexOf(q)>-1); });
+}
+function renderPick(){
+  var rows=candidates().slice(0,80);
+  $('pickList').innerHTML = rows.map(function(p){
+    return '<div class="pickrow '+(PICKED.has(p.id)?'sel':'')+'" onclick="togglePick('+p.id+')">'+
+    '<div class="box">'+ico('check')+'</div><div class="av '+(p.status==='joined'?'on':'')+'">'+INIT(p)+'</div>'+
+    '<span>'+NAME(p)+'</span><span class="meta" style="margin-left:auto">'+(p.avg?p.avg+' avg':'not joined')+'</span></div>';
+  }).join('') || '<div class="empty"><b>Nobody left to add</b><span>Everyone matching is already in this group.</span></div>';
+  $('addBtn').textContent = PICKED.size ? 'Add '+PICKED.size : 'Add selected';
+}
+function togglePick(id){ if(PICKED.has(id)) PICKED.delete(id); else PICKED.add(id); renderPick(); }
+function pickAll(){ candidates().slice(0,80).forEach(function(p){ PICKED.add(p.id); }); renderPick(); }
+function parseEmails(t){ return (t.match(/[^\s,;]+@[^\s,;]+/g)||[]); }
+function bulkCount(){
+  var n=parseEmails($('bulk').value).length;
+  $('bulkNote').textContent = n ? n+' email '+(n===1?'address':'addresses')+' found. Anyone not on your list is added and invited automatically.'
+    : 'Anyone not already on your list is added and invited automatically.';
+  $('addBtn').textContent = n ? 'Add '+n+' people' : 'Add pasted emails';
+}
+function doAddMembers(){
+  var g=GROUPS[CUR], onBulk=$('pane1').classList.contains('on'), added=0;
+  if(onBulk){
+    parseEmails($('bulk').value).forEach(function(e){
+      var nm=e.split('@')[0].replace(/[._]/g,' ').split(' ');
+      var np={id:100000+PEOPLE.length+added,first:(nm[0]||'New'),last:(nm[1]||''),gender:'M',age:0,avg:null,visit:0,miles:0,league:false,status:'invited'};
+      PEOPLE.push(np); g.subs.push(np); added++;
+    });
+  } else {
+    PICKED.forEach(function(id){ var p=byId(id); if(p){ g.subs.push(p); added++; } });
+  }
+  if(!added){ toast('Nothing selected yet.'); return; }
+  closeAll(); openGroup(CUR); renderGroupIndex(); refreshTiles();
+  toast(added+' added to '+g.name+(onBulk?'. Invites sent to the ones not yet on BowlersNetwork.':'.'));
+}
+
+function addTeam(){
+  var g=GROUPS[CUR], roster=[];
+  g.teams.forEach(function(t){ roster=roster.concat(t.members); });
+  roster=roster.concat(g.subs);
+  if(!roster.length){ toast('Add people to the group first, then split them into teams.'); return; }
+  PICKED=new Set();
+  sheet('New team in '+g.name,'Teams are built from people already in the group.',
+    '<div class="fld"><label class="f">Team name</label><input type="text" id="ntName" placeholder="e.g. Pin Pals"></div>'+
+    '<label class="f">Who is on it</label>'+
+    '<p class="note-line" style="margin:0 0 8px">First person you pick becomes the captain. You can change it later.</p>'+
+    '<div class="list">'+roster.slice(0,60).map(function(p){
+      return '<div class="pickrow" id="tp'+p.id+'" onclick="toggleTeamPick('+p.id+')">'+
+      '<div class="box">'+ico('check')+'</div><div class="av on">'+INIT(p)+'</div><span>'+NAME(p)+'</span></div>';
+    }).join('')+'</div>',
+    '<button class="btn ghost" onclick="closeAll()">Cancel</button><button class="btn solid" onclick="doAddTeam()">Create team</button>');
+}
+function toggleTeamPick(id){
+  if(PICKED.has(id)) PICKED.delete(id); else PICKED.add(id);
+  var el=$('tp'+id); if(el) el.classList.toggle('sel',PICKED.has(id));
+}
+function doAddTeam(){
+  var g=GROUPS[CUR], name=$('ntName').value.trim();
+  if(!name){ toast('Give the team a name.'); $('ntName').focus(); return; }
+  if(!PICKED.size){ toast('Pick at least one bowler.'); return; }
+  var members=[]; PICKED.forEach(function(id){ var p=byId(id); if(p) members.push(p); });
+  g.teams.push({name:name,members:members});
+  var ids=new Set(members.map(function(p){return p.id;}));
+  g.subs=g.subs.filter(function(p){ return !ids.has(p.id); });
+  closeAll(); openGroup(CUR); renderGroupIndex();
+  toast('"'+name+'" created with '+members.length+' bowlers. '+NAME(members[0])+' is captain.');
+}
+
 const ACH=p=>{
   const a=[];
   if(p.avg>=200) a.push(['🎯','Bowled '+(p.avg+48)+' - personal best','4 days ago']);
@@ -889,7 +1280,7 @@ function openContact(id){
       <div class="kv"><span>Average</span><b class="num">${p.avg}</b></div>
       <div class="kv"><span>Age</span><b class="num">${p.age}</b></div>
       <div class="kv"><span>Date of birth</span><b class="num">${String(1+(p.id%28)).padStart(2,'0')}/${String(1+(p.id%12)).padStart(2,'0')}/${2026-p.age}</b></div>
-      <div class="kv"><span>Last visit</span><b>${p.visit} days ago</b></div>
+      <div class="kv"><span>Last active</span><b>${p.visit} days ago</b></div>
       <div class="kv"><span>Home center</span><b style="color:var(--accent)">Richmond Lanes</b></div>
       <p style="font-size:11px;color:var(--ink-3);margin:10px 0 0;line-height:1.5">This is ${p.first}'s own profile - not a copy. When they update it, you see it.</p>
     </div>
@@ -932,12 +1323,13 @@ function sendMsg(){
   closeAll(); toast(`Sent to ${who} ${how}.`);
 }
 function closeAll(){
-  $('drawer').classList.remove('on'); $('modal').classList.remove('on'); $('scrim').classList.remove('on');
+  $('drawer').classList.remove('on'); $('modal').classList.remove('on');
+  $('gmodal').classList.remove('on'); $('scrim').classList.remove('on');
 }
 document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeAll(); });
 
 // -- init -------------------------------------------------------------
 // Static markup was already de-placeholdered by the text-node walk at the top
 // of this script; everything below is built from real template literals.
-refreshTiles(); renderPeople(); recount(); reachCount(); renderTree();
+refreshTiles(); renderPeople(); recount(); reachCount(); renderGroupIndex();
 </script>
