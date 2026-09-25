@@ -99,6 +99,20 @@
   /* -- pieces -- */
   .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(178px,1fr));gap:12px;margin-bottom:22px}
   .tile{border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:16px}
+.row-open{cursor:pointer;transition:background .12s}
+.row-open:hover{background:var(--hover)}
+.dtabs{display:flex;gap:2px;padding:0 18px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--surface);z-index:2}
+.dtab{appearance:none;border:0;background:none;font:inherit;font-size:12.5px;font-weight:600;color:var(--ink-2);padding:11px 12px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.dtab:hover{color:var(--ink)}
+.dtab.on{color:var(--accent);border-bottom-color:var(--accent)}
+.dpane{display:none}
+.dpane.on{display:block}
+.dactions{position:sticky;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding:12px 18px;display:flex;gap:8px;flex-wrap:wrap}
+.dactions .btn{flex:1;min-width:104px;justify-content:center}
+.tl{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--line)}
+.tl:last-child{border-bottom:0}
+.tl-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);margin-top:5px;flex:none}
+.tl-dot.dim{background:var(--line-strong)}
 .chart-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:14px;margin-bottom:14px}
 .chart-card{border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:18px;min-width:0}
 .chart-card h4{margin:0;font-size:14px;font-weight:650;letter-spacing:-.01em}
@@ -1861,7 +1875,7 @@ function renderPeople(){
   $('peopleCount').textContent=rows.length.toLocaleString()+' shown';
   const body=$('peopleBody');
   if(!rows.length){ body.innerHTML='<tr><td colspan="6"><div class="empty"><b>Nobody matches</b><span>Try clearing the search or filter.</span></div></td></tr>'; return; }
-  body.innerHTML=rows.slice(0,60).map(p=>`<tr>
+  body.innerHTML=rows.slice(0,60).map(p=>`<tr class="row-open" onclick="openContact(${p.id})" title="Open ${NAME(p)}">
     <td><div class="who"><div class="av ${p.status==='joined'?'on':''}">${INIT(p)}</div><div><div>${NAME(p)}</div><div style="font-size:11px;color:var(--ink-3)">${p.first.toLowerCase()}.${p.last.toLowerCase()}@email.com</div></div></div></td>
     <td><span class="tag ${p.status}"><i></i>${p.status==='imported'?'Not joined':p.status[0].toUpperCase()+p.status.slice(1)}</span></td>
     <td class="num">${p.avg??'<span style="color:var(--ink-3)">-</span>'}</td>
@@ -2662,42 +2676,124 @@ function openContact(id){
   const p=byId(id); if(!p) return;
   const joined=p.status==='joined';
   const bs=[BRANDS[p.id%7],BRANDS[(p.id+3)%7]];
+  const email=`${p.first.toLowerCase()}.${p.last.toLowerCase()}@email.com`;
+  const phone=`(555) ${String(200+(p.id%700)).padStart(3,'0')}-${String(1000+(p.id*37)%9000)}`;
+
+  /* Sent history. A center wants to know what they have already said to
+     someone before saying anything else. */
+  const sent=[
+    ['Saturday league sign-ups','Email',`${2+(p.id%5)} days ago`,'Opened'],
+    ['Your birthday game is waiting','In-app',`${11+(p.id%9)} days ago`, joined?'Opened':'Not delivered'],
+    ['We have missed you','Email',`${26+(p.id%12)} days ago`,'Not opened']
+  ].slice(0, joined?3:2);
+
+  const visits=[
+    ['Open bowl','Lane 12',`${p.visit} days ago`],
+    ['League night','Tuesday handicap',`${p.visit+7} days ago`],
+    ['Birthday party','Six lanes booked',`${p.visit+34} days ago`]
+  ];
+
   $('drawerBody').innerHTML=`
     <div class="dh">
       <div class="av ${joined?'on':''}">${INIT(p)}</div>
       <h3>${NAME(p)}</h3>
-      <div class="em">${p.first.toLowerCase()}.${p.last.toLowerCase()}@email.com</div>
+      <div class="em">${email}</div>
       <div style="margin-top:11px;display:flex;gap:7px;flex-wrap:wrap">
         <span class="tag ${p.status}"><i></i>${p.status==='imported'?'Not joined':p.status[0].toUpperCase()+p.status.slice(1)}</span>
-        <button class="mini" onclick="compose('person','${NAME(p)}',1)">${ico('send')}Message</button>
+        ${p.league?'<span class="tag joined"><i></i>League bowler</span>':''}
       </div>
     </div>
-    ${joined?`
-    <div class="dsec">
-      <div class="k">From their profile <span class="live"><i></i>Live</span></div>
-      <div class="kv"><span>Average</span><b class="num">${p.avg}</b></div>
-      <div class="kv"><span>Age</span><b class="num">${p.age}</b></div>
-      <div class="kv"><span>Date of birth</span><b class="num">${String(1+(p.id%28)).padStart(2,'0')}/${String(1+(p.id%12)).padStart(2,'0')}/${2026-p.age}</b></div>
-      <div class="kv"><span>Last active</span><b>${p.visit} days ago</b></div>
-      <div class="kv"><span>Home center</span><b style="color:var(--accent)">Richmond Lanes</b></div>
-      <p style="font-size:11px;color:var(--ink-3);margin:10px 0 0;line-height:1.5">This is ${p.first}'s own profile - not a copy. When they update it, you see it.</p>
+
+    <div class="dtabs">
+      <button class="dtab on" data-dt="prof" onclick="dtab(this,'prof')">Profile</button>
+      <button class="dtab" data-dt="act" onclick="dtab(this,'act')">Activity</button>
+      <button class="dtab" data-dt="msg" onclick="dtab(this,'msg')">Messages</button>
+      <button class="dtab" data-dt="note" onclick="dtab(this,'note')">Notes</button>
     </div>
-    <div class="dsec">
-      <div class="k">Favourite brands</div>
-      <div class="brands">${bs.map(b=>`<span class="brand">${b}</span>`).join('')}</div>
+
+    <div class="dpane on" id="dp-prof">
+      ${joined?`
+      <div class="dsec">
+        <div class="k">From their profile <span class="live"><i></i>Live</span></div>
+        <div class="kv"><span>Average</span><b class="num">${p.avg}</b></div>
+        <div class="kv"><span>Age</span><b class="num">${p.age}</b></div>
+        <div class="kv"><span>Date of birth</span><b class="num">${String(1+(p.id%28)).padStart(2,'0')}/${String(1+(p.id%12)).padStart(2,'0')}/${2026-p.age}</b></div>
+        <div class="kv"><span>Home center</span><b style="color:var(--accent)">Richmond Lanes</b></div>
+        <div class="kv"><span>Phone</span><b>${phone}</b></div>
+        <p style="font-size:11px;color:var(--ink-3);margin:10px 0 0;line-height:1.5">This is ${p.first}'s own profile, not a copy. When they update it, you see it.</p>
+      </div>
+      <div class="dsec">
+        <div class="k">Favourite brands</div>
+        <div class="brands">${bs.map(b=>`<span class="brand">${b}</span>`).join('')}</div>
+      </div>`:`
+      <div class="dsec">
+        <div class="k">Not on BowlersNetwork yet</div>
+        <div class="kv"><span>Email</span><b>${email}</b></div>
+        <div class="kv"><span>Phone</span><b>${phone}</b></div>
+        <div class="kv"><span>Added</span><b>From your import</b></div>
+        <p style="font-size:13px;color:var(--ink-2);margin:12px 0 0;line-height:1.55">You have their email, so you can still reach them. Once they join, their average, age, favourite brands and accomplishments appear here on their own, and they become targetable by filter.</p>
+      </div>`}
     </div>
-    <div class="dsec">
-      <div class="k">Recent accomplishments</div>
-      ${ACH(p).map(a=>`<div class="ach"><div class="b">${a[0]}</div><div><b>${a[1]}</b><span>${a[2]}</span></div>
-        <button class="mini" onclick="reward('${p.first}','${a[1]}')">${ico('gift')}Reward</button></div>`).join('')}
-      <p style="font-size:11px;color:var(--ink-3);margin:12px 0 0;line-height:1.5">Send a free game, a coupon from a local business, or just a note. One click, straight to them.</p>
-    </div>`:`
-    <div class="dsec">
-      <div class="k">Not on BowlersNetwork yet</div>
-      <p style="font-size:13px;color:var(--ink-2);margin:0 0 12px;line-height:1.55">You have their email, so you can still reach them. Once they join, their average, age, favourite brands and accomplishments appear here automatically - and they become targetable by filter.</p>
-      <button class="btn solid" style="width:100%" onclick="closeAll();toast('Invite sent to ${p.first}. They join with Richmond Lanes as their home center.')">Send invite</button>
-    </div>`}`;
+
+    <div class="dpane" id="dp-act">
+      ${joined?`
+      <div class="dsec">
+        <div class="k">Recent accomplishments</div>
+        ${ACH(p).map(a=>`<div class="ach"><div class="b">${a[0]}</div><div><b>${a[1]}</b><span>${a[2]}</span></div>
+          <button class="mini" onclick="reward('${p.first}','${a[1]}')">${ico('gift')}Reward</button></div>`).join('')}
+      </div>`:''}
+      <div class="dsec">
+        <div class="k">Visits to your center</div>
+        ${visits.map(v=>`<div class="tl"><div class="tl-dot"></div>
+          <div style="flex:1;min-width:0"><b style="font-size:13px">${v[0]}</b>
+          <div class="note">${v[1]} · ${v[2]}</div></div></div>`).join('')}
+        <p style="font-size:11px;color:var(--ink-3);margin:11px 0 0;line-height:1.5">Visits come from event check-ins. Anyone who bowls without booking will not appear here.</p>
+      </div>
+    </div>
+
+    <div class="dpane" id="dp-msg">
+      <div class="dsec">
+        <div class="k">What you have sent</div>
+        ${sent.map(m=>`<div class="tl"><div class="tl-dot ${m[3]==='Opened'?'':'dim'}"></div>
+          <div style="flex:1;min-width:0"><b style="font-size:13px">${m[0]}</b>
+          <div class="note">${m[1]} · ${m[2]} · ${m[3]}</div></div></div>`).join('')}
+        ${joined?'':'<p style="font-size:11px;color:var(--ink-3);margin:11px 0 0;line-height:1.5">In-app messages cannot reach them until they join. Email is the only channel for now.</p>'}
+      </div>
+    </div>
+
+    <div class="dpane" id="dp-note">
+      <div class="dsec">
+        <div class="k">Private notes</div>
+        <p class="note" style="margin:0 0 10px">Only your team sees these. ${p.first} never does.</p>
+        <textarea id="noteBox" rows="4" placeholder="Anything worth remembering before you next speak to them" style="width:100%;resize:vertical;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:10px;padding:11px 13px;font:inherit;font-size:13.5px"></textarea>
+        <button class="btn" style="margin-top:10px" onclick="toast('Note saved against ${p.first}.')">Save note</button>
+      </div>
+    </div>
+
+    <div class="dactions">
+      ${joined
+        ? `<button class="btn solid" onclick="closeAll();compose('person','${NAME(p)}',1)">${ico('send')}Message</button>`
+        : `<button class="btn solid" onclick="closeAll();toast('Invite sent to ${p.first}. They join with Richmond Lanes as their home center.')">Invite to join</button>`}
+      <button class="btn" onclick="closeAll();compose('person','${NAME(p)}',1)">Email</button>
+      <button class="btn" onclick="textThem('${p.first}','${phone}')">Text</button>
+    </div>`;
   $('drawer').classList.add('on'); $('scrim').classList.add('on');
+}
+
+function dtab(btn,name){
+  btn.parentElement.querySelectorAll('.dtab').forEach(b=>b.classList.toggle('on',b===btn));
+  document.querySelectorAll('.dpane').forEach(x=>x.classList.toggle('on',x.id==='dp-'+name));
+}
+
+/* Texting opens the manager's own SMS app rather than sending anything.
+   BowlersNetwork carries no carrier cost and no consent obligation, and the
+   message comes from the center's real number. Desktop has no handler for
+   sms:, so there the number is copied instead. */
+function textThem(first,phone){
+  const touch = matchMedia('(hover:none)').matches;
+  if(touch){ location.href = `sms:${phone.replace(/[^0-9+]/g,'')}`; return; }
+  navigator.clipboard?.writeText(phone);
+  toast(`${phone} copied. On a phone this opens your messages app straight to ${first}.`);
 }
 function reward(name,what){ closeAll(); toast(`Reward sent to ${name} for "${what}".`); }
 
