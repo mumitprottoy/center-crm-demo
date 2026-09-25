@@ -99,6 +99,8 @@
   /* -- pieces -- */
   .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(178px,1fr));gap:12px;margin-bottom:22px}
   .tile{border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:16px}
+.face-open{cursor:pointer;transition:transform .12s}
+.face-open:hover{transform:translateY(-1px)}
 .row-open{cursor:pointer;transition:background .12s}
 .row-open:hover{background:var(--hover)}
 .dtabs{display:flex;gap:2px;padding:0 18px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--surface);z-index:2}
@@ -1602,7 +1604,7 @@ function drawCharts(view){
     mk('cnt-tags', bar(['#leaguenight','#strike','#richmondlanes','#youth','#tournament','#proshop'],[142,118,97,73,58,36],true));
   }
   if(view==='inf'){
-    mk('inf-overlap', {type:'bar',data:{labels:['Marcus R','Dana W','Tyler B','Priya S','Jen O'],
+    mk('inf-overlap', {type:'bar',data:{labels:topVoices().map(p=>p.first+' '+p.last[0]),
       datasets:[{label:'Your bowlers',data:[412,318,264,201,158],backgroundColor:p.accent,borderRadius:6,barPercentage:.7,stack:'a'},
                 {label:'Beyond your list',data:[188,242,96,145,62],backgroundColor:p.line,borderRadius:6,barPercentage:.7,stack:'a'}]},
       options:baseOpts(p,{plugins:{legend:{display:true,position:'bottom',labels:{color:p.ink2,boxWidth:9,boxHeight:9,usePointStyle:true,pointStyle:'circle',padding:14,font:{size:11.5}}},tooltip:baseOpts(p).plugins.tooltip},
@@ -1640,17 +1642,17 @@ const FEED = [
   {who:'Richmond Lanes', av:'RL', center:true, when:'2 hours ago', tags:['Event'],
    text:'Saturday scratch league sign-ups close Friday at 6pm. Eight lanes left, and we will not be adding more this season.',
    likes:47, comments:12},
-  {who:'Marcus Reyes', av:'MR', when:'5 hours ago', tags:[],
+  {who:null, av:null, when:'5 hours ago', tags:[], bowler:0,
    text:'First 700 series of my life and it happened on lane 14 tonight. Still shaking.', likes:186, comments:34},
   {who:'Richmond Lanes', av:'RL', center:true, when:'Yesterday', tags:['Photo'],
    text:'New approach surfaces went down on lanes 1 through 8 over the weekend. Come feel the difference.',
    likes:92, comments:19},
-  {who:'Dana Whitfield', av:'DW', when:'Yesterday', tags:[],
+  {who:null, av:null, when:'Yesterday', tags:[], bowler:1,
    text:'Youth night keeps getting better. My daughter asked to come back before we were out of the car park.', likes:141, comments:28},
   {who:'Richmond Lanes', av:'RL', center:true, when:'3 days ago', tags:['Score'],
    text:'Tuesday handicap results are posted. Kowalski takes it by four pins after losing the first two games.',
    likes:63, comments:8},
-  {who:'Tyler Brennan', av:'TB', when:'4 days ago', tags:[],
+  {who:null, av:null, when:'4 days ago', tags:[], bowler:2,
    text:'Pro shop drilled my new ball in under an hour. Whoever was working the counter, thank you.', likes:78, comments:11}
 ];
 let pendingTags = [];
@@ -1672,13 +1674,21 @@ function publish(){
 }
 
 function renderFeed(){
-  $('feedList').innerHTML = FEED.map(f=>`
+  /* Posts by bowlers name a real person from the list, so their chip opens
+     the same drawer as everywhere else. */
+  const joinedFolk = PEOPLE.filter(p=>p.status==='joined');
+  $('feedList').innerHTML = FEED.map(f=>{
+    const bp = f.bowler!=null ? joinedFolk[f.bowler % joinedFolk.length] : null;
+    const who = bp ? NAME(bp) : f.who;
+    const av  = bp ? INIT(bp) : f.av;
+    const open = bp ? `onclick="openContact(${bp.id})"` : '';
+    return `
     <article class="post">
       <div class="post-head">
-        <div class="lead-av">${f.av}</div>
+        <div class="lead-av ${bp?'face-open':''}" ${open}>${av}</div>
         <div style="min-width:0;flex:1">
           <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap">
-            <b style="font-size:13.5px">${f.who}</b>
+            <b style="font-size:13.5px" class="${bp?'who2':''}" ${open}>${who}</b>
             ${f.center?'<span class="pill-tag">Your center</span>':''}
           </div>
           <div class="note">${f.when}</div>
@@ -1691,7 +1701,7 @@ function renderFeed(){
         <button class="btn" onclick="toast('Comments are read-only in the demo.')">${f.comments} comments</button>
         <button class="btn" onclick="toast('Sharing is read-only in the demo.')">Share</button>
       </div>
-    </article>`).join('');
+    </article>`;}).join('');
 }
 function react(b){
   const n = parseInt(b.textContent,10)+1;
@@ -1699,19 +1709,19 @@ function react(b){
 }
 
 /* ===== Influencers, automation, settings ========================== */
+/* Influencers are real people from the list, so their chip opens the same
+   drawer as everywhere else rather than being a dead name. */
+function topVoices(){
+  return PEOPLE.filter(p=>p.status==='joined').slice(0,5);
+}
 function renderInf(){
-  const rows = [
-    ['MR','Marcus Reyes','412 of your bowlers follow him','69%'],
-    ['DW','Dana Whitfield','318 of your bowlers','57%'],
-    ['TB','Tyler Brennan','264 of your bowlers','73%'],
-    ['PS','Priya Shah','201 of your bowlers','58%'],
-    ['JO','Jen Okafor','158 of your bowlers','72%']
-  ];
-  $('infList').innerHTML = rows.map(r=>`
-    <div class="lead-row">
-      <div class="lead-av">${r[0]}</div>
-      <div style="flex:1;min-width:0"><b style="font-size:13px">${r[1]}</b><div class="note">${r[2]}</div></div>
-      <b style="font-size:13px;color:var(--accent)">${r[3]}</b>
+  const reach=[412,318,264,201,158], pct=['69%','57%','73%','58%','72%'];
+  $('infList').innerHTML = topVoices().map((p,i)=>`
+    <div class="lead-row face-open" onclick="openContact(${p.id})" title="Open ${NAME(p)}">
+      <div class="lead-av">${INIT(p)}</div>
+      <div style="flex:1;min-width:0"><b style="font-size:13px">${NAME(p)}</b>
+      <div class="note">${reach[i]} of your bowlers follow them</div></div>
+      <b style="font-size:13px;color:var(--accent)">${pct[i]}</b>
     </div>`).join('');
 }
 
@@ -1922,7 +1932,7 @@ function recount(){
   $('audChips').innerHTML=c.length?c.map(x=>`<span class="chip">${x}</span>`).join(''):'<span class="chip">No filters - everyone who has joined</span>';
 
   if($('sumWho')) $('sumWho').textContent=n.toLocaleString()+' bowlers';
-  $('audFaces').innerHTML=m.slice(0,6).map(p=>`<div class="av on">${INIT(p)}</div>`).join('')+(n>6?`<span class="more">+${(n-6).toLocaleString()} more</span>`:'');
+  $('audFaces').innerHTML=m.slice(0,6).map(p=>`<div class="av on face-open" title="${NAME(p)}" onclick="openContact(${p.id})">${INIT(p)}</div>`).join('')+(n>6?`<span class="more">+${(n-6).toLocaleString()} more</span>`:'');
 }
 
 function preset(kind){
@@ -2228,7 +2238,7 @@ function reachCount(){
   if(S.league==='subs') c.push('Subs list');
   $('rChips').innerHTML=c.length?c.map(x=>'<span class="chip">'+x+'</span>').join(''):'<span class="chip">No filters - everyone reachable on this channel</span>';
 
-  $('reachFaces').innerHTML=m.slice(0,6).map(p=>'<div class="av on">'+INIT(p)+'</div>').join('')+
+  $('reachFaces').innerHTML=m.slice(0,6).map(p=>'<div class="av on face-open" title="'+NAME(p)+'" onclick="openContact('+p.id+')">'+INIT(p)+'</div>').join('')+
     (n>6?'<span class="more">+'+(n-6).toLocaleString()+' more</span>':'');
 
   const w=$('rWarn');
@@ -2288,7 +2298,14 @@ var POSTS=[
 POSTS.forEach(function(p,i){
   p.id=i; p.liked=false; p.open=false;
   var n=1+Math.floor(rnd()*5);
-  p.c=[]; for(var k=0;k<n;k++) p.c.push({who:CNAMES[Math.floor(rnd()*CNAMES.length)],txt:CTEXT[Math.floor(rnd()*CTEXT.length)]});
+  p.c=[];
+  var pool=(typeof PEOPLE!=='undefined')?PEOPLE.filter(function(x){return x.status==='joined';}):[];
+  for(var k=0;k<n;k++){
+    var who=pool.length?pool[Math.floor(rnd()*pool.length)]:null;
+    p.c.push({who:who?NAME(who):CNAMES[Math.floor(rnd()*CNAMES.length)],
+              pid:who?who.id:null,
+              txt:CTEXT[Math.floor(rnd()*CTEXT.length)]});
+  }
 });
 var PTYPE='text';
 function postType(b){
@@ -2329,8 +2346,12 @@ function renderPosts(){
       '</div>'+
       '<div class="thread '+(p.open?'on':'')+'">'+
         p.c.map(function(c){
-          return '<div class="cmt"><div class="av">'+c.who.split(' ').map(function(w){return w[0];}).join('').slice(0,2)+'</div>'+
-          '<div class="bub"><b>'+c.who+'</b>'+c.txt+'</div></div>';
+          var pid=(c.pid!=null)?c.pid:(byName(c.who)||{}).id;
+          var op=(pid!=null)?' onclick="openContact('+pid+')"':'';
+          return '<div class="cmt">'+
+          '<div class="av'+(pid!=null?' face-open':'')+'"'+(pid!=null?' title="'+c.who+'"'+op:'')+'>'+
+          c.who.split(' ').map(function(w){return w[0];}).join('').slice(0,2)+'</div>'+
+          '<div class="bub"><b'+(pid!=null?' class="who2"'+op:'')+'>'+c.who+'</b>'+c.txt+'</div></div>';
         }).join('')+
         '<div class="cmt-box"><input type="text" id="ci'+p.id+'" placeholder="Reply as Richmond Lanes..."><button class="btn" onclick="addComment('+p.id+')">Reply</button></div>'+
       '</div></div>';
@@ -2645,6 +2666,12 @@ var ACTS=[];
 S.act='';
 function actPick(b){ segPick(b); S.act=b.dataset.v; renderActivity(); }
 function ago(d){ return d===0?'Today':d===1?'Yesterday':d+' days ago'; }
+function byName(n){
+  if(!n) return null;
+  n=String(n).trim().toLowerCase();
+  return PEOPLE.find(function(p){ return NAME(p).toLowerCase()===n; }) || null;
+}
+
 function renderActivity(){
   var rows=ACTS.filter(function(a){
     if(S.act==='big') return a.kind.big;
