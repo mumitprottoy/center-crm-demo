@@ -104,6 +104,14 @@
 .nmphone{border:1px solid var(--line-strong);border-radius:16px;background:var(--hover);padding:14px 12px;min-height:150px}
 .nmnotif{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;box-shadow:0 2px 10px var(--shadow)}
 @media(max-width:760px){.nm-two{grid-template-columns:1fr !important}}
+[data-tip]{position:relative}
+[data-tip]:hover::after{content:attr(data-tip);position:absolute;left:50%;bottom:calc(100% + 8px);transform:translateX(-50%);
+  background:var(--elevated);color:var(--ink);border:1px solid var(--line-strong);border-radius:9px;padding:8px 11px;
+  font-size:11.5px;font-weight:450;line-height:1.45;width:max-content;max-width:250px;white-space:normal;text-align:left;
+  box-shadow:0 8px 24px var(--shadow);z-index:70;pointer-events:none}
+[data-tip]:hover::before{content:'';position:absolute;left:50%;bottom:calc(100% + 3px);transform:translateX(-50%);
+  border:5px solid transparent;border-top-color:var(--line-strong);z-index:70;pointer-events:none}
+.tiles [data-tip]{cursor:help}
 .row-open{cursor:pointer;transition:background .12s}
 .row-open:hover{background:var(--hover)}
 .dtabs{display:flex;gap:2px;padding:0 18px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--surface);z-index:2}
@@ -557,7 +565,26 @@
         <button data-t="system" onclick="setTheme('system')" title="Match system" aria-label="Match system">${ico('mon')}</button>
       </div>
       <span class="pill">Center Mode</span>
-    </header>
+    
+      <div style="position:relative;margin-left:auto">
+        <button class="mini" onclick="bellToggle(event)" aria-label="Notifications" style="position:relative">
+          ${ico('bell')}<span class="badge num" id="bellCount" style="position:absolute;top:-4px;right:-4px">0</span>
+        </button>
+        <div id="bellPanel" style="display:none;position:absolute;right:0;top:calc(100% + 8px);width:340px;max-width:86vw;background:var(--elevated);border:1px solid var(--line-strong);border-radius:14px;box-shadow:0 12px 40px var(--shadow);z-index:60;overflow:hidden">
+          <div style="display:flex;align-items:center;gap:8px;padding:13px 15px;border-bottom:1px solid var(--line)">
+            <b style="font-size:13px;flex:1">Notifications</b>
+            <button class="mini" onclick="bellAllRead()">Mark all read</button>
+          </div>
+          <div class="seg" style="padding:10px 15px 0" id="bellFilter">
+            <button class="on" data-f="all" onclick="bellSet(this,'all')">All</button>
+            <button data-f="unread" onclick="bellSet(this,'unread')">Unread</button>
+            <button data-f="league" onclick="bellSet(this,'league')">League</button>
+            <button data-f="booking" onclick="bellSet(this,'booking')">Bookings</button>
+          </div>
+          <div id="bellList" style="max-height:340px;overflow:auto;padding:8px 8px 10px"></div>
+        </div>
+      </div>
+</header>
 
     <div class="wrap">
       <!-- -- HOME -- -->
@@ -577,7 +604,7 @@
 
         <div class="tiles">
           <div class="tile"><div class="k">Customers</div><div class="v" id="tTotal">0</div><div class="m">on your list</div></div>
-          <div class="tile accent"><div class="k">On BowlersNetwork</div><div class="v" id="tJoined">0</div>
+          <div class="tile accent"><div class="k" data-tip="How many of your customers have joined. This is the number the whole CRM is trying to move.">On BowlersNetwork</div><div class="v" id="tJoined">0</div>
             <div class="bar"><i id="tBar" style="width:0%"></i></div>
             <div class="m" id="tPct">-</div></div>
           <div class="tile"><div class="k">Reachable by filter</div><div class="v" id="tReach">0</div><div class="m">have a full profile</div></div>
@@ -605,9 +632,9 @@
             </div>
           </div>
           <div class="tiles" style="margin:14px 0 0">
-            <div class="tile accent"><div class="k">Reachable</div><div class="v" id="ovReach">0</div><div class="m" id="ovReachM">within 5km</div></div>
-            <div class="tile"><div class="k">On your list</div><div class="v" id="ovMine">0</div><div class="m">of those nearby</div></div>
-            <div class="tile"><div class="k">Not yet yours</div><div class="v" id="ovGap">0</div><div class="m">nearby, not on your list</div></div>
+            <div class="tile accent"><div class="k" data-tip="Everyone on BowlersNetwork inside the radius, whether or not they are on your list.">Reachable</div><div class="v" id="ovReach">0</div><div class="m" id="ovReachM">within 5km</div></div>
+            <div class="tile"><div class="k" data-tip="People from your own customer list who live inside the radius.">On your list</div><div class="v" id="ovMine">0</div><div class="m">of those nearby</div></div>
+            <div class="tile"><div class="k" data-tip="Nearby bowlers you have never had contact details for. Your growth headroom.">Not yet yours</div><div class="v" id="ovGap">0</div><div class="m">nearby, not on your list</div></div>
           </div>
         </div>
 
@@ -846,7 +873,7 @@
           <div class="tiles">
             <div class="tile accent"><div class="k">Bowlers reached</div><div class="v num" id="cReach">0</div><div class="m">last 30 days</div></div>
             <div class="tile"><div class="k">Messages sent</div><div class="v num" id="cSent">0</div><div class="m" id="cSends">-</div></div>
-            <div class="tile"><div class="k">Opened</div><div class="v num" id="cOpen">0%</div><div class="m">email and notification</div></div>
+            <div class="tile"><div class="k" data-tip="Share of delivered notifications that were opened.">Opened</div><div class="v num" id="cOpen">0%</div><div class="m">email and notification</div></div>
             <div class="tile"><div class="k">Post engagement</div><div class="v num" id="cEng">0</div><div class="m">reactions and comments</div></div>
           </div>
 
@@ -990,7 +1017,58 @@
         </div>
       
         </div>
-      </section>
+      
+        
+        <div class="card" style="padding:0;overflow:hidden;margin-top:14px">
+          <button onclick="sttToggle('cw')" style="width:100%;display:flex;align-items:center;gap:10px;padding:15px 18px;background:none;border:0;font:inherit;cursor:pointer;color:var(--ink)">
+            <b style="font-size:13px;flex:1;text-align:left">Build a campaign step by step</b>
+            <span class="note">For anything bigger than a one-off message</span>
+            <span id="cw-chev" style="transition:transform .18s;color:var(--ink-3)">&rsaquo;</span>
+          </button>
+          <div id="cw-wrap" style="display:none;border-top:1px solid var(--line)">
+            <div id="cwStepper" style="display:flex;border-bottom:1px solid var(--line)"></div>
+            <div class="cwstep" id="cw-step-1" style="padding:20px">
+              <b style="font-size:14px">What is it for?</b>
+              <p class="note" style="margin:3px 0 14px">This decides what we measure afterwards.</p>
+              <div class="chart-grid" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:0" id="cwObjectives"></div>
+            </div>
+            <div class="cwstep" id="cw-step-2" style="padding:20px;display:none">
+              <b style="font-size:14px">Who gets it?</b>
+              <p class="note" style="margin:3px 0 14px">Pick the tags that describe them.</p>
+              <div style="display:flex;gap:7px;flex-wrap:wrap" id="cwTags"></div>
+              <div class="card acc" style="margin:16px 0 0"><div class="k">Reaches</div><div class="v" id="cwReach">0</div><div class="m">bowlers on your list</div></div>
+            </div>
+            <div class="cwstep" id="cw-step-3" style="padding:20px;display:none">
+              <b style="font-size:14px">What does it look like?</b>
+              <p class="note" style="margin:3px 0 14px">The format changes where it can appear.</p>
+              <div class="seg" id="cwFormat">
+                <button class="on" data-f="Post" onclick="cwFormat(this,'Post')">Post</button>
+                <button data-f="Email" onclick="cwFormat(this,'Email')">Email</button>
+                <button data-f="Notification" onclick="cwFormat(this,'Notification')">Notification</button>
+                <button data-f="Event" onclick="cwFormat(this,'Event')">Event</button>
+              </div>
+              <div class="fld" style="margin-top:16px"><label class="f">Message</label>
+                <textarea id="cwBody" rows="3" placeholder="What do you want to say?"></textarea></div>
+            </div>
+            <div class="cwstep" id="cw-step-4" style="padding:20px;display:none">
+              <b style="font-size:14px">Ready to go</b>
+              <p class="note" style="margin:3px 0 14px">Check it, then launch.</p>
+              <div id="cwReview"></div>
+              <button class="btn solid" style="margin-top:16px" onclick="cwLaunch()">Launch campaign</button>
+            </div>
+            <div id="cwNav" style="display:flex;gap:8px;padding:14px 20px;border-top:1px solid var(--line)">
+              <button class="btn" id="cwBack" onclick="cwPrev()" style="visibility:hidden">Back</button>
+              <button class="btn solid" id="cwNext" style="margin-left:auto" onclick="cwNext()">Next</button>
+            </div>
+          </div>
+        </div>
+<div class="chart-grid" style="margin-top:14px">
+          <div class="chart-card"><h4>Best time to send</h4><p class="sub">Opens by hour</p><div class="chart-wrap"><canvas id="cp-hourly"></canvas></div></div>
+          <div class="chart-card"><h4>Opens and clicks</h4><p class="sub">Last six weeks</p><div class="chart-wrap"><canvas id="cp-trend"></canvas></div></div>
+          <div class="chart-card"><h4>Who opened</h4><p class="sub">By group</p><div class="chart-wrap"><canvas id="cp-aud"></canvas></div></div>
+          <div class="chart-card"><h4>On what</h4><p class="sub">Device they read it on</p><div class="chart-wrap"><canvas id="cp-device"></canvas></div></div>
+        </div>
+</section>
 
       <!-- -- NEWSFEED -- -->
       <section class="screen" id="s-feed">
@@ -1021,10 +1099,10 @@
         <h2 class="title">Audience</h2>
         <p class="sub">Who your bowlers are. Aggregate only, and withheld wherever a group is too small to stay anonymous.</p>
         <div class="tiles">
-          <div class="tile"><div class="k">Reachable nearby</div><div class="v">12,234</div><div class="m">On BowlersNetwork within 5km</div></div>
-          <div class="tile"><div class="k">Your customers</div><div class="v">1,180</div><div class="m">On your list</div></div>
-          <div class="tile accent"><div class="k">On BowlersNetwork</div><div class="v">412</div><div class="m">35% of your list</div></div>
-          <div class="tile"><div class="k">Median age</div><div class="v">34</div><div class="m">Across linked bowlers</div></div>
+          <div class="tile"><div class="k" data-tip="Bowlers on BowlersNetwork within 5km of the center.">Reachable nearby</div><div class="v">12,234</div><div class="m">On BowlersNetwork within 5km</div></div>
+          <div class="tile"><div class="k" data-tip="Everyone on your imported and manually added list.">Your customers</div><div class="v">1,180</div><div class="m">On your list</div></div>
+          <div class="tile accent"><div class="k" data-tip="How many of your customers have joined. This is the number the whole CRM is trying to move.">On BowlersNetwork</div><div class="v">412</div><div class="m">35% of your list</div></div>
+          <div class="tile"><div class="k" data-tip="Middle age across your linked bowlers, so one very old or young bowler does not skew it.">Median age</div><div class="v">34</div><div class="m">Across linked bowlers</div></div>
         </div>
         <div class="card" style="padding:0;overflow:hidden">
           <button class="fbar" onclick="audToggleFilters()" style="width:100%;display:flex;align-items:center;gap:10px;padding:14px 18px;background:none;border:0;font:inherit;cursor:pointer;color:var(--ink)">
@@ -1082,10 +1160,10 @@
         <h2 class="title">Behaviour</h2>
         <p class="sub">What your bowlers do, and when they do it.</p>
         <div class="tiles">
-          <div class="tile"><div class="k">Daily active</div><div class="v">478</div><div class="m">Up 12.7% on yesterday</div></div>
-          <div class="tile"><div class="k">Weekly active</div><div class="v">2,350</div><div class="m">Up 3.1% on last week</div></div>
-          <div class="tile"><div class="k">Monthly active</div><div class="v">8,450</div><div class="m">Up 5.4% on last month</div></div>
-          <div class="tile"><div class="k">Average session</div><div class="v">1h 45m</div><div class="m">Up 6.3% on last month</div></div>
+          <div class="tile"><div class="k" data-tip="Distinct bowlers who opened the app yesterday.">Daily active</div><div class="v">478</div><div class="m">Up 12.7% on yesterday</div></div>
+          <div class="tile"><div class="k" data-tip="Distinct bowlers in the last seven days.">Weekly active</div><div class="v">2,350</div><div class="m">Up 3.1% on last week</div></div>
+          <div class="tile"><div class="k" data-tip="Distinct bowlers in the last thirty days.">Monthly active</div><div class="v">8,450</div><div class="m">Up 5.4% on last month</div></div>
+          <div class="tile"><div class="k" data-tip="How long a bowler stays in the app once they open it.">Average session</div><div class="v">1h 45m</div><div class="m">Up 6.3% on last month</div></div>
         </div>
         <div class="chart-grid">
           <div class="chart-card wide"><h4>Daily active bowlers</h4><p class="sub">Last 30 days</p><div class="chart-wrap"><canvas id="beh-dau"></canvas></div></div>
@@ -1093,6 +1171,8 @@
           <div class="chart-card"><h4>Devices</h4><p class="sub">How they reach you</p><div class="chart-wrap"><canvas id="beh-device"></canvas></div></div>
           <div class="chart-card tall"><h4>What they use</h4><p class="sub">Share of sessions touching each feature</p><div class="chart-wrap tall"><canvas id="beh-feature"></canvas></div></div>
           <div class="chart-card tall wide"><h4>Retention</h4><p class="sub">Still active weeks after joining</p><div class="chart-wrap tall"><canvas id="beh-retention"></canvas></div></div>
+          <div class="chart-card"><h4>Time spent</h4><p class="sub">Minutes a week per area</p><div class="chart-wrap"><canvas id="beh-time"></canvas></div></div>
+          <div class="chart-card tall wide"><h4>Event interactions</h4><p class="sub">Viewed, RSVPed, came</p><div class="chart-wrap tall"><canvas id="beh-events"></canvas></div></div>
         </div>
         <div class="chart-card wide" style="margin-bottom:14px">
           <h4>Busiest times</h4><p class="sub">Day of week against hour. Darker is busier.</p>
@@ -1105,16 +1185,17 @@
         <h2 class="title">Content</h2>
         <p class="sub">What lands with your bowlers, and what does not.</p>
         <div class="tiles">
-          <div class="tile"><div class="k">Posts this month</div><div class="v">34</div><div class="m">From your center</div></div>
-          <div class="tile accent"><div class="k">Best performer</div><div class="v">2,104</div><div class="m">Saturday league recap</div></div>
-          <div class="tile"><div class="k">Average engagement</div><div class="v">7.4%</div><div class="m">Reactions and comments</div></div>
-          <div class="tile"><div class="k">Watch time</div><div class="v">41m</div><div class="m">Per bowler this month</div></div>
+          <div class="tile"><div class="k" data-tip="Posts published by your center, not by your bowlers.">Posts this month</div><div class="v">34</div><div class="m">From your center</div></div>
+          <div class="tile accent"><div class="k" data-tip="Most seen post this month, counting unique bowlers.">Best performer</div><div class="v">2,104</div><div class="m">Saturday league recap</div></div>
+          <div class="tile"><div class="k" data-tip="Reactions and comments divided by how many people saw it.">Average engagement</div><div class="v">7.4%</div><div class="m">Reactions and comments</div></div>
+          <div class="tile"><div class="k" data-tip="Minutes of video watched per bowler this month.">Watch time</div><div class="v">41m</div><div class="m">Per bowler this month</div></div>
         </div>
         <div class="chart-grid">
           <div class="chart-card"><h4>Content type</h4><p class="sub">Engagement by format</p><div class="chart-wrap"><canvas id="cnt-type"></canvas></div></div>
           <div class="chart-card"><h4>Watch time</h4><p class="sub">Minutes per week</p><div class="chart-wrap"><canvas id="cnt-watch"></canvas></div></div>
           <div class="chart-card tall"><h4>What they search</h4><p class="sub">Top terms from your bowlers</p><div class="chart-wrap tall"><canvas id="cnt-search"></canvas></div></div>
           <div class="chart-card tall wide"><h4>Topics</h4><p class="sub">Most used tags</p><div class="chart-wrap tall"><canvas id="cnt-tags"></canvas></div></div>
+          <div class="chart-card"><h4>Do they come back?</h4><p class="sub">Return rate after seeing a post</p><div class="chart-wrap"><canvas id="cnt-ret"></canvas></div></div>
         </div>
         <div class="card">
           <b style="font-size:13px">Top performing posts</b>
@@ -1130,6 +1211,8 @@
           <div class="chart-card tall"><h4>Audience overlap</h4><p class="sub">How much of their reach is already yours</p><div class="chart-wrap tall"><canvas id="inf-overlap"></canvas></div></div>
           <div class="chart-card">
             <h4>Top voices</h4><p class="sub">By reach among your bowlers</p>
+            <input type="text" id="infSearch" oninput="renderInf()" placeholder="Search by name"
+              style="width:100%;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:10px;padding:9px 12px;font:inherit;font-size:13px;margin-bottom:10px">
             <div id="infList" style="margin-top:4px"></div>
           </div>
         </div>
@@ -1172,7 +1255,7 @@
                 <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:7px" id="nmTagList"></div>
               </div>
               <div class="card acc" style="margin:16px 0 0;display:flex;align-items:center;gap:14px">
-                <div><div class="k">Reaches</div><div class="v" id="nmReach">0</div></div>
+                <div><div class="k" data-tip="How many bowlers this will actually land on, after exclusions.">Reaches</div><div class="v" id="nmReach">0</div></div>
                 <div style="flex:1"><div class="note" id="nmReachSeg">Everyone</div>
                 <div class="note">Around <span id="nmExcl">0</span> excluded for muting your center or opting out</div></div>
               </div>
@@ -1271,10 +1354,10 @@
         <!-- ANALYTICS -->
         <div id="nm-analytics" style="display:none">
           <div class="tiles">
-            <div class="tile"><div class="k">Sent this month</div><div class="v" id="nmStatSent">0</div><div class="m">In-app, to linked bowlers</div></div>
-            <div class="tile accent"><div class="k">Opened</div><div class="v">68%</div><div class="m">Against 21% on email</div></div>
-            <div class="tile"><div class="k">Muted your center</div><div class="v">7</div><div class="m">Of 412 linked</div></div>
-            <div class="tile"><div class="k">Weekly cap left</div><div class="v">1</div><div class="m">Per bowler</div></div>
+            <div class="tile"><div class="k" data-tip="In-app notifications from your center. Email is counted separately.">Sent this month</div><div class="v" id="nmStatSent">0</div><div class="m">In-app, to linked bowlers</div></div>
+            <div class="tile accent"><div class="k" data-tip="Share of delivered notifications that were opened.">Opened</div><div class="v">68%</div><div class="m">Against 21% on email</div></div>
+            <div class="tile"><div class="k" data-tip="Bowlers who still follow you but turned your notifications off.">Muted your center</div><div class="v">7</div><div class="m">Of 412 linked</div></div>
+            <div class="tile"><div class="k" data-tip="How many more messages a bowler can get from you this week before the cap stops you.">Weekly cap left</div><div class="v">1</div><div class="m">Per bowler</div></div>
           </div>
           <div class="chart-grid">
             <div class="chart-card"><h4>Sent over time</h4><p class="sub">Notifications per week</p><div class="chart-wrap"><canvas id="notif-time"></canvas></div></div>
@@ -1287,13 +1370,22 @@
       <section class="screen" id="s-settings">
         <h2 class="title">Settings</h2>
         <p class="sub">Your center, your team, and what BowlersNetwork may do on your behalf.</p>
-        <div class="card"><b style="font-size:13px">Center</b><div id="setCenter" style="margin-top:8px"></div></div>
-        <div class="card">
-          <b style="font-size:13px">Your team</b>
+        <div class="card" style="padding:0;overflow:hidden">
+          <button onclick="sttToggle('setCenter')" style="width:100%;display:flex;align-items:center;gap:10px;padding:15px 18px;background:none;border:0;font:inherit;cursor:pointer;color:var(--ink)">
+            <b style="font-size:13px;flex:1;text-align:left">Center</b><span id="setCenter-chev" style="transition:transform .18s;color:var(--ink-3)">&rsaquo;</span>
+          </button>
+          <div id="setCenter-wrap" style="display:none;padding:0 18px 16px;border-top:1px solid var(--line)"><div id="setCenter" style="margin-top:8px"></div></div>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden">
+          <button onclick="sttToggle('teamList')" style="width:100%;display:flex;align-items:center;gap:10px;padding:15px 18px;background:none;border:0;font:inherit;cursor:pointer;color:var(--ink)">
+            <b style="font-size:13px;flex:1;text-align:left">Your team</b><span id="teamList-chev" style="transition:transform .18s;color:var(--ink-3)">&rsaquo;</span>
+          </button>
+          <div id="teamList-wrap" style="display:none;padding:0 18px 16px;border-top:1px solid var(--line)">
+          <b style="font-size:13px;display:none">Your team</b>
           <p class="note" style="margin:4px 0 12px">Anyone here can hold a role you define. You decide what each role may do, and you can change it whenever you like.</p>
           <div id="teamList"></div>
           <button class="btn" style="margin-top:12px" onclick="toast('In the real thing this invites a colleague by email.')">Invite a colleague</button>
-        </div>
+        </div></div>
         <div class="card">
           <b style="font-size:13px">BowlersNetwork staff access</b>
           <p class="note" style="margin-top:4px">Staff can act inside your center to help you. Everything they do is written into your Activity feed, attributed to them by name, and visible to you. Nothing happens here that you cannot see.</p>
@@ -1771,6 +1863,117 @@ function ringOpts(p){
 
 let OV_KM = 5;
 
+/* ===== Campaign builder ==========================================
+   The staged version, for work bigger than a one-off message. The
+   one-click compose modal stays exactly as it was. */
+const CW={step:1,max:4,highest:1,objective:'',tags:new Set(),format:'Post'};
+const CW_OBJ=[['Fill lanes','Get more bodies in on a quiet night'],
+              ['Grow a league','Sign-ups for a league starting soon'],
+              ['Win people back','Bowlers who have drifted away'],
+              ['Sell something','Pro shop, food, parties']];
+function cwInit(){
+  if($('cwObjectives').dataset.built) return;
+  $('cwObjectives').dataset.built='1';
+  $('cwObjectives').innerHTML = CW_OBJ.map(([t,sub])=>
+    `<button class="tile" data-o="${t}" onclick="cwObj('${t}')" style="text-align:left;cursor:pointer;font:inherit;color:var(--ink)">
+      <div class="k">${t}</div><div class="m" style="margin-top:3px">${sub}</div></button>`).join('');
+  $('cwTags').innerHTML = TAG_POOL.map(t=>
+    `<button class="btn" onclick="cwTag(this,'${t}')">${t.replace(/-/g,' ')}</button>`).join('');
+  cwStepper(); cwShow(1);
+}
+function cwObj(t){
+  CW.objective=t;
+  document.querySelectorAll('#cwObjectives [data-o]').forEach(b=>b.classList.toggle('accent',b.dataset.o===t));
+}
+function cwTag(btn,t){
+  if(CW.tags.has(t)) CW.tags.delete(t); else CW.tags.add(t);
+  btn.classList.toggle('solid');
+  const n=PEOPLE.filter(p=>p.status==='joined'&&p.tags.some(x=>CW.tags.has(x))).length;
+  $('cwReach').textContent=(CW.tags.size?n:PEOPLE.filter(p=>p.status==='joined').length).toLocaleString();
+}
+function cwFormat(btn,f){ CW.format=f; segPick(btn); }
+function cwShow(n){
+  CW.step=n;
+  for(let i=1;i<=CW.max;i++){ const el=$('cw-step-'+i); if(el) el.style.display=(i===n)?'block':'none'; }
+  $('cwBack').style.visibility = n===1?'hidden':'visible';
+  $('cwNav').style.display = n===CW.max?'none':'flex';
+  $('cwNext').textContent = n===CW.max-1?'Review and launch':'Next';
+  cwStepper();
+  if(n===CW.max) cwReview();
+}
+function cwNext(){
+  if(CW.step===1 && !CW.objective){ toast('Pick what the campaign is for.'); return; }
+  if(CW.step===3 && !$('cwBody').value.trim()){ toast('Write the message first.'); return; }
+  if(CW.step<CW.max){ CW.highest=Math.max(CW.highest,CW.step+1); cwShow(CW.step+1); }
+}
+function cwPrev(){ if(CW.step>1) cwShow(CW.step-1); }
+function cwGo(n){ if(n<=CW.highest) cwShow(n); }
+function cwStepper(){
+  const names=['Goal','Who','What','Launch'];
+  $('cwStepper').innerHTML = names.map((nm,i)=>{
+    const k=i+1,on=k===CW.step,done=k<CW.highest;
+    return `<button onclick="cwGo(${k})" style="flex:1;border:0;background:none;font:inherit;cursor:${k<=CW.highest?'pointer':'default'};
+      padding:13px 8px;font-size:12.5px;font-weight:600;color:${on?'var(--accent)':done?'var(--ink-2)':'var(--ink-3)'};
+      border-bottom:2px solid ${on?'var(--accent)':'transparent'}">${k}. ${nm}</button>`;
+  }).join('');
+}
+function cwReview(){
+  const rows=[['For',CW.objective||'(not chosen)'],
+    ['Who',CW.tags.size?[...CW.tags].join(', '):'Everyone on your list'],
+    ['Reaches',$('cwReach').textContent+' bowlers'],
+    ['Format',CW.format],
+    ['Message',$('cwBody').value||'(empty)']];
+  $('cwReview').innerHTML = rows.map(r=>
+    `<div class="lead-row"><span style="flex:1;font-size:13px;color:var(--ink-2)">${r[0]}</span><b style="font-size:13px;text-align:right;max-width:60%">${r[1]}</b></div>`).join('');
+}
+function cwLaunch(){
+  toast(`"${CW.objective}" is live, going to ${$('cwReach').textContent} bowlers.`);
+  CW.step=1; CW.highest=1; CW.objective=''; CW.tags.clear(); $('cwBody').value='';
+  document.querySelectorAll('#cwTags .btn').forEach(b=>b.classList.remove('solid'));
+  document.querySelectorAll('#cwObjectives [data-o]').forEach(b=>b.classList.remove('accent'));
+  cwShow(1);
+}
+
+/* ===== Notification bell ==========================================
+   Real read state, filters and a count that goes down as you read. */
+const BELL=[
+  {id:1,cat:'league',txt:'Tuesday Night League standings are up after week 6.',ago:'12m',read:false},
+  {id:2,cat:'booking',txt:'Six lanes booked for Saturday 2pm by Dana Whitfield.',ago:'48m',read:false},
+  {id:3,cat:'system',txt:'Your customer import finished. 9 rows were skipped.',ago:'2h',read:false},
+  {id:4,cat:'league',txt:'Marcus Reyes bowled a 700 series on lane 14.',ago:'5h',read:false},
+  {id:5,cat:'booking',txt:'A birthday party enquiry came in for next Friday.',ago:'yesterday',read:true},
+  {id:6,cat:'system',txt:'Three bowlers joined BowlersNetwork from your invite.',ago:'2d',read:true}
+];
+let BELL_F='all';
+function bellToggle(e){
+  e.stopPropagation();
+  const el=$('bellPanel');
+  el.style.display = el.style.display==='block'?'none':'block';
+  if(el.style.display==='block') bellRender();
+}
+function bellSet(btn,f){ BELL_F=f; segPick(btn); bellRender(); }
+function bellRead(id){ const n=BELL.find(x=>x.id===id); if(n) n.read=true; bellRender(); }
+function bellAllRead(){ BELL.forEach(n=>n.read=true); bellRender(); toast('All caught up.'); }
+function bellRender(){
+  let rows=BELL.slice();
+  if(BELL_F==='unread') rows=rows.filter(n=>!n.read);
+  else if(BELL_F!=='all') rows=rows.filter(n=>n.cat===BELL_F);
+  const unread=BELL.filter(n=>!n.read).length;
+  const c=$('bellCount');
+  if(c){ c.textContent=unread; c.style.display = unread?'':'none'; }
+  if(!$('bellList')) return;
+  $('bellList').innerHTML = rows.length ? rows.map(n=>`
+    <button onclick="bellRead(${n.id})" style="display:flex;gap:10px;width:100%;text-align:left;border:0;background:${n.read?'none':'var(--accent-subtle)'};
+      border-radius:10px;padding:10px 11px;font:inherit;cursor:pointer;color:var(--ink);margin-bottom:4px">
+      <span style="width:7px;height:7px;border-radius:50%;background:${n.read?'var(--line-strong)':'var(--accent)'};margin-top:6px;flex:none"></span>
+      <span style="flex:1;min-width:0"><span style="font-size:12.5px;display:block;line-height:1.45">${n.txt}</span>
+      <span class="note">${n.ago}</span></span>
+    </button>`).join('')
+    : '<div class="empty" style="padding:22px 10px"><b>Nothing here</b><span>No notifications match that filter.</span></div>';
+}
+document.addEventListener('click',function(){ const el=$('bellPanel'); if(el) el.style.display='none'; });
+
+
 /* ===== Notification manager =======================================
    Real state, not a mock: reach is computed from the records, a step
    will not advance without what it needs, and sending appends to the
@@ -2104,12 +2307,32 @@ function drawCharts(view){
       datasets:[{data:[331,44,37],backgroundColor:[p.series[0],p.series[1],p.line],borderWidth:0,hoverOffset:6}]},options:ringOpts(p)});
     mk('beh-feature', bar(['Newsfeed','Events','Scores','Messages','Media','Groups'],[88,71,64,52,38,29],true));
     mk('beh-retention', area(['Wk 1','Wk 2','Wk 3','Wk 4','Wk 6','Wk 8','Wk 12'],[{name:'Still active',data:[100,74,62,55,48,44,41]}]));
+    const J=PEOPLE.filter(x=>x.status==='joined');
+    mk('beh-time', bar(['Newsfeed','Events','Scores','Media','Messages'],
+      [Math.round(J.reduce((a,b)=>a+b.minsPerWeek,0)/J.length),22,17,12,8]));
+    mk('beh-events', {type:'bar',data:{labels:['League night','Youth clinic','Fundraiser','Birthday','Open bowl'],
+      datasets:[{label:'Viewed',data:[240,186,142,118,96],backgroundColor:p.line,borderRadius:6,stack:'a'},
+                {label:'RSVPed',data:[168,121,88,74,52],backgroundColor:p.series[1],borderRadius:6,stack:'a'},
+                {label:'Came',data:[141,96,71,63,44],backgroundColor:p.accent,borderRadius:6,stack:'a'}]},
+      options:baseOpts(p,{plugins:{legend:{display:true,position:'bottom',labels:{color:p.ink2,boxWidth:9,boxHeight:9,usePointStyle:true,pointStyle:'circle',padding:14,font:{size:11.5}}},tooltip:baseOpts(p).plugins.tooltip},
+        scales:{x:{stacked:true,grid:{display:false},border:{display:false},ticks:{color:p.ink3,font:{size:10.5}}},
+                y:{stacked:true,grid:{color:p.line},border:{display:false},ticks:{color:p.ink3,font:{size:10.5}},beginAtZero:true}}})});
   }
   if(view==='cnt'){
     mk('cnt-type', bar(['Video','Photo','Score','Text','Poll'],[9.1,7.4,6.2,3.8,5.5]));
     mk('cnt-watch', area(['W1','W2','W3','W4','W5','W6'],[{name:'Minutes',data:[24,29,27,34,38,41]}]));
     mk('cnt-search', bar(['league night','open bowl','shoe rental','birthday party','pro shop','coaching'],[184,151,96,88,64,41],true));
     mk('cnt-tags', bar(['#leaguenight','#strike','#richmondlanes','#youth','#tournament','#proshop'],[142,118,97,73,58,36],true));
+    mk('cnt-ret', area(['Day 1','Day 3','Day 7','Day 14','Day 30'],[{name:'Came back',data:[100,68,54,43,36]}]));
+  }
+  if(view==='reach'){
+    mk('cp-hourly', bar(['6a','9a','12p','3p','6p','9p'],[12,38,64,51,96,72]));
+    mk('cp-trend', area(['W1','W2','W3','W4','W5','W6'],[
+      {name:'Opened',data:[41,48,45,55,59,63]},{name:'Clicked',data:[12,16,14,21,24,27]}]));
+    mk('cp-aud', {type:'doughnut',data:{labels:['League','Casual','Youth','Lapsed'],
+      datasets:[{data:[186,142,74,96],backgroundColor:[p.accent,p.series[1],p.series[2],p.line],borderWidth:0,hoverOffset:6}]},options:ringOpts(p)});
+    mk('cp-device', {type:'doughnut',data:{labels:['Phone','Tablet','Desktop'],
+      datasets:[{data:[331,44,37],backgroundColor:[p.accent,p.series[1],p.line],borderWidth:0,hoverOffset:6}]},options:ringOpts(p)});
   }
   if(view==='inf'){
     mk('inf-overlap', {type:'bar',data:{labels:topVoices().map(p=>p.first+' '+p.last[0]),
@@ -2135,7 +2358,7 @@ function go(s){
   if(s==='people') renderPeople();
   if(s==='activity') renderActivity();
   if(s==='event'){ recount(); sumUp(); renderCal(); }
-  if(s==='reach'){ renderComms(); renderPosts(); reachCount(); }
+  if(s==='reach'){ renderComms(); renderPosts(); reachCount(); drawCharts('reach'); cwInit(); }
   if(s==='home') refreshOverview();
   if(s==='feed') renderFeed();
   if(s==='inf') renderInf();
@@ -2227,37 +2450,99 @@ function topVoices(){
 }
 function renderInf(){
   const reach=[412,318,264,201,158], pct=['69%','57%','73%','58%','72%'];
-  $('infList').innerHTML = topVoices().map((p,i)=>`
-    <div class="lead-row face-open" onclick="openContact(${p.id})" title="Open ${NAME(p)}">
-      <div class="lead-av">${INIT(p)}</div>
-      <div style="flex:1;min-width:0"><b style="font-size:13px">${NAME(p)}</b>
-      <div class="note">${reach[i]} of your bowlers follow them</div></div>
-      <b style="font-size:13px;color:var(--accent)">${pct[i]}</b>
+  const q=(($('infSearch')||{}).value||'').trim().toLowerCase();
+  const rows=topVoices().map((pp,i)=>({pp,r:reach[i],k:pct[i]})).filter(x=>!q||NAME(x.pp).toLowerCase().includes(q));
+  if(!rows.length){ $('infList').innerHTML='<div class="empty"><b>Nobody matches</b><span>Try a different name.</span></div>'; return; }
+  $('infList').innerHTML = rows.map(({pp,r,k})=>`
+    <div class="lead-row face-open" onclick="openContact(${pp.id})" title="Open ${NAME(pp)}">
+      <div class="lead-av">${INIT(pp)}</div>
+      <div style="flex:1;min-width:0"><b style="font-size:13px">${NAME(pp)}</b>
+      <div class="note">${r} of your bowlers follow them</div></div>
+      <b style="font-size:13px;color:var(--accent)">${k}</b>
     </div>`).join('');
 }
 
+/* Settings sections fold away, as they did in the original. */
+function sttToggle(id){
+  const w=$(id+'-wrap'), c=$(id+'-chev');
+  const open = w.style.display==='block';
+  w.style.display = open?'none':'block';
+  if(c) c.style.transform = open?'':'rotate(90deg)';
+}
+
+const AUTO_RULES=[
+  {name:'Welcome new customers',when:'The day after someone joins your list',on:true,sent:128,title:'Welcome to Richmond Lanes',body:'Your first game is on us.'},
+  {name:'Win back lapsed bowlers',when:'No visit in 60 days, once a quarter',on:true,sent:41,title:'We have missed you',body:'Come back for a free game this month.'},
+  {name:'Birthday greeting',when:'It is their birthday',on:true,sent:17,title:'Happy birthday',body:'A free game is waiting whenever you are.'},
+  {name:'League sign-up reminder',when:'A league is about to close',on:false,sent:0,title:'Sign-ups close Friday',body:'Lanes are going fast.'},
+  {name:'Invite to BowlersNetwork',when:'Anyone on your list not yet on the app',on:true,sent:312,title:'Join us on BowlersNetwork',body:'See your scores and our events in one place.'}
+];
+
 function renderAuto(){
-  const rules = [
-    ['Welcome new customers','Sends the day after someone joins your list','On','128 sent'],
-    ['Win back lapsed bowlers','No visit in 60 days, once a quarter','On','41 sent'],
-    ['Birthday greeting','Morning of, with a free game','On','17 sent'],
-    ['League sign-up reminder','Three days before a league closes','Off','—'],
-    ['Invite to BowlersNetwork','Anyone on your list not yet on the app','On','312 sent']
-  ];
-  $('autoList').innerHTML = rules.map(r=>`
-    <div class="card" style="display:flex;align-items:center;gap:14px;padding:15px 18px">
-      <div style="flex:1;min-width:0">
-        <b style="font-size:13.5px">${r[0]}</b>
-        <div class="note">${r[1]}</div>
+  const active=AUTO_RULES.filter(r=>r.on).length;
+  $('autoList').innerHTML =
+    `<div class="tiles">
+      <div class="tile"><div class="k" data-tip="Automated rules you have set up, running or not.">Rules</div><div class="v">${AUTO_RULES.length}</div><div class="m">set up</div></div>
+      <div class="tile accent"><div class="k" data-tip="Rules currently switched on.">Running</div><div class="v">${active}</div><div class="m">right now</div></div>
+      <div class="tile"><div class="k" data-tip="Messages sent automatically, without anyone pressing send.">Sent by rules</div><div class="v">${AUTO_RULES.reduce((a,b)=>a+b.sent,0)}</div><div class="m">all time</div></div>
+    </div>
+    <button class="btn solid" style="margin-bottom:14px" onclick="autOpen(null)">New rule</button>` +
+    AUTO_RULES.map((r,i)=>`
+    <div class="card" style="display:flex;align-items:center;gap:14px;padding:15px 18px;flex-wrap:wrap">
+      <div style="flex:1;min-width:180px">
+        <b style="font-size:13.5px">${r.name}</b>
+        <div class="note">${r.when}</div>
       </div>
-      <span class="note">${r[3]}</span>
-      <button class="btn ${r[2]==='On'?'solid':''}" onclick="toggleRule(this)">${r[2]}</button>
+      <span class="note">${r.sent?r.sent+' sent':'not run yet'}</span>
+      <button class="btn" onclick="autOpen(${i})">Edit</button>
+      <button class="btn ${r.on?'solid':''}" onclick="toggleRule(${i})">${r.on?'On':'Off'}</button>
     </div>`).join('');
 }
-function toggleRule(b){
-  const on = b.textContent.trim()==='On';
-  b.textContent = on?'Off':'On';
-  b.classList.toggle('solid', !on);
+function toggleRule(i){ AUTO_RULES[i].on=!AUTO_RULES[i].on; renderAuto(); }
+
+/* The original validated the name then closed without creating anything.
+   Here a saved rule really joins the list and starts counting. */
+function autOpen(i){
+  const r = (i==null)?{name:'',when:'Someone joins your list',title:'',body:''}:AUTO_RULES[i];
+  const opts=['Someone joins your list','Someone has not visited','It is their birthday','A league is about to close'];
+  sheet(i==null?'New rule':'Edit rule','It runs on its own once it is on.',
+    '<div class="fld"><label class="f">Name it</label><input type="text" id="arName" value="'+r.name+'" placeholder="Win back lapsed bowlers"></div>'+
+    '<div class="fld"><label class="f">Run it when</label><select id="arTrigger" onchange="autTriggerFields()">'+
+      opts.map(o=>'<option'+(o===r.when?' selected':'')+'>'+o+'</option>').join('')+'</select></div>'+
+    '<div id="arConditions"></div>'+
+    '<button class="btn" style="margin-bottom:14px" onclick="autAddCondition()">Add a condition</button>'+
+    '<div class="fld"><label class="f">Title</label><input type="text" id="arTitle" value="'+(r.title||'')+'" oninput="autPreview()"></div>'+
+    '<div class="fld"><label class="f">Body</label><textarea id="arBody" rows="2" oninput="autPreview()">'+(r.body||'')+'</textarea></div>'+
+    '<label class="f">What they will see</label>'+
+    '<div class="nmphone" style="margin-top:7px"><div class="nmnotif">'+
+      '<b style="font-size:12.5px;display:block" id="arPrevTitle">Title</b>'+
+      '<span style="font-size:12px;color:var(--ink-2)" id="arPrevBody">Body</span></div></div>',
+    '<button class="btn ghost" onclick="closeAll()">Cancel</button>'+
+    '<button class="btn solid" onclick="autSave('+(i==null?'null':i)+')">Save rule</button>');
+  autTriggerFields(); autPreview();
+}
+function autTriggerFields(){
+  const t=$('arTrigger').value;
+  $('arConditions').innerHTML = t==='Someone has not visited'
+    ? '<div class="fld"><label class="f">Days since their last visit</label><input type="number" value="60"></div>'
+    : '<p class="note" style="margin:0 0 12px">No extra conditions needed for this trigger.</p>';
+}
+function autAddCondition(){
+  $('arConditions').insertAdjacentHTML('beforeend',
+    '<div class="fld" style="display:flex;gap:8px"><select style="flex:1"><option>Average above</option><option>Average below</option><option>On a league</option><option>Lives within 10km</option></select><input type="number" placeholder="value" style="width:96px"></div>');
+}
+function autPreview(){
+  $('arPrevTitle').textContent=$('arTitle').value||'Title';
+  $('arPrevBody').textContent=$('arBody').value||'Body';
+}
+function autSave(i){
+  const name=$('arName').value.trim();
+  if(!name){ $('arName').style.borderColor='var(--alert)'; toast('Give the rule a name.'); return; }
+  const rec={name,when:$('arTrigger').value,title:$('arTitle').value,body:$('arBody').value};
+  if(i==null) AUTO_RULES.push(Object.assign({on:true,sent:0},rec));
+  else Object.assign(AUTO_RULES[i],rec);
+  closeAll(); renderAuto();
+  toast(i==null?`"${name}" is live. It runs on its own from now on.`:`"${name}" updated.`);
 }
 
 function renderSettings(){
@@ -2297,22 +2582,29 @@ function renderCntTop(){
    demo's own accent at varying strength. */
 function renderHeat(){
   const days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-  const hours=['9a','11a','1p','3p','5p','7p','9p','11p'];
-  const v=[[1,2,2,3,5,7,6,2],[1,2,3,4,6,9,7,3],[1,2,2,4,6,8,7,3],[2,3,3,5,7,9,8,4],
-           [2,3,4,6,9,10,9,6],[5,7,8,9,10,10,9,7],[4,6,7,8,8,7,5,3]];
+  const hours=[]; for(let h=6;h<=23;h++) hours.push(h<12?h+'a':(h===12?'12p':(h-12)+'p'));
+  const v=[[5,8,15,30,25,22,35,50,60,55,45,38,28,18,10,5,3,2],
+           [4,7,14,28,24,20,33,48,58,53,44,36,26,17,9,4,3,2],
+           [6,9,16,32,27,24,38,55,65,60,50,42,32,22,12,6,4,2],
+           [5,8,15,30,26,23,36,52,62,57,47,40,30,20,11,5,3,2],
+           [8,12,20,35,30,28,42,60,75,78,68,58,48,35,22,15,10,6],
+           [3,5,10,18,22,30,50,65,80,90,95,88,78,65,50,35,20,10],
+           [2,4,8,15,20,28,45,58,72,85,92,85,72,58,42,28,15,8]];
+  const peak=95;
   let h='<div style="overflow-x:auto"><table style="border-collapse:separate;border-spacing:3px;width:max-content">';
   h+='<tr><td></td>'+hours.map(x=>`<td class="note" style="text-align:center;font-size:10px">${x}</td>`).join('')+'</tr>';
   days.forEach((d,i)=>{
     h+=`<tr><td class="note" style="font-size:11px;padding-right:6px;white-space:nowrap">${d}</td>`;
     v[i].forEach(n=>{
-      h+=`<td title="${d}, ${n*12} bowlers" style="width:34px;height:26px;border-radius:5px;background:color-mix(in srgb,var(--accent) ${n*10}%,transparent);border:1px solid var(--line)"></td>`;
+      h+=`<td data-tip="${d} at ${hours[v[i].indexOf(n)]||''}: ${n*4} bowlers" title="${d}: ${n*4} bowlers" style="width:22px;height:24px;border-radius:4px;background:color-mix(in srgb,var(--accent) ${Math.round(n/peak*100)}%,transparent);border:1px solid var(--line)"></td>`;
     });
     h+='</tr>';
   });
   $('behHeat').innerHTML=h+'</table></div>';
 }
 
-function enter(){ $('gate').classList.add('hide'); $('app').classList.add('on'); refreshTiles(); refreshOverview(); }
+function enter(){ $('gate').classList.add('hide'); $('app').classList.add('on'); refreshTiles(); refreshOverview(); bellRender();
+  const bp=$('bellPanel'); if(bp) bp.addEventListener('click',e=>e.stopPropagation()); }
 
 function toast(m){
   $('toastMsg').textContent=m;
