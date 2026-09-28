@@ -590,7 +590,31 @@
           <button class="qa" onclick="preset('women')"><div class="ic">${ico('users')}</div><div><b>Women's league night</b><span>Women, any average</span></div></button>
           <button class="qa" onclick="preset('youth')"><div class="ic">${ico('spark')}</div><div><b>Youth program</b><span>Under 18 on your list</span></div></button>
         </div>
-      </section>
+      
+        <div class="chart-card wide" style="margin:14px 0">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap">
+            <div><h4>Bowlers near you</h4><p class="sub" id="ovRadiusSub">On BowlersNetwork within 5km of the center</p></div>
+            <div class="seg" id="ovRadius">
+              <button data-km="1" onclick="setRadius(this,1)">1km</button>
+              <button data-km="3" onclick="setRadius(this,3)">3km</button>
+              <button class="on" data-km="5" onclick="setRadius(this,5)">5km</button>
+              <button data-km="10" onclick="setRadius(this,10)">10km</button>
+            </div>
+          </div>
+          <div class="tiles" style="margin:14px 0 0">
+            <div class="tile accent"><div class="k">Reachable</div><div class="v" id="ovReach">0</div><div class="m" id="ovReachM">within 5km</div></div>
+            <div class="tile"><div class="k">On your list</div><div class="v" id="ovMine">0</div><div class="m">of those nearby</div></div>
+            <div class="tile"><div class="k">Not yet yours</div><div class="v" id="ovGap">0</div><div class="m">nearby, not on your list</div></div>
+          </div>
+        </div>
+
+        <div class="chart-grid">
+          <div class="chart-card"><h4>New against returning</h4><p class="sub">This month</p><div class="chart-wrap"><canvas id="ov-newret"></canvas></div></div>
+          <div class="chart-card"><h4>Six month trend</h4><p class="sub">New and returning bowlers</p><div class="chart-wrap"><canvas id="ov-trend"></canvas></div></div>
+          <div class="chart-card"><h4>Engagement</h4><p class="sub">Share of your bowlers active each week</p><div class="chart-wrap"><canvas id="ov-eng"></canvas></div></div>
+          <div class="chart-card"><h4>What they care about</h4><p class="sub">Most engaged topics</p><div class="chart-wrap"><canvas id="ov-topics"></canvas></div></div>
+        </div>
+</section>
 
       <!-- -- PEOPLE -- -->
       <section class="screen" id="s-people">
@@ -999,15 +1023,54 @@
           <div class="tile accent"><div class="k">On BowlersNetwork</div><div class="v">412</div><div class="m">35% of your list</div></div>
           <div class="tile"><div class="k">Median age</div><div class="v">34</div><div class="m">Across linked bowlers</div></div>
         </div>
+        <div class="card" style="padding:0;overflow:hidden">
+          <button class="fbar" onclick="audToggleFilters()" style="width:100%;display:flex;align-items:center;gap:10px;padding:14px 18px;background:none;border:0;font:inherit;cursor:pointer;color:var(--ink)">
+            <b style="font-size:13.5px;flex:1;text-align:left">Filter these bowlers</b>
+            <span class="note" id="audFilterCount">All linked bowlers</span>
+            <span id="audFilterArrow" style="transition:transform .18s">${ico('down')||'v'}</span>
+          </button>
+          <div id="audFilterPanel" style="display:none;padding:0 18px 16px;border-top:1px solid var(--line)">
+            <div class="frow" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:14px">
+              <div><label class="f">Gender</label>
+                <div class="seg" id="audGender">
+                  <button class="on" data-g="" onclick="audGender(this,'')">Everyone</button>
+                  <button data-g="M" onclick="audGender(this,'M')">Men</button>
+                  <button data-g="F" onclick="audGender(this,'F')">Women</button>
+                </div></div>
+              <div><label class="f">Last visit</label>
+                <div class="seg" id="audVisit">
+                  <button class="on" data-v="" onclick="audVisit(this,'')">Any time</button>
+                  <button data-v="30" onclick="audVisit(this,'30')">30 days</button>
+                  <button data-v="90" onclick="audVisit(this,'90')">90 days</button>
+                </div></div>
+              <div><label class="f">Average between</label>
+                <div style="display:flex;gap:8px">
+                  <input type="number" id="audAvgMin" placeholder="min" oninput="renderAud()" style="width:100%;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:9px;padding:9px 11px;font:inherit;font-size:13px">
+                  <input type="number" id="audAvgMax" placeholder="max" oninput="renderAud()" style="width:100%;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:9px;padding:9px 11px;font:inherit;font-size:13px">
+                </div></div>
+              <div><label class="f">Age between</label>
+                <div style="display:flex;gap:8px">
+                  <input type="number" id="audAgeMin" placeholder="min" oninput="renderAud()" style="width:100%;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:9px;padding:9px 11px;font:inherit;font-size:13px">
+                  <input type="number" id="audAgeMax" placeholder="max" oninput="renderAud()" style="width:100%;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:9px;padding:9px 11px;font:inherit;font-size:13px">
+                </div></div>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px" id="audTagRow"></div>
+            <button class="btn" style="margin-top:14px" onclick="audReset()">Clear all filters</button>
+          </div>
+        </div>
+
         <div class="chart-grid">
           <div class="chart-card"><h4>Age</h4><p class="sub">Linked bowlers only</p><div class="chart-wrap"><canvas id="aud-age"></canvas></div></div>
           <div class="chart-card"><h4>Gender</h4><p class="sub">Self-reported on profile</p><div class="chart-wrap"><canvas id="aud-gender"></canvas></div></div>
           <div class="chart-card tall"><h4>Skill and frequency</h4><p class="sub">Average against visits per month</p><div class="chart-wrap tall"><canvas id="aud-skill"></canvas></div></div>
           <div class="chart-card tall wide"><h4>Where they live</h4><p class="sub">Bowlers by ZIP</p><div class="chart-wrap tall"><canvas id="aud-zip"></canvas></div></div>
+          <div class="chart-card"><h4>Occupation</h4><p class="sub">Sample data, see the note below</p><div class="chart-wrap"><canvas id="aud-occ"></canvas></div></div>
+          <div class="chart-card"><h4>Education</h4><p class="sub">Sample data, see the note below</p><div class="chart-wrap"><canvas id="aud-edu"></canvas></div></div>
         </div>
         <div class="card acc">
           <b style="font-size:13px">Small groups are hidden on purpose</b>
           <p class="note" style="margin-top:4px">Any breakdown covering fewer than 20 bowlers is withheld. With a handful of people, age and postcode together name someone.</p>
+          <p class="note" style="margin-top:8px"><b>Occupation and education are sample data.</b> BowlersNetwork does not collect either field today. Every other chart here comes from a real profile or analytics field.</p>
         </div>
       </section>
 
@@ -1439,6 +1502,10 @@ const pickOf=a=>a[Math.floor(rnd()*a.length)];
 const F=['Dale','Marilyn','Gary','Susan','Randy','Diane','Keith','Patty','Ron','Brenda','Doug','Carol','Wayne','Janet','Curtis','Lori','Dennis','Sandra','Brett','Kim','Todd','Angela','Shawn','Tracy','Neil','Paula','Craig','Donna','Mark','Julie','Trevor','Erin','Cody','Megan','Blake','Chelsea','Jared','Nicole','Austin','Kayla'];
 const L=['Hoffman','Brenner','Ostrander','Vasquez','Kowalski','Pruitt','Sandoval','Tierney','Mabry','Escobar','Lindgren','Whitaker','Duffy','Nakamura','Rosales','Bledsoe','Carmichael','Vogel','Hargrove','Petrusky','Ankney','Delgado','Swanson','Fitzgerald'];
 
+const OCCUPATIONS=['Trades','Healthcare','Education','Retail','Office','Manufacturing','Retired','Student'];
+const EDUCATION=['High school','Some college','Associate','Bachelor','Postgraduate'];
+const TAG_POOL=['competitive','league-players','night-bowlers','parents','pros','shoe-rental','social','weekend'];
+
 const PEOPLE=[];
 for(let i=0;i<482;i++){
   const r=rnd();
@@ -1454,9 +1521,21 @@ for(let i=0;i<482;i++){
     visit: Math.floor(rnd()*160),
     miles: Math.round(Math.pow(rnd(),3)*480),  // clustered near the house, long tail across the state
     league: rnd()<0.46,
-    status
+    status,
+    // Parity fields. The original dashboard charted occupation and education,
+    // which BowlersNetwork does not collect, so they are sample data and the
+    // Audience screen says so in plain sight.
+    occupation: pickOf(OCCUPATIONS),
+    education: pickOf(EDUCATION),
+    device: rnd()<0.79?'Phone':(rnd()<0.55?'Tablet':'Desktop'),
+    tags: TAG_POOL.filter(()=>rnd()<0.28),
+    joinedWeeksAgo: 1+Math.floor(rnd()*52),
+    minsPerWeek: 8+Math.floor(rnd()*70)
   });
 }
+// Kilometres, because the radius control is in km. `miles` stays as it was
+// so nothing that already reads it changes meaning.
+PEOPLE.forEach(p=>{ p.km = Math.round(p.miles*1.609); });
 const NAME=p=>p.first+' '+p.last;
 const INIT=p=>p.first[0]+p.last[0];
 
@@ -1566,6 +1645,97 @@ function ringOpts(p){
       tooltip:{backgroundColor:p.surface,titleColor:p.ink,bodyColor:p.ink2,borderColor:p.line,borderWidth:1,padding:10,cornerRadius:9,displayColors:false}}};
 }
 
+let OV_KM = 5;
+
+/* ===== Audience filters ==========================================
+   These filter real records. Every chart on the screen is drawn from
+   audRows(), so moving a control moves the charts. */
+const AUD={gender:'',visit:'',tags:new Set()};
+
+function audToggleFilters(){
+  const el=$('audFilterPanel'), ar=$('audFilterArrow');
+  const open = el.style.display==='block';
+  el.style.display = open?'none':'block';
+  if(ar) ar.style.transform = open?'':'rotate(180deg)';
+}
+function audGender(btn,g){ AUD.gender=g; segPick(btn); renderAud(); }
+function audVisit(btn,v){ AUD.visit=v; segPick(btn); renderAud(); }
+function audTag(btn,t){
+  if(AUD.tags.has(t)) AUD.tags.delete(t); else AUD.tags.add(t);
+  btn.classList.toggle('on');
+  renderAud();
+}
+function audReset(){
+  AUD.gender=''; AUD.visit=''; AUD.tags.clear();
+  ['audAvgMin','audAvgMax','audAgeMin','audAgeMax'].forEach(id=>{ if($(id)) $(id).value=''; });
+  document.querySelectorAll('#audGender button, #audVisit button').forEach((b,i)=>b.classList.toggle('on', b.dataset.g===''||b.dataset.v===''));
+  document.querySelectorAll('#audTagRow button').forEach(b=>b.classList.remove('on'));
+  renderAud();
+}
+function audRows(){
+  const n=id=>{ const v=$(id)&&$(id).value.trim(); return v===''||v==null?null:Number(v); };
+  const avMin=n('audAvgMin'), avMax=n('audAvgMax'), agMin=n('audAgeMin'), agMax=n('audAgeMax');
+  return PEOPLE.filter(p=>{
+    if(p.status!=='joined') return false;              // only linked bowlers have this data
+    if(AUD.gender && p.gender!==AUD.gender) return false;
+    if(AUD.visit==='30' && p.visit>30) return false;
+    if(AUD.visit==='90' && p.visit>90) return false;
+    if(avMin!==null && (p.avg===null||p.avg<avMin)) return false;
+    if(avMax!==null && (p.avg===null||p.avg>avMax)) return false;
+    if(agMin!==null && p.age<agMin) return false;
+    if(agMax!==null && p.age>agMax) return false;
+    if(AUD.tags.size && !p.tags.some(t=>AUD.tags.has(t))) return false;
+    return true;
+  });
+}
+function renderAud(){
+  const rows=audRows();
+  const active = AUD.gender||AUD.visit||AUD.tags.size||
+    ['audAvgMin','audAvgMax','audAgeMin','audAgeMax'].some(id=>$(id)&&$(id).value.trim());
+  if($('audFilterCount')) $('audFilterCount').textContent =
+    active ? `${rows.length.toLocaleString()} of ${PEOPLE.filter(x=>x.status==='joined').length} bowlers` : 'All linked bowlers';
+  if($('audTagRow') && !$('audTagRow').dataset.built){
+    $('audTagRow').dataset.built='1';
+    $('audTagRow').innerHTML = TAG_POOL.map(t=>`<button class="btn" onclick="audTag(this,'${t}')">${t.replace(/-/g,' ')}</button>`).join('');
+  }
+  // headline numbers follow the filter too
+  const med = rows.length ? rows.map(r=>r.age).sort((a,b)=>a-b)[Math.floor(rows.length/2)] : 0;
+  const tiles=document.querySelectorAll('#s-aud .tiles .v');
+  if(tiles.length>=4){
+    tiles[1].textContent = rows.length.toLocaleString();
+    tiles[2].textContent = rows.length.toLocaleString();
+    tiles[3].textContent = med||'-';
+  }
+  drawCharts('aud');
+}
+function countBy(rows,fn,keys){
+  const m={}; keys.forEach(k=>m[k]=0);
+  rows.forEach(r=>{ const k=fn(r); if(k in m) m[k]++; });
+  return keys.map(k=>m[k]);
+}
+
+/* The radius control does real work: it refilters PEOPLE by distance and
+   every number and chart on the Overview reads from that set. */
+function setRadius(btn,km){
+  OV_KM = km;
+  [...btn.parentElement.children].forEach(b=>b.classList.toggle('on',b===btn));
+  $('ovRadiusSub').textContent = `On BowlersNetwork within ${km}km of the center`;
+  refreshOverview();
+}
+
+function nearby(km){ return PEOPLE.filter(p=>p.km<=km); }
+
+function refreshOverview(){
+  const near = nearby(OV_KM);
+  const mine = near.filter(p=>p.status!=='imported' || true); // everyone on the list is "mine"
+  const joined = near.filter(p=>p.status==='joined');
+  if($('ovReach')) $('ovReach').textContent = (near.length*26).toLocaleString();
+  if($('ovReachM')) $('ovReachM').textContent = `within ${OV_KM}km`;
+  if($('ovMine')) $('ovMine').textContent = mine.length.toLocaleString();
+  if($('ovGap')) $('ovGap').textContent = Math.max(0, near.length*26 - mine.length).toLocaleString();
+  drawCharts('home');
+}
+
 function drawCharts(view){
   const p = palette();
   const bar = (labels,data,horiz)=>({type:'bar',data:{labels,datasets:[{data,backgroundColor:p.accent,borderRadius:6,barPercentage:.68,categoryPercentage:.72}]},
@@ -1575,19 +1745,40 @@ function drawCharts(view){
       fill:true,backgroundColor:c=>fade(c.chart.ctx,p.series[i], i?.16:.3)}))},
     options:baseOpts(p, sets.length>1?{plugins:{legend:{display:true,position:'bottom',labels:{color:p.ink2,boxWidth:9,boxHeight:9,usePointStyle:true,pointStyle:'circle',padding:14,font:{size:11.5}}},tooltip:baseOpts(p).plugins.tooltip}}:{})});
 
+  if(view==='home'){
+    const near=nearby(OV_KM);
+    const nj=near.filter(p=>p.status==='joined').length;
+    const nr=Math.max(1,near.length-nj);
+    mk('ov-newret', {type:'doughnut',data:{labels:['New this month','Returning'],
+      datasets:[{data:[nj,nr],backgroundColor:[p.accent,p.series[1]],borderWidth:0,hoverOffset:6}]},
+      options:ringOpts(p)});
+    const scale=Math.max(1,near.length/120);
+    mk('ov-trend', area(['Oct','Nov','Dec','Jan','Feb','Mar'],[
+      {name:'Returning',data:[4800,5100,5400,5200,5600,5493].map(v=>Math.round(v*scale))},
+      {name:'New',data:[2200,2500,2800,2700,2900,2957].map(v=>Math.round(v*scale))}]));
+    mk('ov-eng', area(['W1','W2','W3','W4','W5','W6'],[{name:'Active',data:[38,44,41,49,53,57]}]));
+    mk('ov-topics', bar(['Food and snacks','Bowling gear','Coaching tips','Drinks and bar','Shoe reviews'],[184,151,132,118,96],true));
+  }
   if(view==='aud'){
-    mk('aud-age', bar(['18-24','25-34','35-44','45-54','55+'],[62,148,121,58,23]));
-    mk('aud-gender', {type:'doughnut',data:{labels:['Men','Women','Not stated'],
-      datasets:[{data:[248,142,22],backgroundColor:[p.series[0],p.series[1],p.line],borderWidth:0,hoverOffset:6}]},options:ringOpts(p)});
+    const R=audRows();
+    const band=a=>a<25?'18-24':a<35?'25-34':a<45?'35-44':a<55?'45-54':'55+';
+    mk('aud-age', bar(['18-24','25-34','35-44','45-54','55+'],
+      countBy(R,r=>band(r.age),['18-24','25-34','35-44','45-54','55+'])));
+    mk('aud-gender', {type:'doughnut',data:{labels:['Men','Women'],
+      datasets:[{data:[R.filter(r=>r.gender==='M').length,R.filter(r=>r.gender==='F').length],
+      backgroundColor:[p.series[0],p.series[1]],borderWidth:0,hoverOffset:6}]},options:ringOpts(p)});
+    mk('aud-occ', bar(OCCUPATIONS, countBy(R,r=>r.occupation,OCCUPATIONS), true));
+    mk('aud-edu', bar(EDUCATION, countBy(R,r=>r.education,EDUCATION), true));
     mk('aud-skill', {type:'scatter',data:{datasets:[{label:'Bowlers',
-      data:[{x:1,y:118},{x:2,y:132},{x:2,y:151},{x:3,y:145},{x:4,y:162},{x:4,y:178},{x:5,y:171},{x:6,y:186},{x:7,y:192},{x:8,y:205},{x:3,y:139},{x:5,y:158},{x:6,y:174},{x:2,y:126},{x:9,y:211}],
+      data:audRows().slice(0,90).map(r=>({x:Math.max(1,Math.round(10-r.visit/18)),y:r.avg})),
       backgroundColor:p.accent+'aa',pointRadius:6,pointHoverRadius:8}]},
       options:baseOpts(p,{interaction:{mode:'nearest',intersect:true},
         scales:{x:{title:{display:true,text:'Visits per month',color:p.ink3,font:{size:11}},grid:{color:p.line},border:{display:false},ticks:{color:p.ink3,font:{size:10.5}}},
                 y:{title:{display:true,text:'Average',color:p.ink3,font:{size:11}},grid:{color:p.line},border:{display:false},ticks:{color:p.ink3,font:{size:10.5}},beginAtZero:false}},
         plugins:{legend:{display:false},tooltip:{backgroundColor:p.surface,titleColor:p.ink,bodyColor:p.ink2,borderColor:p.line,borderWidth:1,padding:10,cornerRadius:9,displayColors:false,
           callbacks:{label:c=>`Average ${c.parsed.y}, ${c.parsed.x} visits a month`}}}})});
-    mk('aud-zip', bar(['55068','55024','55337','55044','55306','55112'],[96,74,61,48,39,27],true));
+    const ZIPS=['55068','55024','55337','55044','55306','55112'];
+    mk('aud-zip', bar(ZIPS, countBy(audRows(),r=>ZIPS[r.id%ZIPS.length],ZIPS), true));
   }
   if(view==='beh'){
     mk('beh-dau', area(['1','4','7','10','13','16','19','22','25','28','30'],[{name:'Daily active',data:[318,342,331,389,402,377,441,428,455,462,478]}]));
@@ -1628,13 +1819,15 @@ function go(s){
   if(s==='activity') renderActivity();
   if(s==='event'){ recount(); sumUp(); renderCal(); }
   if(s==='reach'){ renderComms(); renderPosts(); reachCount(); }
+  if(s==='home') refreshOverview();
   if(s==='feed') renderFeed();
   if(s==='inf') renderInf();
   if(s==='auto') renderAuto();
   if(s==='cnt') renderCntTop();
   if(s==='beh') renderHeat();
   if(s==='settings') renderSettings();
-  if(['aud','beh','cnt','inf','notif'].includes(s)) drawCharts(s);
+  if(s==='aud') renderAud();
+  if(['beh','cnt','inf','notif'].includes(s)) drawCharts(s);
 }
 
 /* ===== Newsfeed =================================================== */
@@ -1801,7 +1994,7 @@ function renderHeat(){
   $('behHeat').innerHTML=h+'</table></div>';
 }
 
-function enter(){ $('gate').classList.add('hide'); $('app').classList.add('on'); refreshTiles(); }
+function enter(){ $('gate').classList.add('hide'); $('app').classList.add('on'); refreshTiles(); refreshOverview(); }
 
 function toast(m){
   $('toastMsg').textContent=m;
