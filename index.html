@@ -120,10 +120,56 @@
   .top{gap:8px}
   #bellWrap{margin-left:0 !important}
 }
-#pfPanel .seg button{white-space:nowrap}
+/* Filter panel. Its own classes rather than borrowing .seg, which is sized
+   for two-word labels and clipped anything longer. */
+.pf{display:grid;grid-template-columns:repeat(auto-fit,minmax(224px,1fr));gap:18px 20px}
+.pf-field{min-width:0}
+.pf-label{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-3);margin-bottom:8px}
+.pf-opts{display:flex;flex-wrap:wrap;gap:6px}
+.pf-opt{appearance:none;font:inherit;font-size:12.5px;line-height:1.2;
+  border:1px solid var(--line-strong);background:var(--surface);color:var(--ink-2);
+  border-radius:8px;padding:7px 11px;cursor:pointer;white-space:nowrap;
+  transition:border-color .12s,background .12s,color .12s}
+.pf-opt:hover{border-color:var(--ink-3);color:var(--ink)}
+.pf-opt.on{border-color:var(--accent-edge);background:var(--accent-subtle);color:var(--accent);font-weight:600}
+.pf-range{display:flex;align-items:center;gap:8px}
+.pf-range input{flex:1;min-width:0;width:100%;font:inherit;font-size:13px;
+  border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);
+  border-radius:8px;padding:8px 10px}
+.pf-range input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+.pf-range span{font-size:12px;color:var(--ink-3);flex:none}
+.pf-wide{grid-column:1/-1}
+.pf-dist{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.pf-dist-read{display:flex;align-items:baseline;gap:7px;flex:none;min-width:132px}
+.pf-dist-read b{font-size:19px;font-weight:700;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.pf-dist-read span{font-size:12px;color:var(--ink-2)}
+.pf-slider{flex:1;min-width:220px;display:flex;flex-direction:column;gap:5px}
+.pf-range-in{-webkit-appearance:none;appearance:none;width:100%;height:22px;background:transparent;cursor:pointer;margin:0}
+.pf-range-in:focus{outline:none}
+.pf-range-in::-webkit-slider-runnable-track{height:5px;border-radius:99px;
+  background:linear-gradient(to right,var(--accent) 0 var(--fill,50%),var(--line-strong) var(--fill,50%) 100%)}
+.pf-range-in::-moz-range-track{height:5px;border-radius:99px;background:var(--line-strong)}
+.pf-range-in::-moz-range-progress{height:5px;border-radius:99px;background:var(--accent)}
+.pf-range-in::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:18px;height:18px;margin-top:-6.5px;
+  border-radius:50%;background:var(--surface);border:2px solid var(--accent);
+  box-shadow:0 1px 4px var(--shadow);transition:transform .12s}
+.pf-range-in::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--surface);
+  border:2px solid var(--accent);box-shadow:0 1px 4px var(--shadow)}
+.pf-range-in:hover::-webkit-slider-thumb{transform:scale(1.12)}
+.pf-range-in:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 4px var(--accent-glow)}
+.pf-ticks{position:relative;height:14px;font-size:10.5px;color:var(--ink-3);
+  font-variant-numeric:tabular-nums}
+.pf-ticks span{position:absolute;transform:translateX(-50%);white-space:nowrap}
+.pf-ticks span:first-child{transform:none}
+.pf-ticks span:last-child{transform:translateX(-100%)}
+.pf-hint{font-size:12px;color:var(--ink-2);margin-top:2px;min-height:17px}
+.pf-foot{display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  margin-top:18px;padding-top:15px;border-top:1px solid var(--line)}
+.pf-tags{margin-top:18px}
 @media(max-width:640px){
-  #s-people .seg[style*="nowrap"]{flex-wrap:wrap !important}
-  #s-people > .card > div:first-child{gap:8px}
+  .pf{grid-template-columns:1fr;gap:16px}
+  #s-people .seg{flex-wrap:wrap !important}
 }
 .full{position:fixed;inset:0;z-index:90;background:var(--bg);display:none;flex-direction:column}
 .full.on{display:flex}
@@ -686,54 +732,34 @@
             <span class="num" id="peopleCount" style="margin-left:auto;font-size:12px;color:var(--ink-3)"></span>
           </div>
 
-          <div id="pfPanel" style="display:none;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)">
-            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:13px">
-              <div><label class="f">Gender</label>
-                <div class="seg" style="margin-top:5px">
-                  <button class="on" onclick="pfSet(this,'gender','')">Any</button>
-                  <button onclick="pfSet(this,'gender','M')">Men</button>
-                  <button onclick="pfSet(this,'gender','F')">Women</button>
-                </div></div>
-              <div><label class="f">Age</label>
-                <div class="row" style="margin-top:5px"><input type="number" id="pfAgeMin" placeholder="min" oninput="renderPeople()"><input type="number" id="pfAgeMax" placeholder="max" oninput="renderPeople()"></div></div>
-              <div><label class="f">Average</label>
-                <div class="row" style="margin-top:5px"><input type="number" id="pfAvgMin" placeholder="min" oninput="renderPeople()"><input type="number" id="pfAvgMax" placeholder="max" oninput="renderPeople()"></div></div>
-              <div><label class="f">Within</label>
-                <div class="seg" style="margin-top:5px">
-                  <button class="on" onclick="pfSet(this,'km','')">Anywhere</button>
-                  <button onclick="pfSet(this,'km','5')">5km</button>
-                  <button onclick="pfSet(this,'km','20')">20km</button>
-                  <button onclick="pfSet(this,'km','50')">50km</button>
-                </div></div>
-              <div><label class="f">Last visit</label>
-                <div class="seg" style="margin-top:5px">
-                  <button class="on" onclick="pfSet(this,'visit','')">Any time</button>
-                  <button onclick="pfSet(this,'visit','30')">30 days</button>
-                  <button onclick="pfSet(this,'visit','90')">90 days</button>
-                  <button onclick="pfSet(this,'visit','lapsed')">Lapsed</button>
-                </div></div>
-              <div><label class="f">On BowlersNetwork</label>
-                <div class="seg" style="margin-top:5px">
-                  <button class="on" onclick="pfSet(this,'bn','')">Either</button>
-                  <button onclick="pfSet(this,'bn','yes')">Joined</button>
-                  <button onclick="pfSet(this,'bn','no')">Not yet</button>
-                </div></div>
-              <div><label class="f">Profile</label>
-                <div class="seg" style="margin-top:5px">
-                  <button class="on" onclick="pfSet(this,'profile','')">Either</button>
-                  <button onclick="pfSet(this,'profile','yes')">Complete</button>
-                  <button onclick="pfSet(this,'profile','no')">Incomplete</button>
-                </div></div>
-              <div><label class="f">League</label>
-                <div class="seg" style="margin-top:5px">
-                  <button class="on" onclick="pfSet(this,'league','')">Either</button>
-                  <button onclick="pfSet(this,'league','yes')">On a league</button>
-                  <button onclick="pfSet(this,'league','no')">Not on one</button>
-                </div></div>
+          <div id="pfPanel" style="display:none;margin-top:16px;padding-top:16px;border-top:1px solid var(--line)">
+            <div class="pf">
+              <div class="pf-field"><span class="pf-label">Gender</span><div class="pf-opts"><button class="pf-opt on" onclick="pfSet(this,'gender','')">Any</button><button class="pf-opt" onclick="pfSet(this,'gender','M')">Men</button><button class="pf-opt" onclick="pfSet(this,'gender','F')">Women</button></div></div>
+              <div class="pf-field"><span class="pf-label">Age</span>
+                <div class="pf-range"><input type="number" id="pfAgeMin" placeholder="Any" oninput="renderPeople()"><span>to</span><input type="number" id="pfAgeMax" placeholder="Any" oninput="renderPeople()"></div></div>
+              <div class="pf-field"><span class="pf-label">Average</span>
+                <div class="pf-range"><input type="number" id="pfAvgMin" placeholder="Any" oninput="renderPeople()"><span>to</span><input type="number" id="pfAvgMax" placeholder="Any" oninput="renderPeople()"></div></div>
+              <div class="pf-field pf-wide">
+                <span class="pf-label">Distance from the center</span>
+                <div class="pf-dist">
+                  <div class="pf-dist-read">
+                    <b id="pfMilesVal">500</b><span id="pfMilesUnit">miles</span>
+                  </div>
+                  <div class="pf-slider">
+                    <input type="range" class="pf-range-in" id="pfMiles" min="0" max="19" step="1" value="19"
+                      aria-label="Distance from the center in miles" oninput="pfMilesChange()">
+                    <div class="pf-ticks" id="pfTicks"></div>
+                    <div class="pf-hint" id="pfMilesHint"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="pf-field"><span class="pf-label">Last visit</span><div class="pf-opts"><button class="pf-opt on" onclick="pfSet(this,'visit','')">Any time</button><button class="pf-opt" onclick="pfSet(this,'visit','30')">30 days</button><button class="pf-opt" onclick="pfSet(this,'visit','90')">90 days</button><button class="pf-opt" onclick="pfSet(this,'visit','lapsed')">Lapsed</button></div></div>
+              <div class="pf-field"><span class="pf-label">On BowlersNetwork</span><div class="pf-opts"><button class="pf-opt on" onclick="pfSet(this,'bn','')">Either</button><button class="pf-opt" onclick="pfSet(this,'bn','yes')">Joined</button><button class="pf-opt" onclick="pfSet(this,'bn','no')">Not yet</button></div></div>
+              <div class="pf-field"><span class="pf-label">Profile</span><div class="pf-opts"><button class="pf-opt on" onclick="pfSet(this,'profile','')">Either</button><button class="pf-opt" onclick="pfSet(this,'profile','yes')">Complete</button><button class="pf-opt" onclick="pfSet(this,'profile','no')">Incomplete</button></div></div>
+              <div class="pf-field"><span class="pf-label">League</span><div class="pf-opts"><button class="pf-opt on" onclick="pfSet(this,'league','')">Either</button><button class="pf-opt" onclick="pfSet(this,'league','yes')">On a league</button><button class="pf-opt" onclick="pfSet(this,'league','no')">Not on one</button></div></div>
             </div>
-            <div style="margin-top:13px"><label class="f">Tags</label>
-              <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px" id="pfTags"></div></div>
-            <div style="display:flex;gap:8px;align-items:center;margin-top:14px;flex-wrap:wrap">
+            <div class="pf-tags"><span class="pf-label">Tags</span><div class="pf-opts" id="pfTags"></div></div>
+            <div class="pf-foot">
               <button class="btn" onclick="pfReset()">Clear all filters</button>
               <span class="note" id="pfSummary"></span>
             </div>
@@ -2736,7 +2762,42 @@ function addTab(btn,which){
    Search matches first name, last name, both together in either order,
    username and email. A manager typing "dale kow" should find Dale
    Kowalski without knowing which field they are searching. */
-const PF={gender:'',km:'',visit:'',bn:'',profile:'',league:'',tags:new Set()};
+/* Graduated stops rather than a linear 5-500, because bowlers cluster near
+   the center: a linear slider would spend most of its travel on distances
+   nobody lives at, and make the useful end impossible to hit precisely. */
+const MILE_STOPS=[5,10,15,20,25,30,40,50,60,75,100,125,150,200,250,300,350,400,450,500];
+const MILES_MAX=MILE_STOPS.length-1;
+
+const PF={gender:'',miles:MILES_MAX,visit:'',bn:'',profile:'',league:'',tags:new Set()};
+
+function pfMilesChange(){
+  PF.miles=Number($('pfMiles').value);
+  pfMilesPaint();
+  renderPeople();
+}
+function pfTicks(){
+  const el=$('pfTicks');
+  if(!el || el.dataset.built) return;
+  el.dataset.built='1';
+  // Each label sits where its value actually falls on the scale, so the
+  // spacing tells the truth about how the stops are distributed.
+  el.innerHTML=[5,25,75,200,500].map(mi=>{
+    const i=MILE_STOPS.indexOf(mi);
+    return `<span style="left:${(i/MILES_MAX*100).toFixed(2)}%">${mi}</span>`;
+  }).join('');
+}
+function pfMilesPaint(){
+  pfTicks();
+  const i=PF.miles, mi=MILE_STOPS[i], atMax=i===MILES_MAX;
+  $('pfMiles').value=i;
+  $('pfMiles').style.setProperty('--fill',(i/MILES_MAX*100)+'%');
+  $('pfMilesVal').textContent=mi;
+  $('pfMilesUnit').textContent=mi===1?'mile':'miles';
+  const n=visiblePeople().filter(p=>p.miles<=mi).length;
+  $('pfMilesHint').textContent = atMax
+    ? 'Far enough to include everyone'
+    : `${n.toLocaleString()} of your list live inside this`;
+}
 
 function pfToggle(){
   const el=$('pfPanel');
@@ -2744,29 +2805,36 @@ function pfToggle(){
   if(el.style.display==='block' && !$('pfTags').dataset.built){
     $('pfTags').dataset.built='1';
     $('pfTags').innerHTML = TAG_POOL.map(t=>
-      `<button class="btn" onclick="pfTag(this,'${t}')">${t.replace(/-/g,' ')}</button>`).join('');
+      `<button class="pf-opt" onclick="pfTag(this,'${t}')">${t.replace(/-/g,' ')}</button>`).join('');
   }
+  if(el.style.display==='block') pfMilesPaint();
 }
-function pfSet(btn,key,val){ PF[key]=val; segPick(btn); renderPeople(); }
-function pfTag(btn,t){ if(PF.tags.has(t)) PF.tags.delete(t); else PF.tags.add(t); btn.classList.toggle('solid'); renderPeople(); }
+function pfSet(btn,key,val){
+  PF[key]=val;
+  [...btn.parentElement.children].forEach(b=>b.classList.toggle('on',b===btn));
+  renderPeople();
+}
+function pfTag(btn,t){ if(PF.tags.has(t)) PF.tags.delete(t); else PF.tags.add(t); btn.classList.toggle('on'); renderPeople(); }
 function pfReset(){
-  Object.keys(PF).forEach(k=>{ if(k!=='tags') PF[k]=''; });
-  PF.tags.clear();
+  ['gender','visit','bn','profile','league'].forEach(k=>PF[k]='');
+  PF.miles=MILES_MAX; PF.tags.clear();
   ['pfAgeMin','pfAgeMax','pfAvgMin','pfAvgMax'].forEach(id=>{ if($(id)) $(id).value=''; });
-  $('pfPanel').querySelectorAll('.seg').forEach(g=>[...g.children].forEach((b,i)=>b.classList.toggle('on',i===0)));
-  $('pfTags').querySelectorAll('.btn').forEach(b=>b.classList.remove('solid'));
+  $('pfPanel').querySelectorAll('.pf .pf-opts').forEach(g=>[...g.children].forEach((b,i)=>b.classList.toggle('on',i===0)));
+  $('pfTags').querySelectorAll('.pf-opt').forEach(b=>b.classList.remove('on'));
+  pfMilesPaint();
   renderPeople();
 }
 function pfActive(){
   const n=id=>$(id)&&$(id).value.trim()!=='';
-  return ['gender','km','visit','bn','profile','league'].filter(k=>PF[k]).length
+  return ['gender','visit','bn','profile','league'].filter(k=>PF[k]).length
+       + (PF.miles<MILES_MAX?1:0)
        + PF.tags.size
        + ['pfAgeMin','pfAgeMax','pfAvgMin','pfAvgMax'].filter(n).length;
 }
 function pfMatch(p){
   const num=id=>{ const v=$(id)&&$(id).value.trim(); return v?Number(v):null; };
   if(PF.gender && p.gender!==PF.gender) return false;
-  if(PF.km && p.km>Number(PF.km)) return false;
+  if(PF.miles<MILES_MAX && p.miles>MILE_STOPS[PF.miles]) return false;
   if(PF.visit==='30' && p.visit>30) return false;
   if(PF.visit==='90' && p.visit>90) return false;
   if(PF.visit==='lapsed' && p.visit<=60) return false;
