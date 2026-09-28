@@ -112,6 +112,23 @@
 [data-tip]:hover::before{content:'';position:absolute;left:50%;bottom:calc(100% + 3px);transform:translateX(-50%);
   border:5px solid transparent;border-top-color:var(--line-strong);z-index:70;pointer-events:none}
 .tiles [data-tip]{cursor:help}
+/* The bell sits at the right edge, and its badge hangs outside the button.
+   On a narrow screen that pushed the whole page 20px wider than the viewport. */
+.top{flex-wrap:wrap}
+#bellCount{pointer-events:none}
+@media(max-width:640px){
+  .top{gap:8px}
+  #bellWrap{margin-left:0 !important}
+}
+#pfPanel .seg button{white-space:nowrap}
+@media(max-width:640px){
+  #s-people .seg[style*="nowrap"]{flex-wrap:wrap !important}
+  #s-people > .card > div:first-child{gap:8px}
+}
+.full{position:fixed;inset:0;z-index:90;background:var(--bg);display:none;flex-direction:column}
+.full.on{display:flex}
+.full-top{display:flex;align-items:center;gap:14px;padding:15px 20px;border-bottom:1px solid var(--line);background:var(--surface)}
+.full-body{flex:1;overflow:auto;padding:22px 20px 40px;max-width:760px;width:100%;margin:0 auto}
 .row-open{cursor:pointer;transition:background .12s}
 .row-open:hover{background:var(--hover)}
 .dtabs{display:flex;gap:2px;padding:0 18px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--surface);z-index:2}
@@ -566,7 +583,7 @@
       </div>
       <span class="pill">Center Mode</span>
     
-      <div style="position:relative;margin-left:auto">
+      <div id="bellWrap" style="position:relative;margin-left:auto">
         <button class="mini" onclick="bellToggle(event)" aria-label="Notifications" style="position:relative">
           ${ico('bell')}<span class="badge num" id="bellCount" style="position:absolute;top:-4px;right:-4px">0</span>
         </button>
@@ -648,38 +665,19 @@
 
       <!-- -- PEOPLE -- -->
       <section class="screen" id="s-people">
-        <h2 class="title">Customers</h2>
-        <p class="sub">Your list, and who's joined BowlersNetwork.</p>
-
-        <div class="split" style="margin-bottom:14px">
-          <div class="card" id="importCard" style="margin-bottom:0">
-            <h3>Bring your list in</h3>
-            <p class="h-sub">Export from your scoring system, POS, or a spreadsheet you already keep. Any shape - we only look for three columns.</p>
-            <div class="drop" onclick="doImport()">${ico('upload')}<b>Drop your customer file here</b><span>CSV or XLSX | everything else in the file is ignored</span></div>
-            <div class="fields">
-              <div class="fr"><code>email</code><span class="req">Required</span></div>
-              <div class="fr"><code>first_name</code><span class="opt">Optional</span></div>
-              <div class="fr"><code>last_name</code><span class="opt">Optional</span></div>
-            </div>
-            <p style="font-size:11.5px;color:var(--ink-3);margin:12px 0 0">Extra columns, odd headers and blank rows are fine - they're skipped. Rows without an email are reported back so you can fix them.</p>
+        <div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:6px">
+          <div style="flex:1;min-width:240px">
+            <h2 class="title" style="margin-bottom:2px">Customers</h2>
+            <p class="sub">Your list, and who has joined BowlersNetwork.</p>
           </div>
-
-          <div class="card" style="margin-bottom:0">
-            <h3>Or add one person</h3>
-            <p class="h-sub">Same three fields. Uses the invite you already have.</p>
-            <div class="fld"><label class="f">Email <span style="color:var(--accent)">*</span></label><input type="text" id="oneEmail" placeholder="bowler@email.com"></div>
-            <div class="row" style="margin-bottom:14px">
-              <div style="flex:1"><label class="f">First name</label><input type="text" id="oneFirst" placeholder="Optional"></div>
-              <div style="flex:1"><label class="f">Last name</label><input type="text" id="oneLast" placeholder="Optional"></div>
-            </div>
-            <button class="btn solid" style="width:100%" onclick="addOne()">Add &amp; invite</button>
-          </div>
+          <button class="btn solid" onclick="openAdd()" style="flex:none">${ico('upload')}Add customers</button>
         </div>
 
         <div class="card">
-          <div style="display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-bottom:14px">
-            <input type="text" id="q" placeholder="Search name or email..." style="max-width:280px" oninput="renderPeople()">
-            <div class="seg" style="flex:0">
+          <div style="display:flex;gap:9px;align-items:center;flex-wrap:wrap">
+            <input type="text" id="q" placeholder="Name, username or email" style="flex:1 1 220px;min-width:180px" oninput="renderPeople()">
+            <button class="btn" onclick="pfToggle()" id="pfBtn" style="flex:none">${ico('filter')}Filters<span class="badge num" id="pfCount" style="display:none">0</span></button>
+            <div class="seg" style="flex:none;flex-wrap:nowrap">
               <button class="on" data-st="all" onclick="setStatus('all',this)">All</button>
               <button data-st="joined" onclick="setStatus('joined',this)">Joined</button>
               <button data-st="invited" onclick="setStatus('invited',this)">Invited</button>
@@ -687,7 +685,61 @@
             </div>
             <span class="num" id="peopleCount" style="margin-left:auto;font-size:12px;color:var(--ink-3)"></span>
           </div>
-          <div style="overflow-x:auto">
+
+          <div id="pfPanel" style="display:none;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:13px">
+              <div><label class="f">Gender</label>
+                <div class="seg" style="margin-top:5px">
+                  <button class="on" onclick="pfSet(this,'gender','')">Any</button>
+                  <button onclick="pfSet(this,'gender','M')">Men</button>
+                  <button onclick="pfSet(this,'gender','F')">Women</button>
+                </div></div>
+              <div><label class="f">Age</label>
+                <div class="row" style="margin-top:5px"><input type="number" id="pfAgeMin" placeholder="min" oninput="renderPeople()"><input type="number" id="pfAgeMax" placeholder="max" oninput="renderPeople()"></div></div>
+              <div><label class="f">Average</label>
+                <div class="row" style="margin-top:5px"><input type="number" id="pfAvgMin" placeholder="min" oninput="renderPeople()"><input type="number" id="pfAvgMax" placeholder="max" oninput="renderPeople()"></div></div>
+              <div><label class="f">Within</label>
+                <div class="seg" style="margin-top:5px">
+                  <button class="on" onclick="pfSet(this,'km','')">Anywhere</button>
+                  <button onclick="pfSet(this,'km','5')">5km</button>
+                  <button onclick="pfSet(this,'km','20')">20km</button>
+                  <button onclick="pfSet(this,'km','50')">50km</button>
+                </div></div>
+              <div><label class="f">Last visit</label>
+                <div class="seg" style="margin-top:5px">
+                  <button class="on" onclick="pfSet(this,'visit','')">Any time</button>
+                  <button onclick="pfSet(this,'visit','30')">30 days</button>
+                  <button onclick="pfSet(this,'visit','90')">90 days</button>
+                  <button onclick="pfSet(this,'visit','lapsed')">Lapsed</button>
+                </div></div>
+              <div><label class="f">On BowlersNetwork</label>
+                <div class="seg" style="margin-top:5px">
+                  <button class="on" onclick="pfSet(this,'bn','')">Either</button>
+                  <button onclick="pfSet(this,'bn','yes')">Joined</button>
+                  <button onclick="pfSet(this,'bn','no')">Not yet</button>
+                </div></div>
+              <div><label class="f">Profile</label>
+                <div class="seg" style="margin-top:5px">
+                  <button class="on" onclick="pfSet(this,'profile','')">Either</button>
+                  <button onclick="pfSet(this,'profile','yes')">Complete</button>
+                  <button onclick="pfSet(this,'profile','no')">Incomplete</button>
+                </div></div>
+              <div><label class="f">League</label>
+                <div class="seg" style="margin-top:5px">
+                  <button class="on" onclick="pfSet(this,'league','')">Either</button>
+                  <button onclick="pfSet(this,'league','yes')">On a league</button>
+                  <button onclick="pfSet(this,'league','no')">Not on one</button>
+                </div></div>
+            </div>
+            <div style="margin-top:13px"><label class="f">Tags</label>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px" id="pfTags"></div></div>
+            <div style="display:flex;gap:8px;align-items:center;margin-top:14px;flex-wrap:wrap">
+              <button class="btn" onclick="pfReset()">Clear all filters</button>
+              <span class="note" id="pfSummary"></span>
+            </div>
+          </div>
+
+          <div style="overflow-x:auto;margin-top:14px">
             <table><thead><tr><th>Bowler</th><th>Status</th><th class="num">Average</th><th class="num">Age</th><th>Last active</th><th>League</th></tr></thead><tbody id="peopleBody"></tbody></table>
           </div>
         </div>
@@ -1395,6 +1447,54 @@
   </div>
 </div>
 
+<!-- === ADD CUSTOMERS (full screen) === -->
+<div class="full" id="addFull">
+  <header class="full-top">
+    <div style="flex:1;min-width:0">
+      <b style="font-size:15px">Add customers</b>
+      <div class="note">Bring your whole list in, or add one person.</div>
+    </div>
+    <button class="mini" onclick="closeAdd()" aria-label="Close">Close</button>
+  </header>
+  <div class="full-body">
+    <div class="seg" style="margin-bottom:18px" id="addTabs">
+      <button class="on" onclick="addTab(this,'csv')">From a file</button>
+      <button onclick="addTab(this,'one')">One person</button>
+    </div>
+
+    <div id="add-csv">
+      <div class="card">
+        <h3>Bring your list in</h3>
+        <p class="h-sub">Export from your scoring system, POS, or a spreadsheet you already keep. Any shape, we only look for three columns.</p>
+        <div class="drop" onclick="doImport()">${ico('upload')}<b>Drop your customer file here</b><span>CSV or XLSX, everything else in the file is ignored</span></div>
+        <div class="fields">
+          <div class="fr"><code>email</code><span class="req">Required</span></div>
+          <div class="fr"><code>first_name</code><span class="opt">Optional</span></div>
+          <div class="fr"><code>last_name</code><span class="opt">Optional</span></div>
+        </div>
+        <p style="font-size:11.5px;color:var(--ink-3);margin:12px 0 0">Extra columns, odd headers and blank rows are fine, they are skipped. Rows without an email are reported back so you can fix them.</p>
+      </div>
+      <div class="card acc">
+        <b style="font-size:13px">What happens next</b>
+        <p class="note" style="margin-top:4px">Anyone whose email already matches a BowlersNetwork account is linked straight away, and you see their average and profile. Everyone else gets an invite, and links themselves the moment they join.</p>
+      </div>
+    </div>
+
+    <div id="add-one" style="display:none">
+      <div class="card">
+        <h3>Add one person</h3>
+        <p class="h-sub">Same three fields. Uses the invite you already have.</p>
+        <div class="fld"><label class="f">Email <span style="color:var(--accent)">*</span></label><input type="text" id="oneEmail" placeholder="bowler@email.com"></div>
+        <div class="row" style="margin-bottom:14px">
+          <div style="flex:1"><label class="f">First name</label><input type="text" id="oneFirst" placeholder="Optional"></div>
+          <div style="flex:1"><label class="f">Last name</label><input type="text" id="oneLast" placeholder="Optional"></div>
+        </div>
+        <button class="btn solid" style="width:100%" onclick="addOne()">Add and invite</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- === CONTACT DRAWER === -->
 <div class="scrim" id="scrim" onclick="closeAll()"></div>
 <aside class="drawer" id="drawer"><div id="drawerBody"></div></aside>
@@ -1662,6 +1762,7 @@ function ico(n){
     home:'<path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
     users:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
     cal:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+    filter:'<path d="M3 5h18l-7 8v6l-4 2v-8z"/>',
     feed:'<path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1.5"/>',
     pie:'<path d="M21 12A9 9 0 1 1 12 3v9z"/><path d="M14 3.2A9 9 0 0 1 20.8 10H14z"/>',
     pulse:'<path d="M3 12h4l3 8 4-16 3 8h4"/>',
@@ -1751,7 +1852,13 @@ for(let i=0;i<482;i++){
 }
 // Kilometres, because the radius control is in km. `miles` stays as it was
 // so nothing that already reads it changes meaning.
-PEOPLE.forEach(p=>{ p.km = Math.round(p.miles*1.609); });
+PEOPLE.forEach(p=>{
+  p.km = Math.round(p.miles*1.609);
+  p.email = `${p.first.toLowerCase()}.${p.last.toLowerCase()}@email.com`;
+  p.username = p.status==='joined' ? (p.first+p.last).toLowerCase().replace(/[^a-z]/g,'')+(p.id%90+10) : '';
+  // Only joined bowlers have a profile to complete, and not all of them finish it.
+  p.profileComplete = p.status==='joined' && (p.id%10)>3;
+});
 const NAME=p=>p.first+' '+p.last;
 const INIT=p=>p.first[0]+p.last[0];
 
@@ -2616,6 +2723,75 @@ function segPick(b){ [...b.parentElement.children].forEach(x=>x.classList.remove
 function pick(key,b){ segPick(b); S[key]=b.dataset.v; if(key==='seg') reachCount(); else recount(); }
 function setStatus(v,b){ segPick(b); S.status=v; renderPeople(); }
 
+/* ===== Add customers ============================================== */
+function openAdd(){ $('addFull').classList.add('on'); document.body.style.overflow='hidden'; }
+function closeAdd(){ $('addFull').classList.remove('on'); document.body.style.overflow=''; }
+function addTab(btn,which){
+  segPick(btn);
+  $('add-csv').style.display = which==='csv'?'block':'none';
+  $('add-one').style.display = which==='one'?'block':'none';
+}
+
+/* ===== Customer search and filters =================================
+   Search matches first name, last name, both together in either order,
+   username and email. A manager typing "dale kow" should find Dale
+   Kowalski without knowing which field they are searching. */
+const PF={gender:'',km:'',visit:'',bn:'',profile:'',league:'',tags:new Set()};
+
+function pfToggle(){
+  const el=$('pfPanel');
+  el.style.display = el.style.display==='block'?'none':'block';
+  if(el.style.display==='block' && !$('pfTags').dataset.built){
+    $('pfTags').dataset.built='1';
+    $('pfTags').innerHTML = TAG_POOL.map(t=>
+      `<button class="btn" onclick="pfTag(this,'${t}')">${t.replace(/-/g,' ')}</button>`).join('');
+  }
+}
+function pfSet(btn,key,val){ PF[key]=val; segPick(btn); renderPeople(); }
+function pfTag(btn,t){ if(PF.tags.has(t)) PF.tags.delete(t); else PF.tags.add(t); btn.classList.toggle('solid'); renderPeople(); }
+function pfReset(){
+  Object.keys(PF).forEach(k=>{ if(k!=='tags') PF[k]=''; });
+  PF.tags.clear();
+  ['pfAgeMin','pfAgeMax','pfAvgMin','pfAvgMax'].forEach(id=>{ if($(id)) $(id).value=''; });
+  $('pfPanel').querySelectorAll('.seg').forEach(g=>[...g.children].forEach((b,i)=>b.classList.toggle('on',i===0)));
+  $('pfTags').querySelectorAll('.btn').forEach(b=>b.classList.remove('solid'));
+  renderPeople();
+}
+function pfActive(){
+  const n=id=>$(id)&&$(id).value.trim()!=='';
+  return ['gender','km','visit','bn','profile','league'].filter(k=>PF[k]).length
+       + PF.tags.size
+       + ['pfAgeMin','pfAgeMax','pfAvgMin','pfAvgMax'].filter(n).length;
+}
+function pfMatch(p){
+  const num=id=>{ const v=$(id)&&$(id).value.trim(); return v?Number(v):null; };
+  if(PF.gender && p.gender!==PF.gender) return false;
+  if(PF.km && p.km>Number(PF.km)) return false;
+  if(PF.visit==='30' && p.visit>30) return false;
+  if(PF.visit==='90' && p.visit>90) return false;
+  if(PF.visit==='lapsed' && p.visit<=60) return false;
+  if(PF.bn==='yes' && p.status!=='joined') return false;
+  if(PF.bn==='no' && p.status==='joined') return false;
+  if(PF.profile==='yes' && !p.profileComplete) return false;
+  if(PF.profile==='no' && p.profileComplete) return false;
+  if(PF.league==='yes' && !p.league) return false;
+  if(PF.league==='no' && p.league) return false;
+  if(PF.tags.size && !p.tags.some(t=>PF.tags.has(t))) return false;
+  const agMin=num('pfAgeMin'), agMax=num('pfAgeMax'), avMin=num('pfAvgMin'), avMax=num('pfAvgMax');
+  if(agMin!==null && p.age<agMin) return false;
+  if(agMax!==null && p.age>agMax) return false;
+  if(avMin!==null && (p.avg===null||p.avg<avMin)) return false;
+  if(avMax!==null && (p.avg===null||p.avg>avMax)) return false;
+  return true;
+}
+function pfSearch(p,q){
+  if(!q) return true;
+  const first=p.first.toLowerCase(), last=p.last.toLowerCase();
+  const hay=[first,last,first+' '+last,last+' '+first,p.username,p.email].filter(Boolean);
+  // Every word typed has to match something, so "kow dale" works too.
+  return q.split(/\s+/).filter(Boolean).every(w=>hay.some(h=>h.includes(w)));
+}
+
 // -- tiles ------------------------------------------------------------
 var EVENTS=[
   {name:'Saturday Scratch Classic', when:'Sat 27 Sep, 6:30pm', going:38},
@@ -2681,15 +2857,21 @@ function addOne(){
 
 // -- people table -----------------------------------------------------
 function renderPeople(){
-  const q=$('q').value.toLowerCase();
+  const q=$('q').value.trim().toLowerCase();
   let rows=visiblePeople();
   if(S.status!=='all') rows=rows.filter(p=>p.status===S.status);
-  if(q) rows=rows.filter(p=>NAME(p).toLowerCase().includes(q));
-  $('peopleCount').textContent=rows.length.toLocaleString()+' shown';
+  rows=rows.filter(p=>pfSearch(p,q) && pfMatch(p));
+  const total=visiblePeople().length;
+  $('peopleCount').textContent = rows.length.toLocaleString()+' of '+total.toLocaleString();
+  const n=pfActive(), badge=$('pfCount');
+  if(badge){ badge.textContent=n; badge.style.display=n?'':'none'; }
+  if($('pfSummary')) $('pfSummary').textContent = n
+    ? `${n} filter${n===1?'':'s'} on, showing ${rows.length.toLocaleString()} of ${total.toLocaleString()}`
+    : 'No filters on';
   const body=$('peopleBody');
   if(!rows.length){ body.innerHTML='<tr><td colspan="6"><div class="empty"><b>Nobody matches</b><span>Try clearing the search or filter.</span></div></td></tr>'; return; }
   body.innerHTML=rows.slice(0,60).map(p=>`<tr class="row-open" onclick="openContact(${p.id})" title="Open ${NAME(p)}">
-    <td><div class="who"><div class="av ${p.status==='joined'?'on':''}">${INIT(p)}</div><div><div>${NAME(p)}</div><div style="font-size:11px;color:var(--ink-3)">${p.first.toLowerCase()}.${p.last.toLowerCase()}@email.com</div></div></div></td>
+    <td><div class="who"><div class="av ${p.status==='joined'?'on':''}">${INIT(p)}</div><div><div>${NAME(p)}</div><div style="font-size:11px;color:var(--ink-3)">${p.username?'@'+p.username:p.email}</div></div></div></td>
     <td><span class="tag ${p.status}"><i></i>${p.status==='imported'?'Not joined':p.status[0].toUpperCase()+p.status.slice(1)}</span></td>
     <td class="num">${p.avg??'<span style="color:var(--ink-3)">-</span>'}</td>
     <td class="num">${p.age}</td>
