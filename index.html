@@ -101,6 +101,9 @@
   .tile{border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:16px}
 .face-open{cursor:pointer;transition:transform .12s}
 .face-open:hover{transform:translateY(-1px)}
+.nmphone{border:1px solid var(--line-strong);border-radius:16px;background:var(--hover);padding:14px 12px;min-height:150px}
+.nmnotif{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;box-shadow:0 2px 10px var(--shadow)}
+@media(max-width:760px){.nm-two{grid-template-columns:1fr !important}}
 .row-open{cursor:pointer;transition:background .12s}
 .row-open:hover{background:var(--hover)}
 .dtabs{display:flex;gap:2px;padding:0 18px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--surface);z-index:2}
@@ -1146,16 +1149,137 @@
       <!-- -- NOTIFICATIONS -- -->
       <section class="screen" id="s-notif">
         <h2 class="title">Notifications</h2>
-        <p class="sub">What you have sent through the app, and how it landed.</p>
-        <div class="tiles">
-          <div class="tile"><div class="k">Sent this month</div><div class="v">18</div><div class="m">In-app, to linked bowlers</div></div>
-          <div class="tile accent"><div class="k">Opened</div><div class="v">68%</div><div class="m">Against 21% on email</div></div>
-          <div class="tile"><div class="k">Muted your center</div><div class="v">7</div><div class="m">Of 412 linked</div></div>
-          <div class="tile"><div class="k">Weekly cap left</div><div class="v">1</div><div class="m">Per bowler</div></div>
+        <p class="sub">Write it, choose who gets it, and send. Everything you have sent is here too.</p>
+
+        <div class="seg" style="margin-bottom:16px" id="nmTabs">
+          <button class="on" data-nt="compose" onclick="nmTab(this,'compose')">Compose</button>
+          <button data-nt="history" onclick="nmTab(this,'history')">History</button>
+          <button data-nt="rules" onclick="nmTab(this,'rules')">Rules</button>
+          <button data-nt="analytics" onclick="nmTab(this,'analytics')">Analytics</button>
         </div>
-        <div class="chart-grid">
-          <div class="chart-card"><h4>Sent over time</h4><p class="sub">In-app notifications per week</p><div class="chart-wrap"><canvas id="notif-time"></canvas></div></div>
-          <div class="chart-card"><h4>By channel</h4><p class="sub">Where your messages went</p><div class="chart-wrap"><canvas id="notif-channel"></canvas></div></div>
+
+        <!-- COMPOSE -->
+        <div id="nm-compose">
+          <div class="card" style="padding:0;overflow:hidden">
+            <div id="nmStepper" style="display:flex;border-bottom:1px solid var(--line)"></div>
+
+            <div class="nmstep on" id="nm-step-1" style="padding:20px">
+              <b style="font-size:14px">Who is this for?</b>
+              <p class="note" style="margin:3px 0 14px">Pick a group, or build one from tags.</p>
+              <div class="chart-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:0" id="nmSegs"></div>
+              <div id="nmCustomTags" style="display:none;margin-top:14px">
+                <label class="f">Tags</label>
+                <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:7px" id="nmTagList"></div>
+              </div>
+              <div class="card acc" style="margin:16px 0 0;display:flex;align-items:center;gap:14px">
+                <div><div class="k">Reaches</div><div class="v" id="nmReach">0</div></div>
+                <div style="flex:1"><div class="note" id="nmReachSeg">Everyone</div>
+                <div class="note">Around <span id="nmExcl">0</span> excluded for muting your center or opting out</div></div>
+              </div>
+            </div>
+
+            <div class="nmstep" id="nm-step-2" style="padding:20px;display:none">
+              <b style="font-size:14px">What does it say?</b>
+              <p class="note" style="margin:3px 0 14px">Keep it short. This lands on a lock screen.</p>
+              <div style="display:grid;grid-template-columns:1fr 280px;gap:20px" class="nm-two">
+                <div>
+                  <label class="f">Channels</label>
+                  <div style="display:flex;gap:7px;flex-wrap:wrap;margin:7px 0 16px" id="nmChannels">
+                    <button class="btn" data-ch="push" onclick="nmChannel(this,'push')">Push</button>
+                    <button class="btn" data-ch="inapp" onclick="nmChannel(this,'inapp')">In-app</button>
+                    <button class="btn" data-ch="email" onclick="nmChannel(this,'email')">Email</button>
+                  </div>
+                  <label class="f">Title <span class="note" id="nmTitleCount">0/48</span></label>
+                  <input type="text" id="nmTitle" maxlength="48" oninput="nmPreview()" placeholder="Lanes are open Friday night"
+                    style="width:100%;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:10px;padding:11px 13px;font:inherit;font-size:14px;margin:6px 0 14px">
+                  <label class="f">Body <span class="note" id="nmBodyCount">0/140</span></label>
+                  <textarea id="nmBody" rows="3" maxlength="140" oninput="nmPreview()" placeholder="$2 games till close. Bring someone who has not bowled in a while."
+                    style="width:100%;resize:vertical;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:10px;padding:11px 13px;font:inherit;font-size:14px;margin-top:6px"></textarea>
+                  <label class="f" style="margin-top:14px;display:block">Opens</label>
+                  <select id="nmDeeplink" style="width:100%;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:10px;padding:11px 13px;font:inherit;font-size:14px;margin-top:6px">
+                    <option value="center">Your center page</option>
+                    <option value="event">An event</option>
+                    <option value="league">League standings</option>
+                    <option value="offer">An offer</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="f">On their phone</label>
+                  <div class="nmphone">
+                    <div class="nmnotif">
+                      <div style="display:flex;gap:8px;align-items:center;margin-bottom:5px">
+                        <div class="lead-av" style="width:20px;height:20px;border-radius:5px;font-size:9px">RL</div>
+                        <span class="note" style="font-size:10px">Richmond Lanes · now</span>
+                      </div>
+                      <b style="font-size:12.5px;display:block" id="nmPrevTitle">Your title appears here</b>
+                      <span style="font-size:12px;color:var(--ink-2)" id="nmPrevBody">Body text updates as you type.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="nmstep" id="nm-step-3" style="padding:20px;display:none">
+              <b style="font-size:14px">When?</b>
+              <p class="note" style="margin:3px 0 14px">Sending at a time people are actually holding their phone matters more than the words.</p>
+              <div class="seg" id="nmSched">
+                <button class="on" data-s="now" onclick="nmSchedule(this,'now')">Send now</button>
+                <button data-s="later" onclick="nmSchedule(this,'later')">Later</button>
+                <button data-s="recurring" onclick="nmSchedule(this,'recurring')">Recurring</button>
+              </div>
+              <div id="nmSchedExtra" style="margin-top:14px"></div>
+            </div>
+
+            <div class="nmstep" id="nm-step-4" style="padding:20px;display:none">
+              <b style="font-size:14px">Check it over</b>
+              <p class="note" style="margin:3px 0 14px">Once it is gone it is gone.</p>
+              <div id="nmReview"></div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:18px">
+                <button class="btn solid" onclick="nmSend()">Send it</button>
+                <button class="btn" onclick="nmSaveDraft()">Save as draft</button>
+              </div>
+            </div>
+
+            <div id="nmNav" style="display:flex;gap:8px;padding:14px 20px;border-top:1px solid var(--line)">
+              <button class="btn" id="nmBack" onclick="nmPrev()" style="visibility:hidden">Back</button>
+              <button class="btn solid" id="nmNext" style="margin-left:auto" onclick="nmNext()">Next</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- HISTORY -->
+        <div id="nm-history" style="display:none">
+          <div class="seg" style="margin-bottom:14px" id="nmHistFilter">
+            <button class="on" data-h="all" onclick="nmHist(this,'all')">All</button>
+            <button data-h="sent" onclick="nmHist(this,'sent')">Sent</button>
+            <button data-h="scheduled" onclick="nmHist(this,'scheduled')">Scheduled</button>
+            <button data-h="draft" onclick="nmHist(this,'draft')">Drafts</button>
+          </div>
+          <div id="nmSentList"></div>
+        </div>
+
+        <!-- RULES -->
+        <div id="nm-rules" style="display:none">
+          <div class="card">
+            <b style="font-size:13px">Limits that protect your bowlers</b>
+            <p class="note" style="margin:4px 0 14px">These apply to everything, including automated rules.</p>
+            <div id="nmRuleRows"></div>
+            <button class="btn solid" style="margin-top:14px" onclick="nmSaveRules()">Save limits</button>
+          </div>
+        </div>
+
+        <!-- ANALYTICS -->
+        <div id="nm-analytics" style="display:none">
+          <div class="tiles">
+            <div class="tile"><div class="k">Sent this month</div><div class="v" id="nmStatSent">0</div><div class="m">In-app, to linked bowlers</div></div>
+            <div class="tile accent"><div class="k">Opened</div><div class="v">68%</div><div class="m">Against 21% on email</div></div>
+            <div class="tile"><div class="k">Muted your center</div><div class="v">7</div><div class="m">Of 412 linked</div></div>
+            <div class="tile"><div class="k">Weekly cap left</div><div class="v">1</div><div class="m">Per bowler</div></div>
+          </div>
+          <div class="chart-grid">
+            <div class="chart-card"><h4>Sent over time</h4><p class="sub">Notifications per week</p><div class="chart-wrap"><canvas id="notif-time"></canvas></div></div>
+            <div class="chart-card"><h4>By channel</h4><p class="sub">Where your messages went</p><div class="chart-wrap"><canvas id="notif-channel"></canvas></div></div>
+          </div>
         </div>
       </section>
 
@@ -1647,6 +1771,199 @@ function ringOpts(p){
 
 let OV_KM = 5;
 
+/* ===== Notification manager =======================================
+   Real state, not a mock: reach is computed from the records, a step
+   will not advance without what it needs, and sending appends to the
+   history the History tab reads. */
+const NM = {
+  step:1, max:4, highest:1,
+  segment:'all', tags:new Set(), channels:new Set(['push']),
+  schedule:'now',
+  sent:[
+    {id:'n1',title:'Saturday league sign-ups close Friday',body:'Eight lanes left.',seg:'League bowlers',reach:186,ch:['push','inapp'],status:'sent',when:Date.now()-2*864e5,delivered:181,opened:124},
+    {id:'n2',title:'Your birthday game is waiting',body:'Free game, any time this month.',seg:'Everyone',reach:412,ch:['inapp'],status:'sent',when:Date.now()-9*864e5,delivered:404,opened:233},
+    {id:'n3',title:'Youth night starts Saturday',body:'Ages 8-18, coaching included.',seg:'Parents',reach:74,ch:['push'],status:'scheduled',when:Date.now()+2*864e5,delivered:0,opened:0}
+  ],
+  histFilter:'all'
+};
+const NM_SEGS=[
+  ['all','Everyone','Every linked bowler on your list'],
+  ['new','New bowlers','Joined in the last 30 days'],
+  ['league','League bowlers','On a league roster'],
+  ['lapsed','Lapsed','No visit in 60 days'],
+  ['custom','Build one','Pick by tag']
+];
+
+function nmPeople(seg){
+  const J=PEOPLE.filter(p=>p.status==='joined');
+  if(seg==='new')    return J.filter(p=>p.joinedWeeksAgo<=4);
+  if(seg==='league') return J.filter(p=>p.league);
+  if(seg==='lapsed') return J.filter(p=>p.visit>60);
+  if(seg==='custom') return J.filter(p=>p.tags.some(t=>NM.tags.has(t)));
+  return J;
+}
+function nmReachCount(){ return nmPeople(NM.segment).length; }
+
+function nmTab(btn,t){
+  segPick(btn);
+  ['compose','history','rules','analytics'].forEach(x=>{
+    const el=$('nm-'+x); if(el) el.style.display = (x===t)?'block':'none';
+  });
+  if(t==='history') nmRenderSent();
+  if(t==='rules') nmRenderRules();
+  if(t==='analytics'){ $('nmStatSent').textContent=NM.sent.filter(x=>x.status==='sent').length; drawCharts('notif'); }
+}
+
+function nmInit(){
+  $('nmSegs').innerHTML = NM_SEGS.map(([k,label,sub])=>
+    `<button class="tile ${k===NM.segment?'accent':''}" data-seg="${k}" onclick="nmSetSeg('${k}')"
+      style="text-align:left;border-width:1px;cursor:pointer;font:inherit;color:var(--ink)">
+      <div class="k">${label}</div><div class="m" style="margin-top:3px">${sub}</div></button>`).join('');
+  $('nmTagList').innerHTML = TAG_POOL.map(t=>
+    `<button class="btn" data-t="${t}" onclick="nmTag(this,'${t}')">${t.replace(/-/g,' ')}</button>`).join('');
+  nmStepper(); nmShow(1); nmUpdateReach(); nmPreview();
+}
+
+function nmSetSeg(k){
+  NM.segment=k;
+  document.querySelectorAll('#nmSegs [data-seg]').forEach(b=>b.classList.toggle('accent',b.dataset.seg===k));
+  $('nmCustomTags').style.display = (k==='custom')?'block':'none';
+  nmUpdateReach();
+}
+function nmTag(btn,t){
+  if(NM.tags.has(t)) NM.tags.delete(t); else NM.tags.add(t);
+  btn.classList.toggle('solid');
+  nmUpdateReach();
+}
+function nmUpdateReach(){
+  const n=nmReachCount();
+  const label=(NM_SEGS.find(x=>x[0]===NM.segment)||[])[1]||'Custom';
+  $('nmReach').textContent=n.toLocaleString();
+  $('nmReachSeg').textContent=label;
+  $('nmExcl').textContent=Math.round(n*0.049);
+}
+function nmChannel(btn,ch){
+  if(NM.channels.has(ch)) NM.channels.delete(ch); else NM.channels.add(ch);
+  btn.classList.toggle('solid');
+  nmPreview();
+}
+function nmPreview(){
+  const t=$('nmTitle').value, b=$('nmBody').value;
+  $('nmPrevTitle').textContent = t || 'Your title appears here';
+  $('nmPrevBody').textContent  = b || 'Body text updates as you type.';
+  $('nmTitleCount').textContent = `${t.length}/48`;
+  $('nmBodyCount').textContent  = `${b.length}/140`;
+}
+function nmSchedule(btn,mode){
+  NM.schedule=mode; segPick(btn);
+  $('nmSchedExtra').innerHTML = mode==='now'
+    ? '<p class="note">Goes out as soon as you send it.</p>'
+    : mode==='later'
+      ? '<label class="f">When</label><input type="datetime-local" style="border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:10px;padding:10px 12px;font:inherit;font-size:13.5px;margin-top:6px">'
+      : '<label class="f">How often</label><div class="seg" style="margin-top:6px"><button class="on">Weekly</button><button>Every 2 weeks</button><button>Monthly</button></div>';
+}
+
+function nmValidate(step){
+  if(step===1 && nmReachCount()===0){ toast('That reaches nobody. Widen the group first.'); return false; }
+  if(step===2){
+    if(!$('nmTitle').value.trim() || !$('nmBody').value.trim()){ toast('A title and a body, then you can carry on.'); return false; }
+    if(NM.channels.size===0){ toast('Pick at least one channel.'); return false; }
+  }
+  return true;
+}
+function nmShow(step){
+  NM.step=step;
+  for(let i=1;i<=NM.max;i++){ const el=$('nm-step-'+i); if(el) el.style.display=(i===step)?'block':'none'; }
+  $('nmBack').style.visibility = step===1?'hidden':'visible';
+  $('nmNav').style.display = step===NM.max?'none':'flex';
+  $('nmNext').textContent = step===NM.max-1?'Review':'Next';
+  nmStepper();
+  if(step===NM.max) nmReview();
+}
+function nmNext(){ if(!nmValidate(NM.step)) return; if(NM.step<NM.max){ NM.highest=Math.max(NM.highest,NM.step+1); nmShow(NM.step+1); } }
+function nmPrev(){ if(NM.step>1) nmShow(NM.step-1); }
+function nmGo(n){ if(n<=NM.highest) nmShow(n); }
+function nmStepper(){
+  const names=['Who','What','When','Check'];
+  $('nmStepper').innerHTML = names.map((n,i)=>{
+    const k=i+1, on=k===NM.step, done=k<NM.highest;
+    return `<button onclick="nmGo(${k})" style="flex:1;border:0;background:none;font:inherit;cursor:${k<=NM.highest?'pointer':'default'};
+      padding:13px 8px;font-size:12.5px;font-weight:600;
+      color:${on?'var(--accent)':done?'var(--ink-2)':'var(--ink-3)'};
+      border-bottom:2px solid ${on?'var(--accent)':'transparent'}">${k}. ${n}</button>`;
+  }).join('');
+}
+function nmReview(){
+  const chLabel={push:'Push',inapp:'In-app',email:'Email'};
+  const rows=[
+    ['Going to',(NM_SEGS.find(x=>x[0]===NM.segment)||[])[1]||'Custom'],
+    ['Reaches',nmReachCount().toLocaleString()+' bowlers'],
+    ['Channels',[...NM.channels].map(c=>chLabel[c]).join(', ')||'(none)'],
+    ['When',{now:'Straight away',later:'Scheduled',recurring:'Recurring'}[NM.schedule]],
+    ['Title',$('nmTitle').value||'(empty)'],
+    ['Body',$('nmBody').value||'(empty)']
+  ];
+  $('nmReview').innerHTML = rows.map(r=>
+    `<div class="lead-row"><span style="flex:1;font-size:13px;color:var(--ink-2)">${r[0]}</span><b style="font-size:13px;text-align:right;max-width:60%">${r[1]}</b></div>`).join('');
+}
+function nmSend(){
+  const n=nmReachCount();
+  NM.sent.unshift({
+    id:'n'+NM.sent.length+1, title:$('nmTitle').value.trim()||'Untitled',
+    body:$('nmBody').value.trim(), seg:(NM_SEGS.find(x=>x[0]===NM.segment)||[])[1]||'Custom',
+    reach:n, ch:[...NM.channels],
+    status: NM.schedule==='now'?'sent':'scheduled',
+    when: NM.schedule==='now'?Date.now():Date.now()+3600e3,
+    delivered: NM.schedule==='now'?Math.round(n*0.951):0,
+    opened: NM.schedule==='now'?Math.round(n*0.62):0
+  });
+  toast(NM.schedule==='now'?`Going out to ${n.toLocaleString()} bowlers.`:'Scheduled.');
+  nmReset(); nmTab(document.querySelector('#nmTabs [data-nt="history"]'),'history');
+}
+function nmSaveDraft(){
+  NM.sent.unshift({id:'d'+Date.now(),title:$('nmTitle').value.trim()||'Untitled draft',
+    body:$('nmBody').value.trim(),seg:'-',reach:0,ch:[...NM.channels],status:'draft',when:Date.now(),delivered:0,opened:0});
+  toast('Saved as a draft.'); nmReset();
+}
+function nmReset(){
+  NM.step=1; NM.highest=1; NM.segment='all'; NM.tags.clear();
+  NM.channels=new Set(['push']); NM.schedule='now';
+  $('nmTitle').value=''; $('nmBody').value='';
+  document.querySelectorAll('#nmChannels .btn').forEach(b=>b.classList.toggle('solid',b.dataset.ch==='push'));
+  document.querySelectorAll('#nmTagList .btn').forEach(b=>b.classList.remove('solid'));
+  nmSetSeg('all'); nmShow(1); nmPreview();
+}
+function nmHist(btn,f){ NM.histFilter=f; segPick(btn); nmRenderSent(); }
+function nmRenderSent(){
+  let rows=NM.sent.slice();
+  if(NM.histFilter!=='all') rows=rows.filter(r=>r.status===NM.histFilter);
+  rows.sort((a,b)=>b.when-a.when);
+  if(!rows.length){ $('nmSentList').innerHTML='<div class="empty"><b>Nothing here</b><span>Nothing matches that filter yet.</span></div>'; return; }
+  const chLabel={push:'Push',inapp:'In-app',email:'Email'};
+  $('nmSentList').innerHTML = rows.map(r=>{
+    const pct = r.delivered? Math.round(r.opened/r.delivered*100):0;
+    const when = new Date(r.when).toLocaleDateString(undefined,{month:'short',day:'numeric'});
+    return `<div class="card" style="display:flex;gap:14px;align-items:center;padding:15px 18px">
+      <div style="flex:1;min-width:0">
+        <b style="font-size:13.5px">${r.title}</b>
+        <div class="note">${r.seg} · ${r.ch.map(c=>chLabel[c]).join(', ')} · ${when}</div>
+      </div>
+      ${r.status==='sent'?`<div style="text-align:right"><b style="font-size:13px">${pct}%</b><div class="note">opened</div></div>`:''}
+      <span class="tag ${r.status==='sent'?'joined':r.status==='scheduled'?'invited':'imported'}"><i></i>${r.status[0].toUpperCase()+r.status.slice(1)}</span>
+    </div>`;
+  }).join('');
+}
+function nmRenderRules(){
+  const rules=[['Most messages a week','2','Per bowler, across everything you send'],
+               ['Quiet hours','9pm to 9am','Nothing goes out overnight'],
+               ['Pause after being ignored','5','Consecutive unopened messages'],
+               ['Always allow','Event reminders','These ignore the weekly cap']];
+  $('nmRuleRows').innerHTML = rules.map(r=>
+    `<div class="lead-row"><div style="flex:1;min-width:0"><b style="font-size:13px">${r[0]}</b><div class="note">${r[2]}</div></div>
+     <b style="font-size:13px;color:var(--accent)">${r[1]}</b></div>`).join('');
+}
+function nmSaveRules(){ toast('Limits saved. They apply to automated rules too.'); }
+
 /* ===== Audience filters ==========================================
    These filter real records. Every chart on the screen is drawn from
    audRows(), so moving a control moves the charts. */
@@ -1827,6 +2144,7 @@ function go(s){
   if(s==='beh') renderHeat();
   if(s==='settings') renderSettings();
   if(s==='aud') renderAud();
+  if(s==='notif') nmInit();
   if(['beh','cnt','inf','notif'].includes(s)) drawCharts(s);
 }
 
