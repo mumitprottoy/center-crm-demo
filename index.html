@@ -3798,7 +3798,7 @@ function openContact(id){
     <div class="dtabs">
       <button class="dtab on" data-dt="prof" onclick="dtab(this,'prof')">Profile</button>
       <button class="dtab" data-dt="act" onclick="dtab(this,'act')">Activity</button>
-      <button class="dtab" data-dt="grp" onclick="dtab(this,'grp')">Groups${groupsOf(p).length?` <span class="badge num">${groupsOf(p).length}</span>`:''}</button>
+      <button class="dtab" data-dt="grp" onclick="dtab(this,'grp')">Groups${groupsOf(p).length?` (${groupsOf(p).length})`:''}</button>
       <button class="dtab" data-dt="msg" onclick="dtab(this,'msg')">Messages</button>
       <button class="dtab" data-dt="note" onclick="dtab(this,'note')">Notes</button>
     </div>
