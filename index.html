@@ -1826,9 +1826,20 @@ function ico(n){
 // and swap each for its real SVG. Done this way rather than rewriting
 // innerHTML on containers so no element - and no inline handler - is touched.
 (function(){
-  const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+  // A script element's own source is a text node in the body, and it is full
+  // of ${ico(...)} inside template strings. Walking into it re-parsed the
+  // whole program as HTML and littered the DOM with phantom copies of every
+  // markup fragment in this file, including drawer tabs and panes that
+  // global selectors would then match.
+  const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{
+    acceptNode(node){
+      const tag=node.parentNode && node.parentNode.nodeName;
+      if(tag==='SCRIPT'||tag==='STYLE'||tag==='TEMPLATE') return NodeFilter.FILTER_REJECT;
+      return node.nodeValue.includes("${ico(") ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+    }
+  });
   const hits=[];
-  while(walker.nextNode()) if(walker.currentNode.nodeValue.includes("${ico(")) hits.push(walker.currentNode);
+  while(walker.nextNode()) hits.push(walker.currentNode);
   hits.forEach(node=>{
     const tpl=document.createElement('template');
     tpl.innerHTML=node.nodeValue.replace(/\$\{ico\('(\w+)'\)\}/g,(_,n)=>ico(n));
@@ -3787,6 +3798,7 @@ function openContact(id){
     <div class="dtabs">
       <button class="dtab on" data-dt="prof" onclick="dtab(this,'prof')">Profile</button>
       <button class="dtab" data-dt="act" onclick="dtab(this,'act')">Activity</button>
+      <button class="dtab" data-dt="grp" onclick="dtab(this,'grp')">Groups${groupsOf(p).length?` <span class="badge num">${groupsOf(p).length}</span>`:''}</button>
       <button class="dtab" data-dt="msg" onclick="dtab(this,'msg')">Messages</button>
       <button class="dtab" data-dt="note" onclick="dtab(this,'note')">Notes</button>
     </div>
@@ -3831,6 +3843,28 @@ function openContact(id){
       </div>
     </div>
 
+    <div class="dpane" id="dp-grp">
+      <div class="dsec">
+        <div class="k">Groups at your center</div>
+        ${(()=>{
+          const gs=groupsOf(p);
+          if(!gs.length) return `
+            <p style="font-size:13px;color:var(--ink-2);margin:0 0 12px;line-height:1.55">${p.first} is not in any of your groups yet.</p>
+            <button class="btn" onclick="closeAll();go('groups')">Put them in one</button>`;
+          return gs.map(m=>`
+            <button class="tl" style="width:100%;text-align:left;border:0;background:none;font:inherit;cursor:pointer;color:var(--ink);padding:11px 0"
+              onclick="closeAll();openGroup(${m.gi})">
+              <div class="tl-dot ${m.sub?'dim':''}"></div>
+              <div style="flex:1;min-width:0">
+                <b style="font-size:13px">${m.group.name}</b>
+                <div class="note">${m.sub ? 'On the subs list' : m.team + (m.captain ? ' · Captain' : '')}</div>
+              </div>
+              <span class="note" style="flex:none">${m.group.desc.split(',')[0]}</span>
+            </button>`).join('');
+        })()}
+      </div>
+    </div>
+
     <div class="dpane" id="dp-msg">
       <div class="dsec">
         <div class="k">What you have sent</div>
@@ -3858,6 +3892,20 @@ function openContact(id){
       <button class="btn" onclick="textThem('${p.first}','${phone}')">Text</button>
     </div>`;
   $('drawer').classList.add('on'); $('scrim').classList.add('on');
+}
+
+/* Where this person sits across the center's groups: on a team, captaining
+   one, or waiting on the subs list. */
+function groupsOf(p){
+  const out=[];
+  GROUPS.forEach((g,gi)=>{
+    g.teams.forEach(t=>{
+      const idx=t.members.findIndex(m=>m.id===p.id);
+      if(idx>-1) out.push({gi,group:g,team:t.name,captain:idx===0,sub:false});
+    });
+    if(g.subs.some(m=>m.id===p.id)) out.push({gi,group:g,team:null,captain:false,sub:true});
+  });
+  return out;
 }
 
 function dtab(btn,name){
