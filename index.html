@@ -3646,7 +3646,11 @@ const DC = GROUPS.map(g => ({
     ...g.teams.map(t => ({name:t.name, kind:'roster', members:t.members, msgs:[
       {who:null, tm:'Tue', tx:'Practice at 6, same lanes as last week.'}
     ]})),
-    {name:'Subs', kind:'pool', members:g.subs, msgs:[]}
+    {name:'Subs', kind:'pool', members:g.subs, msgs:[
+      {who:'Richmond Lanes', tm:'Mon', tx:'Two spots open Tuesday. First to reply gets them.'},
+      {who:null, tm:'Mon', tx:'I can take one.'},
+      {who:null, tm:'Tue', tx:'Put me down for any week you are short.'}
+    ]}
   ]
 }));
 
@@ -3696,27 +3700,9 @@ function dcMain(){
   $('dcChanName').textContent = c.name;
   $('dcChanDesc').textContent = k.desc;
   $('dcMemBtn').style.display = c.members.length ? '' : 'none';
-  $('dcCompose').style.display = c.kind==='pool' ? 'none' : 'flex';
+  $('dcCompose').style.display = 'flex';
   $('dcInput').placeholder = c.kind==='announce'
     ? `Post to everyone in ${DC[DCG].name}` : `Message ${c.name}`;
-
-  if(c.kind==='pool'){
-    // The one affordance that makes the league case work without league
-    // logic: anyone here moves into any roster in a single action.
-    $('dcBody').innerHTML = c.members.length ? `
-      <p class="note" style="margin:0 0 12px">${c.members.length} people waiting. Move anyone into a roster.</p>
-      ${c.members.map(m=>`
-        <div class="lead-row">
-          <div class="lead-av face-open" onclick="openContact(${m.id})">${INIT(m)}</div>
-          <div style="flex:1;min-width:0">
-            <b style="font-size:13px" class="who2" onclick="openContact(${m.id})">${NAME(m)}</b>
-            <div class="note">${m.avg?m.avg+' average':'Not on BowlersNetwork yet'}</div>
-          </div>
-          <button class="btn" onclick="dcPromote(${m.id})">Move to a roster</button>
-        </div>`).join('')}`
-      : '<div class="dc-empty">Nobody waiting.</div>';
-    dcMembers(); return;
-  }
 
   const joined = PEOPLE.filter(p=>p.status==='joined');
   $('dcBody').innerHTML = c.msgs.length ? c.msgs.map((m,i)=>{
@@ -3739,11 +3725,13 @@ function dcMembers(){
   $('dcMem').innerHTML = c.members.length ? `
     <div class="dc-cat" style="padding-left:4px">In here &middot; ${c.members.length}</div>
     ${c.members.map((m,i)=>`
-      <button class="dc-chan" onclick="openContact(${m.id})" title="${NAME(m)}">
-        <span class="lead-av" style="width:24px;height:24px;font-size:10px">${INIT(m)}</span>
-        <span class="nm">${NAME(m)}</span>
+      <div class="dc-chan" style="cursor:default">
+        <span class="lead-av face-open" style="width:24px;height:24px;font-size:10px"
+          onclick="openContact(${m.id})">${INIT(m)}</span>
+        <span class="nm who2" onclick="openContact(${m.id})" title="${NAME(m)}">${NAME(m)}</span>
         ${i===0 && c.kind==='roster' ? '<span class="ct">captain</span>' : ''}
-      </button>`).join('')}` : '';
+        ${c.kind==='pool' ? `<button class="mini" title="Move into a roster" onclick="dcPromote(${m.id})">&rarr;</button>` : ''}
+      </div>`).join('')}` : '';
 }
 
 function dcGo(i){ DCG=i; DCC=1; DCMEM=false; document.querySelector('.dc').classList.remove('mem-open'); dcRender(); }
