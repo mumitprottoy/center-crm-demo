@@ -139,6 +139,56 @@
   border-radius:8px;padding:8px 10px}
 .pf-range input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
 .pf-range span{font-size:12px;color:var(--ink-3);flex:none}
+/* ── Groups v2: server / channel shell ─────────────────────────── */
+.dc{display:grid;grid-template-columns:68px 232px 1fr;border:1px solid var(--line);
+  border-radius:14px;overflow:hidden;background:var(--surface);height:min(74vh,720px)}
+.dc.mem-open{grid-template-columns:68px 232px 1fr 208px}
+.dc-rail{background:var(--hover);display:flex;flex-direction:column;align-items:center;
+  gap:8px;padding:10px 0;overflow-y:auto}
+.dc-srv{width:44px;height:44px;border-radius:15px;border:0;cursor:pointer;flex:none;
+  background:var(--surface);color:var(--ink-2);font:inherit;font-size:13px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;transition:border-radius .16s,background .16s,color .16s}
+.dc-srv:hover{border-radius:13px;background:var(--accent-subtle);color:var(--accent)}
+.dc-srv.on{border-radius:13px;background:var(--accent);color:var(--on-accent)}
+.dc-srv-new{background:transparent;border:1px dashed var(--line-strong);color:var(--ink-3);font-size:18px}
+.dc-side{background:var(--bg);border-right:1px solid var(--line);display:flex;flex-direction:column;min-width:0}
+.dc-side-head{display:flex;align-items:center;gap:8px;padding:13px 14px;border-bottom:1px solid var(--line)}
+.dc-side-head b{flex:1;min-width:0;font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dc-chans{flex:1;overflow-y:auto;padding:10px 8px}
+.dc-cat{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink-3);padding:12px 6px 5px}
+.dc-chan{display:flex;align-items:center;gap:7px;width:100%;border:0;background:none;font:inherit;
+  color:var(--ink-2);font-size:13px;padding:7px 8px;border-radius:7px;cursor:pointer;text-align:left}
+.dc-chan:hover{background:var(--hover);color:var(--ink)}
+.dc-chan.on{background:var(--accent-subtle);color:var(--accent);font-weight:600}
+.dc-chan .ic{width:15px;text-align:center;flex:none;opacity:.75}
+.dc-chan .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dc-chan .ct{font-size:11px;color:var(--ink-3);flex:none}
+.dc-side-foot{display:flex;align-items:center;gap:9px;padding:10px 12px;border-top:1px solid var(--line);background:var(--hover)}
+.dc-main{display:flex;flex-direction:column;min-width:0;background:var(--surface)}
+.dc-top{display:flex;align-items:center;gap:9px;padding:13px 16px;border-bottom:1px solid var(--line)}
+.dc-top b{font-size:14px}
+.dc-hash{color:var(--ink-3);font-size:15px}
+.dc-body{flex:1;overflow-y:auto;padding:16px}
+.dc-compose{display:flex;gap:8px;padding:12px 16px;border-top:1px solid var(--line)}
+.dc-compose input{flex:1;min-width:0;border:1px solid var(--line-strong);background:var(--bg);
+  color:var(--ink);border-radius:10px;padding:10px 13px;font:inherit;font-size:13.5px}
+.dc-compose input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+.dc-mem{display:none;border-left:1px solid var(--line);background:var(--bg);overflow-y:auto;padding:12px 10px}
+.dc.mem-open .dc-mem{display:block}
+.dc-msg{display:flex;gap:10px;padding:7px 0}
+.dc-msg .bod{min-width:0;flex:1}
+.dc-msg .nm{font-size:13px;font-weight:650}
+.dc-msg .tm{font-size:10.5px;color:var(--ink-3);margin-left:6px}
+.dc-msg .tx{font-size:13.5px;color:var(--ink-2);line-height:1.5;margin-top:1px}
+.dc-empty{text-align:center;color:var(--ink-3);padding:36px 16px;font-size:13px}
+@media(max-width:860px){
+  .dc,.dc.mem-open{grid-template-columns:56px 1fr;height:min(80vh,640px)}
+  .dc-main{display:none}
+  .dc.show-main .dc-side{display:none}
+  .dc.show-main .dc-main{display:flex}
+  .dc-mem,.dc.mem-open .dc-mem{display:none}
+}
 .pf-wide{grid-column:1/-1}
 .pf-dist{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 .pf-dist-read{display:flex;align-items:baseline;gap:7px;flex:none;min-width:132px}
@@ -789,6 +839,12 @@
 
       <!-- -- GROUPS -- -->
       <section class="screen" id="s-groups">
+        <div class="seg" style="margin-bottom:18px" id="grpVer">
+          <button class="on" onclick="grpVersion(this,1)">Version 1</button>
+          <button onclick="grpVersion(this,2)">Version 2</button>
+        </div>
+
+        <div id="grpV1">
         <!-- index -->
         <div id="grpIndex">
           <div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:8px">
@@ -845,7 +901,49 @@
             </div>
           </div>
         </div>
-      </section>
+              </div><!-- /grpV1 -->
+
+        <div id="grpV2" style="display:none">
+          <div class="dc">
+            <!-- servers -->
+            <div class="dc-rail" id="dcRail"></div>
+
+            <!-- channels -->
+            <div class="dc-side">
+              <div class="dc-side-head">
+                <b id="dcGroupName">Group</b>
+                <button class="mini" onclick="dcAddChannel()" title="Add channel">+</button>
+              </div>
+              <div class="dc-chans" id="dcChans"></div>
+              <div class="dc-side-foot">
+                <div class="lead-av" style="width:30px;height:30px;font-size:11px">RL</div>
+                <div style="flex:1;min-width:0">
+                  <b style="font-size:12.5px;display:block">Richmond Lanes</b>
+                  <span class="note">Center account</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- content -->
+            <div class="dc-main">
+              <div class="dc-top">
+                <span class="dc-hash" id="dcChanIcon">#</span>
+                <b id="dcChanName">general</b>
+                <span class="note" id="dcChanDesc" style="flex:1;min-width:0"></span>
+                <button class="mini" onclick="dcToggleMembers()" id="dcMemBtn">Members</button>
+              </div>
+              <div class="dc-body" id="dcBody"></div>
+              <div class="dc-compose" id="dcCompose">
+                <input type="text" id="dcInput" placeholder="Message" onkeydown="if(event.key==='Enter')dcSend()">
+                <button class="btn solid" onclick="dcSend()">Send</button>
+              </div>
+            </div>
+
+            <!-- members -->
+            <div class="dc-mem" id="dcMem"></div>
+          </div>
+        </div>
+</section>
 
       <!-- -- EVENT (hero) -- -->
       <section class="screen" id="s-event">
@@ -3499,6 +3597,189 @@ function renderGroupIndex(){
         '<div><b>'+g.subs.length+'</b><span>Subs</span></div>'+
       '</div></button>';
   }).join('');
+}
+
+/* ===== Groups v2: servers and channels =============================
+   One primitive, a channel, with a kind that changes behaviour and never
+   vocabulary. A league manager makes rosters and names them after teams;
+   nothing on screen says "team" or "subs list". The same structure serves
+   a committee or a youth program without a second concept. */
+const CH_KINDS = {
+  chat:     {icon:'#', label:'Chat',          desc:'Open conversation'},
+  announce: {icon:'!', label:'Announcements', desc:'You post, members read'},
+  roster:   {icon:'@', label:'Roster',        desc:'A named group of people who talk'},
+  pool:     {icon:'~', label:'Pool',          desc:'People waiting to be moved into a roster'}
+};
+
+// Built from the same GROUPS data v1 uses, so both versions show the same
+// center. Teams become rosters, the subs list becomes a pool.
+const DC = GROUPS.map(g => ({
+  name: g.name,
+  desc: g.desc,
+  channels: [
+    {name:'announcements', kind:'announce', members:[], msgs:[
+      {who:'Richmond Lanes', tm:'Mon', tx:'Week 6 standings are up. Gutter Gang still top by 14 pins.'},
+      {who:'Richmond Lanes', tm:'Thu', tx:'Lane 7 is back in service after the sensor swap.'}
+    ]},
+    {name:'general', kind:'chat', members:[], msgs:[
+      {who:null, tm:'09:12', tx:'Anyone got a spare 15lb for tonight?'},
+      {who:null, tm:'09:40', tx:'I have one in my locker, help yourself.'},
+      {who:null, tm:'10:02', tx:'Bringing my brother along, he has not bowled in years.'}
+    ]},
+    ...g.teams.map(t => ({name:t.name, kind:'roster', members:t.members, msgs:[
+      {who:null, tm:'Tue', tx:'Practice at 6, same lanes as last week.'}
+    ]})),
+    {name:'Subs', kind:'pool', members:g.subs, msgs:[]}
+  ]
+}));
+
+let DCG = 0, DCC = 1, DCMEM = false;
+
+function grpVersion(btn, v){
+  segPick(btn);
+  $('grpV1').style.display = v===1 ? '' : 'none';
+  $('grpV2').style.display = v===2 ? '' : 'none';
+  if(v===2) dcRender();
+}
+
+function dcRender(){ dcRail(); dcSide(); dcMain(); }
+
+function dcRail(){
+  $('dcRail').innerHTML = DC.map((g,i)=>{
+    const init = g.name.split(' ').filter(w=>/[A-Za-z]/.test(w)).slice(0,2).map(w=>w[0]).join('');
+    return `<button class="dc-srv ${i===DCG?'on':''}" title="${g.name}" onclick="dcGo(${i})">${init}</button>`;
+  }).join('') + `<button class="dc-srv dc-srv-new" title="New group" onclick="newGroup()">+</button>`;
+}
+
+function dcSide(){
+  const g = DC[DCG];
+  $('dcGroupName').textContent = g.name;
+  const order = ['announce','chat','roster','pool'];
+  const heads = {announce:'Information', chat:'Talk', roster:'Rosters', pool:'Pool'};
+  let html = '';
+  order.forEach(kind=>{
+    const list = g.channels.map((c,i)=>({c,i})).filter(x=>x.c.kind===kind);
+    if(!list.length) return;
+    html += `<div class="dc-cat">${heads[kind]}</div>`;
+    html += list.map(({c,i})=>`
+      <button class="dc-chan ${i===DCC?'on':''}" onclick="dcOpen(${i})">
+        <span class="ic">${CH_KINDS[c.kind].icon}</span>
+        <span class="nm">${c.name}</span>
+        ${c.members.length?`<span class="ct">${c.members.length}</span>`:''}
+      </button>`).join('');
+  });
+  $('dcChans').innerHTML = html;
+}
+
+function dcMain(){
+  const c = DC[DCG].channels[DCC];
+  if(!c) return;
+  const k = CH_KINDS[c.kind];
+  $('dcChanIcon').textContent = k.icon;
+  $('dcChanName').textContent = c.name;
+  $('dcChanDesc').textContent = k.desc;
+  $('dcMemBtn').style.display = c.members.length ? '' : 'none';
+  $('dcCompose').style.display = c.kind==='pool' ? 'none' : 'flex';
+  $('dcInput').placeholder = c.kind==='announce'
+    ? `Post to everyone in ${DC[DCG].name}` : `Message ${c.name}`;
+
+  if(c.kind==='pool'){
+    // The one affordance that makes the league case work without league
+    // logic: anyone here moves into any roster in a single action.
+    $('dcBody').innerHTML = c.members.length ? `
+      <p class="note" style="margin:0 0 12px">${c.members.length} people waiting. Move anyone into a roster.</p>
+      ${c.members.map(m=>`
+        <div class="lead-row">
+          <div class="lead-av face-open" onclick="openContact(${m.id})">${INIT(m)}</div>
+          <div style="flex:1;min-width:0">
+            <b style="font-size:13px" class="who2" onclick="openContact(${m.id})">${NAME(m)}</b>
+            <div class="note">${m.avg?m.avg+' average':'Not on BowlersNetwork yet'}</div>
+          </div>
+          <button class="btn" onclick="dcPromote(${m.id})">Move to a roster</button>
+        </div>`).join('')}`
+      : '<div class="dc-empty">Nobody waiting.</div>';
+    dcMembers(); return;
+  }
+
+  const joined = PEOPLE.filter(p=>p.status==='joined');
+  $('dcBody').innerHTML = c.msgs.length ? c.msgs.map((m,i)=>{
+    const person = m.who ? null : (c.members[i % Math.max(1,c.members.length)] || joined[i % joined.length]);
+    const nm = m.who || NAME(person);
+    const av = m.who ? 'RL' : INIT(person);
+    const open = person ? `onclick="openContact(${person.id})"` : '';
+    return `<div class="dc-msg">
+      <div class="lead-av ${person?'face-open':''}" ${open}>${av}</div>
+      <div class="bod">
+        <span class="nm ${person?'who2':''}" ${open}>${nm}</span><span class="tm">${m.tm}</span>
+        <div class="tx">${m.tx}</div>
+      </div></div>`;
+  }).join('') : `<div class="dc-empty">Nothing in #${c.name} yet. Say something.</div>`;
+  dcMembers();
+}
+
+function dcMembers(){
+  const c = DC[DCG].channels[DCC];
+  $('dcMem').innerHTML = c.members.length ? `
+    <div class="dc-cat" style="padding-left:4px">In here &middot; ${c.members.length}</div>
+    ${c.members.map((m,i)=>`
+      <button class="dc-chan" onclick="openContact(${m.id})" title="${NAME(m)}">
+        <span class="lead-av" style="width:24px;height:24px;font-size:10px">${INIT(m)}</span>
+        <span class="nm">${NAME(m)}</span>
+        ${i===0 && c.kind==='roster' ? '<span class="ct">captain</span>' : ''}
+      </button>`).join('')}` : '';
+}
+
+function dcGo(i){ DCG=i; DCC=1; DCMEM=false; document.querySelector('.dc').classList.remove('mem-open'); dcRender(); }
+function dcOpen(i){
+  DCC=i; dcSide(); dcMain();
+  document.querySelector('.dc').classList.add('show-main');
+}
+function dcToggleMembers(){
+  DCMEM=!DCMEM;
+  document.querySelector('.dc').classList.toggle('mem-open',DCMEM);
+}
+function dcSend(){
+  const el=$('dcInput'), tx=el.value.trim();
+  if(!tx) return;
+  DC[DCG].channels[DCC].msgs.push({who:'Richmond Lanes', tm:'now', tx});
+  el.value=''; dcMain();
+  $('dcBody').scrollTop = $('dcBody').scrollHeight;
+}
+function dcPromote(pid){
+  const g=DC[DCG];
+  const rosters=g.channels.map((c,i)=>({c,i})).filter(x=>x.c.kind==='roster');
+  if(!rosters.length){ toast('Make a roster first.'); return; }
+  sheet('Move into a roster','Pick where they go.',
+    rosters.map(({c,i})=>`<button class="pickrow" onclick="dcDoPromote(${pid},${i})">
+      <span>${c.name}</span><span class="meta" style="margin-left:auto">${c.members.length} people</span></button>`).join(''),
+    '<button class="btn ghost" onclick="closeAll()">Cancel</button>');
+}
+function dcDoPromote(pid,ci){
+  const g=DC[DCG];
+  const pool=g.channels.find(c=>c.kind==='pool');
+  const person=pool.members.find(m=>m.id===pid);
+  if(!person) return;
+  pool.members=pool.members.filter(m=>m.id!==pid);
+  g.channels[ci].members.push(person);
+  closeAll(); dcSide(); dcMain();
+  toast(`${person.first} moved into ${g.channels[ci].name}.`);
+}
+function dcAddChannel(){
+  sheet('Add a channel','What should it do?',
+    Object.entries(CH_KINDS).map(([k,v])=>`
+      <button class="pickrow" onclick="dcNewChannel('${k}')">
+        <span class="box">${v.icon}</span>
+        <span style="flex:1;min-width:0"><b>${v.label}</b><div class="note">${v.desc}</div></span>
+      </button>`).join(''),
+    '<button class="btn ghost" onclick="closeAll()">Cancel</button>');
+}
+function dcNewChannel(kind){
+  const nm = prompt(`Name this ${CH_KINDS[kind].label.toLowerCase()}`);
+  if(!nm || !nm.trim()){ closeAll(); return; }
+  DC[DCG].channels.push({name:nm.trim(), kind, members:[], msgs:[]});
+  DCC = DC[DCG].channels.length-1;
+  closeAll(); dcSide(); dcMain();
+  toast(`${nm.trim()} added.`);
 }
 
 function showGroups(){ $('grpIndex').style.display=''; $('grpDetail').style.display='none'; }
