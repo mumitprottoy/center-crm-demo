@@ -141,8 +141,13 @@
 .pf-range span{font-size:12px;color:var(--ink-3);flex:none}
 /* ── Groups v2: server / channel shell ─────────────────────────── */
 .dc{display:grid;grid-template-columns:68px 232px 1fr;border:1px solid var(--line);
-  border-radius:14px;overflow:hidden;background:var(--surface);height:min(74vh,720px)}
+  border-radius:14px;overflow:hidden;background:var(--surface);height:min(74vh,720px);
+  transition:grid-template-columns .18s ease}
 .dc.mem-open{grid-template-columns:68px 232px 1fr 208px}
+.dc.side-hid{grid-template-columns:68px 0 1fr}
+.dc.side-hid.mem-open{grid-template-columns:68px 0 1fr 208px}
+.dc.side-hid .dc-side{border-right:0}
+.dc.side-hid .dc-side > *{display:none}
 .dc-rail{background:var(--hover);display:flex;flex-direction:column;align-items:center;
   gap:8px;padding:10px 0;overflow-y:auto}
 .dc-srv{width:44px;height:44px;border-radius:15px;border:0;cursor:pointer;flex:none;
@@ -151,10 +156,19 @@
 .dc-srv:hover{border-radius:13px;background:var(--accent-subtle);color:var(--accent)}
 .dc-srv.on{border-radius:13px;background:var(--accent);color:var(--on-accent)}
 .dc-srv-new{background:transparent;border:1px dashed var(--line-strong);color:var(--ink-3);font-size:18px}
-.dc-side{background:var(--bg);border-right:1px solid var(--line);display:flex;flex-direction:column;min-width:0}
+.dc-side{background:var(--bg);border-right:1px solid var(--line);display:flex;flex-direction:column;min-width:0;min-height:0;overflow:hidden}
 .dc-side-head{display:flex;align-items:center;gap:8px;padding:13px 14px;border-bottom:1px solid var(--line)}
 .dc-side-head b{flex:1;min-width:0;font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.dc-chans{flex:1;overflow-y:auto;padding:10px 8px}
+.dc-chans{flex:1 1 0;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:10px 8px;
+  scrollbar-width:thin;scrollbar-color:var(--line-strong) transparent}
+.dc-chans::-webkit-scrollbar{width:8px}
+.dc-chans::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:99px;
+  border:2px solid transparent;background-clip:content-box}
+.dc-chans::-webkit-scrollbar-thumb:hover{background:var(--ink-3);background-clip:content-box}
+.dc-chans::-webkit-scrollbar-track{background:transparent}
+.dc-side-head .mini,.dc-top .mini{flex:none}
+.dc-toggle{transition:transform .18s ease}
+.dc.side-hid .dc-toggle{transform:rotate(180deg)}
 .dc-cat{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
   color:var(--ink-3);padding:12px 6px 5px}
 .dc-chan{display:flex;align-items:center;gap:7px;width:100%;border:0;background:none;font:inherit;
@@ -913,6 +927,7 @@
               <div class="dc-side-head">
                 <b id="dcGroupName">Group</b>
                 <button class="mini" onclick="dcAddChannel()" title="Add channel">+</button>
+                <button class="mini dc-toggle" onclick="dcToggleSide()" title="Hide channels" aria-label="Hide channels">&lsaquo;</button>
               </div>
               <div class="dc-chans" id="dcChans"></div>
               <div class="dc-side-foot">
@@ -927,6 +942,8 @@
             <!-- content -->
             <div class="dc-main">
               <div class="dc-top">
+                <button class="mini" id="dcShowSide" onclick="dcToggleSide()" title="Show channels"
+                  style="display:none" aria-label="Show channels">&rsaquo;</button>
                 <span class="dc-hash" id="dcChanIcon">#</span>
                 <b id="dcChanName">general</b>
                 <span class="note" id="dcChanDesc" style="flex:1;min-width:0"></span>
@@ -3734,6 +3751,14 @@ function dcOpen(i){
   DCC=i; dcSide(); dcMain();
   document.querySelector('.dc').classList.add('show-main');
 }
+function dcToggleSide(){
+  const el=document.querySelector('.dc');
+  const hidden=el.classList.toggle('side-hid');
+  // The reopen control only exists while the sidebar is away, so the top
+  // bar does not carry a dead button the rest of the time.
+  $('dcShowSide').style.display = hidden ? '' : 'none';
+}
+
 function dcToggleMembers(){
   DCMEM=!DCMEM;
   document.querySelector('.dc').classList.toggle('mem-open',DCMEM);
